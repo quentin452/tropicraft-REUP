@@ -13,7 +13,7 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
     public WorldGenForestAltarRuin(final World world, final Random random) {
         super(world, random, random.nextInt(4));
     }
-    
+
     public boolean generate(final int i, int j, final int k) {
         j = Integer.MAX_VALUE;
         this.setOrigin(i, k);
@@ -110,15 +110,13 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
                             this.generateTunnel(x, y2, z);
                             hasGennedTunnel = true;
                         }
-                        continue;
                     }
-                    break;
                 }
             }
         }
         return true;
     }
-    
+
     private void generateTunnel(int i, int j, int k) {
         final int depth = this.rand.nextInt(5) + 8;
         for (int y = 0; y < depth; ++y) {
@@ -162,7 +160,7 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
             chest.setInventorySlotContents(0, this.randLoot());
         }
     }
-    
+
     public ItemStack randLoot() {
         final int picker = this.rand.nextInt(18);
         if (picker < 6) {

@@ -22,17 +22,16 @@ public class RenderTCItemFrame extends Render
     private final RenderBlocks field_147916_f;
     private final Minecraft field_147917_g;
     private IIcon field_94147_f;
-    private static final String __OBFID = "CL_00001002";
-    
+
     public RenderTCItemFrame() {
         this.field_147916_f = new RenderBlocks();
         this.field_147917_g = Minecraft.getMinecraft();
     }
-    
+
     public void updateIcons(final IIconRegister p_94143_1_) {
         this.field_94147_f = p_94143_1_.registerIcon("itemframe_background");
     }
-    
+
     public void doRender(final EntityItemFrame p_76986_1_, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         GL11.glPushMatrix();
         final double d3 = p_76986_1_.posX - p_76986_2_ - 0.5;
@@ -52,11 +51,11 @@ public class RenderTCItemFrame extends Render
         GL11.glPopMatrix();
         this.func_147914_a(p_76986_1_, p_76986_2_ + Direction.offsetX[p_76986_1_.hangingDirection] * 0.3f, p_76986_4_ - 0.25, p_76986_6_ + Direction.offsetZ[p_76986_1_.hangingDirection] * 0.3f);
     }
-    
+
     protected ResourceLocation getEntityTexture(final EntityItemFrame p_110775_1_) {
         return null;
     }
-    
+
     private void func_147915_b(final EntityItemFrame p_147915_1_) {
         GL11.glPushMatrix();
         GL11.glRotatef(p_147915_1_.rotationYaw, 0.0f, 1.0f, 0.0f);
@@ -93,7 +92,7 @@ public class RenderTCItemFrame extends Render
         this.field_147916_f.clearOverrideBlockTexture();
         GL11.glPopMatrix();
     }
-    
+
     private void renderFrameItemAsBlock(final EntityItemFrame p_82403_1_) {
         GL11.glPushMatrix();
         GL11.glRotatef(p_82403_1_.rotationYaw, 0.0f, 1.0f, 0.0f);
@@ -130,7 +129,7 @@ public class RenderTCItemFrame extends Render
         this.field_147916_f.clearOverrideBlockTexture();
         GL11.glPopMatrix();
     }
-    
+
     private void func_82402_b(final EntityItemFrame p_82402_1_) {
         final ItemStack itemstack = p_82402_1_.getDisplayedItem();
         if (itemstack != null) {
@@ -217,7 +216,7 @@ public class RenderTCItemFrame extends Render
             GL11.glPopMatrix();
         }
     }
-    
+
     protected void func_147914_a(final EntityItemFrame p_147914_1_, final double p_147914_2_, final double p_147914_4_, final double p_147914_6_) {
         if (Minecraft.isGuiEnabled() && p_147914_1_.getDisplayedItem() != null && p_147914_1_.getDisplayedItem().hasDisplayName() && this.renderManager.field_147941_i == p_147914_1_) {
             final float f = 1.6f;
@@ -263,15 +262,15 @@ public class RenderTCItemFrame extends Render
             }
         }
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity p_110775_1_) {
         return this.getEntityTexture((EntityItemFrame)p_110775_1_);
     }
-    
+
     public void doRender(final Entity p_76986_1_, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_) {
         this.doRender((EntityItemFrame)p_76986_1_, p_76986_2_, p_76986_4_, p_76986_6_, p_76986_8_, p_76986_9_);
     }
-    
+
     static {
         mapBackgroundTextures = new ResourceLocation("textures/map/map_background.png");
     }

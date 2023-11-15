@@ -3,6 +3,7 @@ package net.tropicraft.entity.projectile;
 import CoroUtil.entity.*;
 import cpw.mods.fml.relauncher.*;
 import extendedrenderer.particle.behavior.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.*;
 import net.minecraft.entity.*;
 import java.util.*;
@@ -22,6 +23,11 @@ public class EntityIceBall extends EntityThrowableUsefull
 
     public EntityIceBall(final World world) {
         super(world);
+    }
+
+    @Override
+    protected void entityInit() {
+
     }
 
     public EntityIceBall(final World world, final EntityLivingBase EntityLivingBase) {
@@ -55,6 +61,16 @@ public class EntityIceBall extends EntityThrowableUsefull
             }
             this.tickAnimate();
         }
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
+
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+
     }
 
     protected float getGravityVelocity() {
@@ -145,5 +161,10 @@ public class EntityIceBall extends EntityThrowableUsefull
                 this.pm.particles.add(entityfx);
             }
         }
+    }
+
+    @Override
+    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+
     }
 }

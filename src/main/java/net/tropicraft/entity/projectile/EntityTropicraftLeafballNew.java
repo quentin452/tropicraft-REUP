@@ -2,6 +2,7 @@ package net.tropicraft.entity.projectile;
 
 import CoroUtil.entity.*;
 import cpw.mods.fml.relauncher.*;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.*;
 import net.minecraft.entity.*;
 import java.util.*;
@@ -21,6 +22,11 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
         super(world);
     }
 
+    @Override
+    protected void entityInit() {
+
+    }
+
     public EntityTropicraftLeafballNew(final World world, final EntityLivingBase entityliving) {
         super(world, entityliving);
     }
@@ -34,6 +40,16 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
         if (!this.worldObj.isRemote) {
             ++this.ticksInAir;
         }
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tagCompund) {
+
+    }
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tagCompound) {
+
     }
 
     public MovingObjectPosition tickEntityCollision(final Vec3 vec3, final Vec3 vec31) {
@@ -100,5 +116,10 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
                 entityfx.spawnAsWeatherEffect();
             }
         }
+    }
+
+    @Override
+    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+
     }
 }
