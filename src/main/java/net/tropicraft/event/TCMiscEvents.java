@@ -26,7 +26,7 @@ public class TCMiscEvents
             WorldDirectorManager.instance().registerWorldDirector(new WorldDirector(), CoroAI.modID, event.world);
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void tickClient(final TickEvent.ClientTickEvent event) {
@@ -40,7 +40,7 @@ public class TCMiscEvents
             }
         }
     }
-    
+
     @SubscribeEvent
     public void tickServer(final TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -49,7 +49,7 @@ public class TCMiscEvents
         final World world = (World)FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
         if (world != null && world instanceof WorldServer) {
             for (int ii = 0; ii < world.playerEntities.size(); ++ii) {
-                final Entity entity1 = world.playerEntities.get(ii);
+                final Entity entity1 = (Entity) world.playerEntities.get(ii);
                 if (entity1 instanceof EntityPlayerMP && ((EntityPlayerMP)entity1).isPotionActive(Potion.confusion) && this.isSunset(world) && entity1.ridingEntity instanceof EntityChair) {
                     entity1.ridingEntity = null;
                     TropicraftWorldUtils.teleportPlayer((EntityPlayerMP)entity1);
@@ -57,7 +57,7 @@ public class TCMiscEvents
             }
         }
     }
-    
+
     private boolean isSunset(final World world) {
         final long timeDay = world.getWorldTime() % 24000L;
         return timeDay > 12200L && timeDay < 14000L;

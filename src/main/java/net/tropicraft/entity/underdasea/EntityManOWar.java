@@ -16,7 +16,7 @@ public class EntityManOWar extends EntityWaterMob
     protected float randomMotionVecX;
     protected float randomMotionVecY;
     protected float randomMotionVecZ;
-    
+
     public EntityManOWar(final World world) {
         super(world);
         this.important1 = 0.0f;
@@ -29,16 +29,16 @@ public class EntityManOWar extends EntityWaterMob
         this.setSize(0.6f, 0.6f);
         this.experienceValue = 7;
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(5.0);
     }
-    
+
     public boolean canBreatheUnderwater() {
         return true;
     }
-    
+
     public byte getAttackStrength() {
         switch (this.worldObj.difficultySetting) {
             case EASY: {
@@ -55,11 +55,11 @@ public class EntityManOWar extends EntityWaterMob
             }
         }
     }
-    
+
     protected Entity getTarget() {
         return null;
     }
-    
+
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (this.worldObj.isRemote) {
@@ -69,7 +69,7 @@ public class EntityManOWar extends EntityWaterMob
             if (this.attackTime == 0) {
                 final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.expand(2.0, 8.0, 2.0).getOffsetBoundingBox(0.0, -8.0, 0.0));
                 for (int i = 0; i < list.size(); ++i) {
-                    final Entity ent = list.get(i);
+                    final Entity ent = (Entity) list.get(i);
                     if (!(ent instanceof EntityManOWar) && ent instanceof EntityLiving && ((EntityLiving)ent).isInWater()) {
                         final byte byte0 = this.getAttackStrength();
                         ((EntityLiving)ent).attackEntityFrom(DamageSource.drown, (float)byte0);
@@ -126,7 +126,7 @@ public class EntityManOWar extends EntityWaterMob
             }
         }
     }
-    
+
     protected void updateEntityActionState() {
         if (this.rand.nextInt(150) == 0 || !this.inWater || (this.randomMotionVecX == 0.0f && this.randomMotionVecY == 0.0f && this.randomMotionVecZ == 0.0f)) {
             final float f = this.rand.nextFloat() * 3.141593f * 2.0f;
@@ -142,7 +142,7 @@ public class EntityManOWar extends EntityWaterMob
             }
         }
     }
-    
+
     public void onDeath(final DamageSource d) {
         super.onDeath(d);
         if (!this.worldObj.isRemote) {
@@ -151,19 +151,19 @@ public class EntityManOWar extends EntityWaterMob
             }
         }
     }
-    
+
     public boolean getCanSpawnHere() {
         return !this.worldObj.checkBlockCollision(this.boundingBox);
     }
-    
+
     public int getTalkInterval() {
         return 120;
     }
-    
+
     protected boolean canDespawn() {
         return true;
     }
-    
+
     protected int getExperiencePoints(final EntityPlayer entityplayer) {
         return 3 + this.worldObj.rand.nextInt(3);
     }

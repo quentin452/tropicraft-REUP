@@ -36,7 +36,7 @@ public class GuiTropicalBook extends GuiScreen
     private static final int buttonInfoPage = 2011;
     private static final int buttonNextContentPage = 2012;
     private static final int buttonPrevContentPage = 2013;
-    
+
     public GuiTropicalBook(final TropicalBook tropbook) {
         this.indexPage = -1;
         this.selectedIndex = 0;
@@ -49,15 +49,15 @@ public class GuiTropicalBook extends GuiScreen
         this.closedTextureIndex = tropbook.outsideTexture;
         this.openTextureIndex = tropbook.insideTexture;
     }
-    
+
     public boolean doesGuiPauseGame() {
         return false;
     }
-    
+
     public void initGui() {
         this.addButtons();
     }
-    
+
     protected void actionPerformed(final GuiButton guibutton) {
         switch (guibutton.id) {
             case 2003: {
@@ -105,7 +105,7 @@ public class GuiTropicalBook extends GuiScreen
             }
         }
     }
-    
+
     private void addButtons() {
         this.buttonList.clear();
         if (this.indexPage == -1) {
@@ -157,7 +157,7 @@ public class GuiTropicalBook extends GuiScreen
             }
         }
     }
-    
+
     public void addIcons() {
         int indexPosition = 0;
         for (int entry = this.indexPage * this.book.entriesPerIndexPage(); entry < (this.indexPage + 1) * this.book.entriesPerIndexPage(); ++entry) {
@@ -184,11 +184,11 @@ public class GuiTropicalBook extends GuiScreen
             ++indexPosition;
         }
     }
-    
+
     protected void mouseClicked(final int x, final int y, final int mousebutton) {
         if (mousebutton == 0) {
             for (int l = 0; l < this.buttonList.size(); ++l) {
-                final GuiButton guibutton = this.buttonList.get(l);
+                final GuiButton guibutton = (GuiButton) this.buttonList.get(l);
                 if (guibutton.mousePressed(this.mc, x, y)) {
                     this.mc.getSoundHandler().playSound((ISound)PositionedSoundRecord.func_147674_a(new ResourceLocation("tropicraft:pageFlip"), 1.0f));
                     this.actionPerformed(guibutton);
@@ -196,7 +196,7 @@ public class GuiTropicalBook extends GuiScreen
             }
         }
     }
-    
+
     public void handleKeyboardInput() {
         super.handleKeyboardInput();
         if (Keyboard.getEventKeyState()) {
@@ -207,7 +207,7 @@ public class GuiTropicalBook extends GuiScreen
             this.keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
         }
     }
-    
+
     public void drawScreen(final int i, final int j, final float f) {
         this.drawDefaultBackground();
         if (this.indexPage == -1) {
@@ -286,7 +286,7 @@ public class GuiTropicalBook extends GuiScreen
         this.addButtons();
         super.drawScreen(i, j, f);
     }
-    
+
     private void printRecipes() throws Exception {
         final List<ShapedRecipes> recipes = ((Encyclopedia)this.book).getRecipesForEntry(this.selectedIndex);
         if (recipes == null || recipes.isEmpty()) {
@@ -347,7 +347,7 @@ public class GuiTropicalBook extends GuiScreen
             newy += 62;
         }
     }
-    
+
     private void checkMouseHover(final ItemStack itemstack, final int k, final int l, final int size) {
         float scale = 0.0f;
         switch (this.mc.gameSettings.guiScale) {

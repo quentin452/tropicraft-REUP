@@ -15,19 +15,19 @@ public class EntityKoaTrader extends EntityKoaBase
         this.agent.jobMan.addPrimaryJob((JobBase)new JobTrade(this.agent.jobMan));
         this.agent.scanForHomeChest = false;
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.agent.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(80.0);
     }
-    
+
     public int getCooldownRanged() {
         return 5;
     }
-    
+
     public IEntityLivingData onSpawnWithEgg(final IEntityLivingData par1EntityLivingData) {
-        this.agent.entInv.inventory.setInventorySlotContents(0, new ItemStack((Item)TCItemRegistry.swordEudialyte));
+        this.agent.entInv.setSlotContents(0, new ItemStack((Item)TCItemRegistry.swordEudialyte));
         this.agent.entInv.syncToClient();
         return super.onSpawnWithEgg(par1EntityLivingData);
     }

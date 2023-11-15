@@ -25,12 +25,12 @@ public class Tropicraft
     public static Encyclopedia encyclopedia;
     public static String eventChannelName;
     public static final FMLEventChannel eventChannel;
-    
+
     @Mod.EventHandler
     public void serverStarting(final FMLServerStartingEvent event) {
         TCCommandRegistry.init(event);
     }
-    
+
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         ConfigMod.addConfigFile(event, "tc_biomes", (IConfigCategory)new ConfigBiomes());
@@ -48,36 +48,36 @@ public class Tropicraft
         TCCraftingRegistry.init();
         Tropicraft.eventChannel.register((Object)new TCPacketEvents());
     }
-    
+
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
         Tropicraft.proxy.initRenderHandlersAndIDs();
         TCEntityRegistry.init();
         Tropicraft.proxy.initRenderRegistry();
-        MinecraftForge.EVENT_BUS.register((Object)new TCBlockEvents());
-        MinecraftForge.EVENT_BUS.register((Object)new TCItemEvents());
+        MinecraftForge.EVENT_BUS.register(new TCBlockEvents());
+        MinecraftForge.EVENT_BUS.register(new TCItemEvents());
         final TCMiscEvents misc = new TCMiscEvents();
-        MinecraftForge.EVENT_BUS.register((Object)misc);
-        FMLCommonHandler.instance().bus().register((Object)misc);
-        GameRegistry.registerWorldGenerator((IWorldGenerator)new TCWorldGenerator(), 10);
+        MinecraftForge.EVENT_BUS.register(misc);
+        FMLCommonHandler.instance().bus().register(misc);
+        GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
         TropicraftWorldUtils.initializeDimension();
     }
-    
+
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
     }
-    
+
     @Mod.EventHandler
     public void handleIMCMessages(final FMLInterModComms.IMCEvent event) {
     }
-    
+
     public static void dbg(final Object obj) {
         final boolean consoleDebug = true;
         if (consoleDebug) {
             System.out.println(obj);
         }
     }
-    
+
     static {
         Tropicraft.eventChannelName = "tropicraft";
         eventChannel = NetworkRegistry.INSTANCE.newEventDrivenChannel(Tropicraft.eventChannelName);

@@ -24,12 +24,12 @@ public class JobTrade extends JobBase
     public EntityPlayer activeTrader;
     public ArrayList<ItemStack> offeredItems;
     public Block idTradeBlock;
-    
+
     public JobTrade(final JobManager jm) {
         super(jm);
         this.offeredItems = new ArrayList<ItemStack>();
     }
-    
+
     public void convertOfferingsToCurrency(final int newCredit) {
         this.offeredItems.clear();
         int leftToConvert;
@@ -40,7 +40,7 @@ public class JobTrade extends JobBase
             this.offeredItems.add(new ItemStack(TCKoaCurrencyRegistry.currency.getItem(), leftToConvert));
         }
     }
-    
+
     public int getOfferedItemsValue() {
         int value = 0;
         try {
@@ -53,7 +53,7 @@ public class JobTrade extends JobBase
         }
         return value;
     }
-    
+
     public int returnCredit() {
         final int value = 0;
         try {
@@ -67,7 +67,7 @@ public class JobTrade extends JobBase
         }
         return value;
     }
-    
+
     public void tick() {
         if (this.tradeBlockPos != null && (this.ai.targX != this.tradeBlockPos.posX || this.ai.targY != this.tradeBlockPos.posY + 1 || this.ai.targZ != this.tradeBlockPos.posZ) && this.ent.getDistance((double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ) > 15.0) {
             this.ent.getNavigator().clearPathEntity();
@@ -102,14 +102,14 @@ public class JobTrade extends JobBase
             this.tradeTick();
         }
     }
-    
+
     public void tradeStart() {
         if (this.tradePlate != null) {
             this.tradePlate.tradeState = 1;
             this.tradePlate.credit = this.getOfferedItemsValue();
         }
     }
-    
+
     public void tradeConfirmCallback() {
         int credit = this.getOfferedItemsValue();
         final ItemEntry ie = ItemValues.itemsBuyable.get(this.tradePlate.itemIndex);
@@ -122,14 +122,14 @@ public class JobTrade extends JobBase
         }
         this.tradeSuccess();
     }
-    
+
     public void tradeSuccess() {
         if (this.tradePlate != null) {
             this.tradePlate.tradeState = 1;
             this.tradePlate.credit = this.getOfferedItemsValue();
         }
     }
-    
+
     public void tradeReset() {
         if (this.offeredItems != null) {
             this.returnCredit();
@@ -142,7 +142,7 @@ public class JobTrade extends JobBase
         }
         Tropicraft.dbg("trade reset");
     }
-    
+
     public void tradeTick() {
         TileEntity tEnt = null;
         if (this.tradeBlockPos != null) {
@@ -155,7 +155,7 @@ public class JobTrade extends JobBase
             ((TileEntityPurchasePlate)tEnt).activeTrader = this.activeTrader;
         }
     }
-    
+
     public ChunkCoordinates tickFind(final Block id, final int range) {
         for (int i = 0; i < 30; ++i) {
             final int randX = (int)this.ent.posX + this.ent.worldObj.rand.nextInt(range) - range / 2;
@@ -169,20 +169,20 @@ public class JobTrade extends JobBase
         }
         return null;
     }
-    
+
     public boolean shouldExecute() {
         return this.isAreaSecure();
     }
-    
+
     public boolean shouldContinue() {
         return !this.isAreaSecure();
     }
-    
+
     public boolean isAreaSecure() {
         if (this.tradeBlockPos != null) {
             final List list = this.ent.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this.ent, AxisAlignedBB.getBoundingBox((double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ, (double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ).expand(6.0, 3.0, 6.0));
             for (int j = 0; j < list.size(); ++j) {
-                final Entity entity1 = list.get(j);
+                final Entity entity1 = (Entity) list.get(j);
                 if (this.entInt.isEnemy(entity1)) {
                     return false;
                 }
@@ -190,7 +190,7 @@ public class JobTrade extends JobBase
         }
         return true;
     }
-    
+
     public void onIdleTickAct() {
         if (this.activeTrader != null) {
             this.ent.faceEntity((Entity)this.activeTrader, 15.0f, 15.0f);
@@ -207,7 +207,7 @@ public class JobTrade extends JobBase
             }
         }
     }
-    
+
     public boolean hookInteract(final EntityPlayer par1EntityPlayer) {
         if (!this.ent.worldObj.isRemote) {
             if (this.offeredItems == null) {

@@ -16,34 +16,34 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
     public int ticksInAir;
     @SideOnly(Side.CLIENT)
     public boolean hasDeathTicked;
-    
+
     public EntityTropicraftLeafballNew(final World world) {
         super(world);
     }
-    
+
     public EntityTropicraftLeafballNew(final World world, final EntityLivingBase entityliving) {
         super(world, entityliving);
     }
-    
+
     public EntityTropicraftLeafballNew(final World world, final double d, final double d1, final double d2) {
         super(world, d, d1, d2);
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
         if (!this.worldObj.isRemote) {
             ++this.ticksInAir;
         }
     }
-    
+
     public MovingObjectPosition tickEntityCollision(final Vec3 vec3, final Vec3 vec31) {
         MovingObjectPosition movingobjectposition = null;
         Entity entity = null;
-        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0, 1.0, 1.0));
+        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0, 1.0, 1.0));
         final double d0 = 0.0;
         final EntityLivingBase entityliving = this.getThrower();
-        for (int j = 0; j < list.size(); ++j) {
-            final Entity entity2 = list.get(j);
+        for (Object o : list) {
+            final Entity entity2 = (Entity) o;
             if (entity2.canBeCollidedWith() && this.ticksInAir >= 2) {
                 final float f = 0.3f;
                 entity = entity2;
@@ -54,7 +54,7 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
         }
         return movingobjectposition;
     }
-    
+
     protected void onImpact(final MovingObjectPosition movingobjectposition) {
         if (movingobjectposition.entityHit != null && !this.worldObj.isRemote) {
             final byte byte0 = 2;
@@ -74,14 +74,14 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
             this.tickDeath();
         }
     }
-    
+
     public void setDead() {
         if (this.worldObj.isRemote) {
             this.tickDeath();
         }
         super.setDead();
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void tickDeath() {
         if (!this.hasDeathTicked) {
@@ -90,8 +90,8 @@ public class EntityTropicraftLeafballNew extends EntityThrowableUsefull
                 final double speed = 0.01;
                 final double speedInheritFactor = 0.5;
                 final EntityIconFX entityIconFX;
-                final EntityRotFX entityfx = (EntityRotFX)(entityIconFX = new EntityIconFX(this.worldObj, this.posX, this.posY, this.posZ, TCItemRegistry.leafBall.getIconFromDamage(0)));
-                ((EntityRotFX)entityIconFX).motionX += this.motionX * speedInheritFactor;
+                final EntityRotFX entityfx = entityIconFX = new EntityIconFX(this.worldObj, this.posX, this.posY, this.posZ, TCItemRegistry.leafBall.getIconFromDamage(0));
+                entityIconFX.motionX += this.motionX * speedInheritFactor;
                 final EntityRotFX entityRotFX = entityfx;
                 entityRotFX.motionZ += this.motionZ * speedInheritFactor;
                 entityfx.setGravity(0.5f);

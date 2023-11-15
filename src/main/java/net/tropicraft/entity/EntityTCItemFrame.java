@@ -19,13 +19,13 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
     public int xPosition;
     public int yPosition;
     public int zPosition;
-    
+
     public EntityTCItemFrame(final World world) {
         super(world);
         this.itemDropChance = 1.0f;
         this.setShouldDropContents(false);
     }
-    
+
     public EntityTCItemFrame(final World par1World, final int par2, final int par3, final int par4, final int par5, final boolean shouldDropContents) {
         super(par1World, par2, par3, par4, par5);
         this.itemDropChance = 1.0f;
@@ -34,12 +34,12 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         this.zPosition = par4;
         this.setShouldDropContents(shouldDropContents);
     }
-    
+
     protected void entityInit() {
         super.entityInit();
         this.dataWatcher.addObject(16, (Object)0);
     }
-    
+
     public void onBroken(final Entity par1Entity) {
         if (!this.getShouldDropContents()) {
             this.entityDropItem(new ItemStack(TCItemRegistry.koaFrame), 0.0f);
@@ -54,7 +54,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
             }
         }
     }
-    
+
     public void writeEntityToNBT(final NBTTagCompound par1NBTTagCompound) {
         if (this.getDisplayedItem() != null) {
             par1NBTTagCompound.setTag("Item", (NBTBase)this.getDisplayedItem().writeToNBT(new NBTTagCompound()));
@@ -64,7 +64,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         }
         super.writeEntityToNBT(par1NBTTagCompound);
     }
-    
+
     public void readEntityFromNBT(final NBTTagCompound par1NBTTagCompound) {
         final NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
         if (var2 != null && !var2.hasNoTags()) {
@@ -77,19 +77,19 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         }
         super.readEntityFromNBT(par1NBTTagCompound);
     }
-    
+
     public boolean getShouldDropContents() {
         return this.getDataWatcher().getWatchableObjectByte(16) == 1;
     }
-    
+
     public void setShouldDropContents(final boolean par1) {
-        this.dataWatcher.updateObject(16, (Object)(par1 ? 1 : ((Byte)0)));
+        this.dataWatcher.updateObject(16, (Object)(par1 ? 1 : (0)));
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
     }
-    
+
     public boolean onValidSurface() {
         if (!this.worldObj.getCollidingBoundingBoxes((Entity)this, this.boundingBox).isEmpty()) {
             return false;
@@ -130,14 +130,14 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
             }
         }
         final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox);
-        for (final Entity var11 : var9) {
+        for (final Object var11 : var9) {
             if (var11 instanceof EntityHanging) {
                 return false;
             }
         }
         return true;
     }
-    
+
     public void writeSpawnData(final ByteBuf data) {
         data.writeInt(this.field_146063_b);
         data.writeInt(this.field_146064_c);
@@ -145,7 +145,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         data.writeByte(this.hangingDirection);
         data.writeBoolean(this.getShouldDropContents());
     }
-    
+
     public void readSpawnData(final ByteBuf data) {
         this.field_146063_b = data.readInt();
         this.field_146064_c = data.readInt();

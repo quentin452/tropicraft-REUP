@@ -29,13 +29,13 @@ public class EntityDart extends Entity implements IProjectile
     public int dartShake;
     private boolean hasRidden;
     public static int[] potions;
-    
+
     public EntityDart(final World world) {
         super(world);
         this.renderDistanceWeight = 10.0;
         this.setSize(0.5f, 0.5f);
     }
-    
+
     public EntityDart(final World world, final double x, final double y, final double z) {
         super(world);
         this.renderDistanceWeight = 10.0;
@@ -45,7 +45,7 @@ public class EntityDart extends Entity implements IProjectile
         this.ticksInAir = 0;
         this.ticksInGround = 0;
     }
-    
+
     public EntityDart(final World world, final Entity shooter, final float derp, final short damage) {
         this(world);
         this.shootingEntity = shooter;
@@ -61,7 +61,7 @@ public class EntityDart extends Entity implements IProjectile
         this.motionY = -MathHelper.sin(this.rotationPitch / 180.0f * 3.1415927f);
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, derp * 1.5f, 1.0f);
     }
-    
+
     public void setThrowableHeading(double x, double y, double z, final float rotation1, final float rotation2) {
         final float f2 = MathHelper.sqrt_double(x * x + y * y + z * z);
         x /= f2;
@@ -85,7 +85,7 @@ public class EntityDart extends Entity implements IProjectile
         this.prevRotationPitch = n2;
         this.ticksInGround = 0;
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
         if (this.prevRotationPitch == 0.0f && this.prevRotationYaw == 0.0f) {
@@ -118,7 +118,7 @@ public class EntityDart extends Entity implements IProjectile
             final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0, 1.0, 1.0));
             double d0 = 0.0;
             for (int i = 0; i < list.size(); ++i) {
-                final Entity entity2 = list.get(i);
+                final Entity entity2 = (Entity) list.get(i);
                 if (entity2.canBeCollidedWith() && (entity2 != this.shootingEntity || this.ticksInAir >= 5)) {
                     final float f2 = 0.3f;
                     final AxisAlignedBB axisalignedbb1 = entity2.boundingBox.expand((double)f2, (double)f2, (double)f2);
@@ -234,17 +234,17 @@ public class EntityDart extends Entity implements IProjectile
             this.func_145775_I();
         }
     }
-    
+
     public void setDead() {
         super.setDead();
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(final double par1, final double par3, final double par5, final float par7, final float par8, final int par9) {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void setVelocity(final double par1, final double par3, final double par5) {
         this.motionX = par1;
@@ -264,25 +264,25 @@ public class EntityDart extends Entity implements IProjectile
             this.ticksInGround = 0;
         }
     }
-    
+
     public void onCollideWithPlayer(final EntityPlayer par1EntityPlayer) {
     }
-    
+
     protected boolean canTriggerWalking() {
         return false;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public float getShadowSize() {
         return 0.0f;
     }
-    
+
     protected void entityInit() {
         EntityDart.potions = new int[] { Potion.blindness.id, Potion.poison.id, Potion.moveSlowdown.id, Potion.harm.id, Potion.confusion.id, Potion.hunger.id, Potion.weakness.id };
-        this.dataWatcher.addObject(17, (Object)new Short((short)200));
-        this.dataWatcher.addObject(18, (Object)new Byte((byte)0));
+        this.dataWatcher.addObject(17, (Object)(short)200);
+        this.dataWatcher.addObject(18, (Object)(byte)0);
     }
-    
+
     public void writeEntityToNBT(final NBTTagCompound nbttagcompound) {
         nbttagcompound.setByte("shake", (byte)this.dartShake);
         nbttagcompound.setByte("inGround", (byte)(byte)(this.inGround ? 1 : 0));
@@ -291,7 +291,7 @@ public class EntityDart extends Entity implements IProjectile
         nbttagcompound.setShort("hitTime", (short)this.getHitTimer());
         nbttagcompound.setShort("dartType", this.dartType);
     }
-    
+
     public void readEntityFromNBT(final NBTTagCompound nbttagcompound) {
         this.dartShake = (nbttagcompound.getByte("shake") & 0xFF);
         this.inGround = (nbttagcompound.getByte("inGround") == 1);
@@ -300,19 +300,19 @@ public class EntityDart extends Entity implements IProjectile
         this.setHitTimer(nbttagcompound.getShort("hitTime"));
         this.dartType = nbttagcompound.getShort("dartType");
     }
-    
+
     public void setIsHit(final boolean set) {
-        this.dataWatcher.updateObject(18, (Object)new Byte((byte)(set ? 1 : 0)));
+        this.dataWatcher.updateObject(18, (Object)(byte)(set ? 1 : 0));
     }
-    
+
     public boolean getIsHit() {
         return this.dataWatcher.getWatchableObjectByte(18) == 1;
     }
-    
+
     public void setHitTimer(final short hitTime) {
-        this.dataWatcher.updateObject(17, (Object)new Short(hitTime));
+        this.dataWatcher.updateObject(17, (Object)hitTime);
     }
-    
+
     public int getHitTimer() {
         return this.dataWatcher.getWatchableObjectShort(17);
     }

@@ -19,7 +19,7 @@ public abstract class TropicalBook
     private List<String> sortedPages;
     public String outsideTexture;
     public String insideTexture;
-    
+
     public TropicalBook(final String savedDataFile, final String contentsFile, final String outsideTex, final String insideTex) {
         this.visiblePages = new HashMap<String, Byte>();
         this.pageTitles = new HashMap<String, String>();
@@ -32,9 +32,9 @@ public abstract class TropicalBook
             if (this.dataFile.canRead()) {
                 final InputStream dataInput = new FileInputStream(this.dataFile);
                 final NBTTagCompound data = CompressedStreamTools.readCompressed(dataInput);
-                for (final String tagName : data.func_150296_c()) {
-                    final Byte b = data.getByte(tagName);
-                    this.visiblePages.put(tagName, b);
+                for (final Object tagName : data.func_150296_c()) {
+                    final Byte b = data.getByte((String) tagName);
+                    this.visiblePages.put((String) tagName, b);
                 }
                 dataInput.close();
             }
@@ -68,12 +68,12 @@ public abstract class TropicalBook
             Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex2);
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public static String getClientSidePath() {
         return FMLClientHandler.instance().getClient().mcDataDir.getPath();
     }
-    
+
     protected void saveData() {
         try {
             this.dataFile.createNewFile();
@@ -91,119 +91,119 @@ public abstract class TropicalBook
             Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public boolean hasRecipeList() {
         return false;
     }
-    
+
     public boolean isPageVisible(final String entry) {
         return this.visiblePages.containsKey(entry) && this.visiblePages.get(entry) > 0;
     }
-    
+
     public boolean isPageVisible(final int i) {
         return this.isPageVisible(this.getPageName(i));
     }
-    
+
     public boolean hasPageBeenRead(final String entry) {
         return this.visiblePages.containsKey(entry) && this.visiblePages.get(entry) > 1;
     }
-    
+
     public boolean hasPageBeenRead(final int i) {
         return this.hasPageBeenRead(this.getPageName(i));
     }
-    
+
     public void markPageAsNewlyVisible(final String entry) {
-        this.visiblePages.put(entry, (Byte)1);
+        this.visiblePages.put(entry, (byte) 1);
         this.saveData();
     }
-    
+
     public void markPageAsNewlyVisible(final int i) {
         this.markPageAsNewlyVisible(this.getPageName(i));
     }
-    
+
     public void markPageAsRead(final String entry) {
-        this.visiblePages.put(entry, (Byte)2);
+        this.visiblePages.put(entry, (byte) 2);
         this.saveData();
     }
-    
+
     public void markPageAsRead(final int i) {
         this.markPageAsRead(this.getPageName(i));
     }
-    
+
     public boolean pageExists(final String name) {
         return this.pageTitles.containsKey(name);
     }
-    
+
     public abstract void updatePagesFromInventory(final InventoryPlayer p0);
-    
+
     public int getPageCount() {
         return this.sortedPages.size();
     }
-    
+
     public int getContentPageCount(final int page, final ContentMode mode) {
         return 1;
     }
-    
+
     public int entriesPerIndexPage() {
         return 12;
     }
-    
+
     public int entriesPerContentPage(final ContentMode mode) {
         return 1;
     }
-    
+
     public boolean hasIndexIcons() {
         return false;
     }
-    
+
     public ItemStack getPageItemStack(final int page) {
         return null;
     }
-    
+
     protected String getPageName(final int i) {
         if (i >= 0 && i < this.sortedPages.size()) {
             return this.sortedPages.get(i);
         }
         return null;
     }
-    
+
     public String getPageTitleNotVisible(final int i) {
         return "Page not found";
     }
-    
+
     private String getPageTitleByName(final String name) {
         if (this.pageExists(name)) {
             return this.pageTitles.get(name);
         }
         return null;
     }
-    
+
     public String getPageTitleByIndex(final int i) {
         return this.getPageTitleByName(this.getPageName(i));
     }
-    
+
     private String getPageDescriptionByName(final String name) {
         if (this.pageExists(name)) {
             return this.pageDescriptions.get(name);
         }
         return null;
     }
-    
+
     public String getPageDescriptionsByIndex(final int i) {
         return this.getPageDescriptionByName(this.getPageName(i));
     }
-    
+
     protected List<String> getSortedPages() {
         return this.sortedPages;
     }
-    
+
     static {
         TropicalBook.file = null;
     }
-    
+
     public enum ContentMode
     {
-        INFO, 
+        INFO,
         RECIPE;
     }
 }

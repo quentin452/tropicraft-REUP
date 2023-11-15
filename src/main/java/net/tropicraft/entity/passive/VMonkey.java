@@ -1,5 +1,6 @@
 package net.tropicraft.entity.passive;
 
+import net.minecraft.util.Vec3;
 import net.tropicraft.entity.*;
 import net.minecraft.world.*;
 import net.tropicraft.registry.*;
@@ -18,7 +19,7 @@ public class VMonkey extends EntityCoroAI
     public boolean isClimbing;
     public int noMoveTicks;
     public Vec3 prevPos;
-    
+
     public VMonkey(final World par1World) {
         super(par1World);
         this.noMoveTicks = 0;
@@ -29,34 +30,34 @@ public class VMonkey extends EntityCoroAI
         this.agent.dipl_info = TeamTypes.getType("animal");
         this.experienceValue = 4;
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0);
     }
-    
+
     public boolean getCanSpawnHere() {
         final int i = MathHelper.floor_double(this.posX);
         final int j = MathHelper.floor_double(this.boundingBox.minY);
         final int k = MathHelper.floor_double(this.posZ);
         return CoroUtilBlock.isAir(this.worldObj.getBlock(i, j - 1, k)) && this.worldObj.getFullBlockLightValue(i, j, k) > 8 && super.getCanSpawnHere();
     }
-    
+
     public void entityInit() {
         super.entityInit();
         this.getDataWatcher().addObject(16, (Object)0);
     }
-    
+
     public void checkNewAgent() {
         if (this.agent == null) {
             this.agent = new AIAgent((ICoroAI)this, true);
         }
     }
-    
+
     public boolean isEnemy(final Entity ent) {
         return false;
     }
-    
+
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (this.worldObj.isRemote) {
@@ -76,29 +77,29 @@ public class VMonkey extends EntityCoroAI
             this.prevPos = curPos;
         }
     }
-    
+
     public boolean attackEntityFrom(final DamageSource par1DamageSource, final float par2) {
         this.worldObj.playSoundAtEntity((Entity)this, "monkeyhurt", 1.0f, 1.0f);
         return super.attackEntityFrom(par1DamageSource, par2);
     }
-    
+
     public void attackMelee(final Entity ent, final float dist) {
         super.attackMelee(ent, dist);
         this.worldObj.playSoundAtEntity((Entity)this, (this.worldObj.rand.nextInt(3) == 0) ? "monkeyangry" : "monkeyhiccup", 1.0f, 1.0f);
     }
-    
+
     protected String getLivingSound() {
         return "tropicraft:" + (this.isPotionActive(Potion.confusion.id) ? "monkeyhiccup" : "monkeyliving");
     }
-    
+
     protected String getHurtSound() {
         return "tropicraft:monkeyhurt";
     }
-    
+
     protected String getDeathSound() {
         return "";
     }
-    
+
     public boolean allowLeashing() {
         return true;
     }

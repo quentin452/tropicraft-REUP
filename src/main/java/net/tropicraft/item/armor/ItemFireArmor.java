@@ -21,7 +21,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
         super(material, renderIndex, armorType);
         this.setMaxDamage(300);
     }
-    
+
     public void onArmorTick(final World world, final EntityPlayer player, final ItemStack itemStack) {
         if (world.isRemote) {
             this.clientTick(player);
@@ -36,7 +36,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
             }
         }
     }
-    
+
     private float getSunBrightness(final World world, final float par1) {
         final float f1 = world.getCelestialAngle(par1);
         float f2 = 1.0f - (MathHelper.cos(f1 * 3.1415927f * 2.0f) * 2.0f + 0.2f);
@@ -51,14 +51,14 @@ public class ItemFireArmor extends ItemTropicraftArmor
         f2 *= (float)(1.0 - world.getWeightedThunderStrength(par1) * 5.0f / 16.0);
         return f2 * 0.8f + 0.2f;
     }
-    
+
     @Override
     public void damageArmor(final EntityLivingBase player, final ItemStack stack, final DamageSource source, final int damage, final int slot) {
         if (source == DamageSource.inFire || source == DamageSource.lava) {
             stack.damageItem(damage, player);
         }
     }
-    
+
     @Override
     public ISpecialArmor.ArmorProperties getProperties(final EntityLivingBase player, final ItemStack armor, final DamageSource source, final double damage, final int slot) {
         if (source == DamageSource.inFire || source == DamageSource.lava) {
@@ -66,7 +66,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
         }
         return new ISpecialArmor.ArmorProperties(10, 0.15, Integer.MAX_VALUE);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public static void getFXLayers() {
         Field field = null;
@@ -86,7 +86,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
             }
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void clientTick(final EntityPlayer player) {
         if (ItemFireArmor.fxLayers == null) {
@@ -183,7 +183,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
             if (ItemFireArmor.fxLayers != null) {
                 for (int layer = 0; layer < 4; ++layer) {
                     for (int j = 0; j < ItemFireArmor.fxLayers[layer].size(); ++j) {
-                        final EntityFX entity1 = ItemFireArmor.fxLayers[layer].get(j);
+                        final EntityFX entity1 = (EntityFX) ItemFireArmor.fxLayers[layer].get(j);
                         if (entity1 instanceof EntityFlameFX && player.getDistanceToEntity((Entity)entity1) < 4.0f && entity1.posY > player.posY) {
                             if (player.getDistanceToEntity((Entity)entity1) < 2.0f) {}
                             if (player.getDistanceToEntity((Entity)entity1) < 2.0f || rand.nextInt(5) == 0) {
@@ -195,7 +195,7 @@ public class ItemFireArmor extends ItemTropicraftArmor
             }
         }
     }
-    
+
     public void moveEnt(final Entity ent, final Entity center, final boolean shield) {
         final float look = 0.0f;
         final double dist = 0.10000000149011612;

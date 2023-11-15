@@ -35,7 +35,7 @@ public class EntityChair extends Entity
     @SideOnly(Side.CLIENT)
     private double velocityZ;
     private double speedMultiplier;
-    
+
     public EntityChair(final World world) {
         super(world);
         this.ignoreFrustumCheck = true;
@@ -45,7 +45,7 @@ public class EntityChair extends Entity
         this.entityCollisionReduction = 0.95f;
         this.setSize(1.0f, 1.0f);
     }
-    
+
     public EntityChair(final World world, final double x, final double y, final double z, final int color, final EntityPlayer player) {
         this(world);
         this.setPosition(x, y, z);
@@ -58,7 +58,7 @@ public class EntityChair extends Entity
         this.setColor(color);
         this.rotationYaw = this.getAngleToPlayer(player);
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
         if (this.getTimeSinceHit() > 0) {
@@ -232,7 +232,7 @@ public class EntityChair extends Entity
             }
         }
     }
-    
+
     protected void entityInit() {
         this.dataWatcher.addObject(2, (Object)new Integer(ColorHelper.DEFAULT_VALUE));
         this.dataWatcher.addObject(3, (Object)new Float(0.0f));
@@ -240,17 +240,17 @@ public class EntityChair extends Entity
         this.dataWatcher.addObject(5, (Object)new Integer(1));
         this.dataWatcher.addObject(6, (Object)new Integer(0));
     }
-    
+
     protected void readEntityFromNBT(final NBTTagCompound nbt) {
         this.setColor(nbt.getInteger("COLOR"));
         this.setComeSailAway((boolean)nbt.getBoolean("COME_SAIL_AWAY"));
     }
-    
+
     protected void writeEntityToNBT(final NBTTagCompound nbt) {
         nbt.setInteger("COLOR", (int)this.getColor());
         nbt.setBoolean("COME_SAIL_AWAY", (boolean)this.getComeSailAway());
     }
-    
+
     public boolean attackEntityFrom(final DamageSource par1DamageSource, final float par2) {
         if (this.isEntityInvulnerable()) {
             return false;
@@ -274,18 +274,18 @@ public class EntityChair extends Entity
         }
         return true;
     }
-    
+
     public int getDamageFromColor() {
         return ColorHelper.getDamageFromColor(this.getColor());
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void performHurtAnimation() {
         this.setForwardDirection(-this.getForwardDirection());
         this.setTimeSinceHit(10);
         this.setDamage(this.getDamage() * 11.0f);
     }
-    
+
     public boolean interactFirst(final EntityPlayer player) {
         if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != player) {
             return true;
@@ -296,7 +296,7 @@ public class EntityChair extends Entity
         }
         return true;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(final double par1, final double par3, final double par5, final float par7, final float par8, final int par9) {
         if (this.isChairEmpty) {
@@ -321,11 +321,11 @@ public class EntityChair extends Entity
         this.motionY = this.velocityY;
         this.motionZ = this.velocityZ;
     }
-    
+
     public boolean canBeCollidedWith() {
         return !this.isDead;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void setVelocity(final double xVelocity, final double yVelocity, final double zVelocity) {
         this.motionX = xVelocity;
@@ -335,7 +335,7 @@ public class EntityChair extends Entity
         this.motionZ = zVelocity;
         this.velocityZ = zVelocity;
     }
-    
+
     public void updateRiderPosition() {
         if (this.riddenByEntity != null) {
             final double xOffset = Math.cos(this.rotationYaw * 3.141592653589793 / 180.0) * 0.4;
@@ -343,37 +343,37 @@ public class EntityChair extends Entity
             this.riddenByEntity.setPosition(this.posX + xOffset, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + zOffset);
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public float getShadowSize() {
         return 0.5f;
     }
-    
+
     public double getMountedYOffset() {
         return this.height - 0.65;
     }
-    
+
     private float getAngleToPlayer(final EntityPlayer player) {
         final float angle = MathHelper.wrapAngleTo180_float(player.rotationYaw);
         return angle;
     }
-    
+
     public AxisAlignedBB getCollisionBox(final Entity par1Entity) {
         return par1Entity.boundingBox;
     }
-    
+
     public AxisAlignedBB getBoundingBox() {
         return this.boundingBox;
     }
-    
+
     public boolean canBePushed() {
         return false;
     }
-    
+
     protected boolean canTriggerWalking() {
         return false;
     }
-    
+
     protected void updateFallState(final double distanceFallenThisTick, final boolean onGround) {
         final int i = MathHelper.floor_double(this.posX);
         final int j = MathHelper.floor_double(this.posY);
@@ -397,47 +397,47 @@ public class EntityChair extends Entity
             this.fallDistance -= (float)distanceFallenThisTick;
         }
     }
-    
+
     public void setColor(final int color) {
         this.dataWatcher.updateObject(2, (Object)color);
     }
-    
+
     public void setColor(final float red, final float green, final float blue) {
         this.dataWatcher.updateObject(2, (Object)ColorHelper.getColor(red, green, blue));
     }
-    
+
     public int getColor() {
         return this.dataWatcher.getWatchableObjectInt(2);
     }
-    
+
     public void setDamage(final float damage) {
         this.dataWatcher.updateObject(3, (Object)damage);
     }
-    
+
     public float getDamage() {
         return this.dataWatcher.getWatchableObjectFloat(3);
     }
-    
+
     public void setComeSailAway(final boolean sail) {
-        this.dataWatcher.updateObject(4, (Object)(sail ? 1 : ((Byte)0)));
+        this.dataWatcher.updateObject(4, (Object)(sail ? 1 : (0)));
     }
-    
+
     public boolean getComeSailAway() {
         return this.dataWatcher.getWatchableObjectByte(4) == 1;
     }
-    
+
     public void setForwardDirection(final int dir) {
         this.dataWatcher.updateObject(5, (Object)dir);
     }
-    
+
     public int getForwardDirection() {
         return this.dataWatcher.getWatchableObjectInt(5);
     }
-    
+
     public void setTimeSinceHit(final int time) {
         this.dataWatcher.updateObject(6, (Object)time);
     }
-    
+
     public int getTimeSinceHit() {
         return this.dataWatcher.getWatchableObjectInt(6);
     }

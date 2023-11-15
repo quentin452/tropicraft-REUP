@@ -20,7 +20,7 @@ public class JobHuntAshen extends JobBase
     public int targetNoMoveTicks;
     public int targetNoMoveTicksMax;
     public int panicTicks;
-    
+
     public JobHuntAshen(final JobManager jm) {
         super(jm);
         this.huntRange = 24L;
@@ -34,15 +34,15 @@ public class JobHuntAshen extends JobBase
         this.targetNoMoveTicksMax = 4;
         this.panicTicks = 0;
     }
-    
+
     public boolean shouldExecute() {
         return true;
     }
-    
+
     public boolean shouldContinue() {
         return this.ai.entityToAttack == null || this.ai.entityToAttack.getDistanceToEntity((Entity)this.ent) > this.huntRange;
     }
-    
+
     public void onLowHealth() {
         if (this.ai.lastFleeEnt == null) {
             return;
@@ -62,11 +62,11 @@ public class JobHuntAshen extends JobBase
             }
         }
     }
-    
+
     public boolean shouldTickCloseCombat() {
         return this.useMelee && super.shouldTickCloseCombat();
     }
-    
+
     public boolean hookHit(final DamageSource ds, final int damage) {
         if (this.ent.getDataWatcher().getWatchableObjectInt(16) != -1) {
             this.panicTicks = 40;
@@ -76,10 +76,10 @@ public class JobHuntAshen extends JobBase
         }
         return true;
     }
-    
+
     public void setJobItems() {
     }
-    
+
     public boolean checkDangers() {
         boolean returnVal = false;
         if (this.ent.getDataWatcher().getWatchableObjectInt(16) == -1) {
@@ -98,7 +98,7 @@ public class JobHuntAshen extends JobBase
         }
         return returnVal || this.checkHealth();
     }
-    
+
     public boolean avoid(final boolean actOnTrue) {
         final int range = 25;
         boolean seesMask = false;
@@ -113,7 +113,7 @@ public class JobHuntAshen extends JobBase
         if (this.panicTicks <= 0) {
             final List list = this.ent.worldObj.getEntitiesWithinAABB((Class)EntityLostMask.class, this.ent.boundingBox.expand((double)range, (double)(range / 2), (double)range));
             for (int j = 0; j < list.size(); ++j) {
-                final EntityLostMask entity1 = list.get(j);
+                final EntityLostMask entity1 = (EntityLostMask) list.get(j);
                 if (!entity1.isDead) {
                     seesMask = true;
                     final float dist = this.ent.getDistanceToEntity((Entity)entity1);
@@ -136,12 +136,12 @@ public class JobHuntAshen extends JobBase
         }
         return super.avoid(actOnTrue);
     }
-    
+
     public void tick() {
         super.tick();
         this.jobHunter();
     }
-    
+
     protected void jobHunter() {
         this.dontStrayFromHome = false;
         this.ai.maxDistanceFromHome = 48.0;
@@ -175,7 +175,7 @@ public class JobHuntAshen extends JobBase
             float closest = 9999.0f;
             final List list = this.ent.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this.ent, this.ent.boundingBox.expand((double)this.huntRange, (double)(this.huntRange / 2L), (double)this.huntRange));
             for (int j = 0; j < list.size(); ++j) {
-                final Entity entity1 = list.get(j);
+                final Entity entity1 = (Entity) list.get(j);
                 if (this.isEnemy(entity1) && (this.xRay || ((EntityLivingBase)entity1).canEntityBeSeen((Entity)this.ent)) && this.sanityCheck(entity1)) {
                     final float dist = this.ent.getDistanceToEntity(entity1);
                     if (dist < closest) {
@@ -209,11 +209,11 @@ public class JobHuntAshen extends JobBase
         }
         this.ent.prevHealth = this.ent.getHealth();
     }
-    
+
     public boolean sanityCheckHelp(final Entity caller, final Entity target) {
         return this.ent.getHealth() >= 10.0f && (!this.dontStrayFromHome || target.getDistance((double)this.ai.homeX, (double)this.ai.homeY, (double)this.ai.homeZ) <= this.ai.maxDistanceFromHome * 1.5) && this.ai.rand.nextInt(2) == 0;
     }
-    
+
     public boolean sanityCheck(final Entity target) {
         return this.ent.getHealth() >= 6.0f && (!this.dontStrayFromHome || target.getDistance((double)this.ai.homeX, (double)this.ai.homeY, (double)this.ai.homeZ) <= this.ai.maxDistanceFromHome);
     }

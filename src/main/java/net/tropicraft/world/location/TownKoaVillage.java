@@ -8,6 +8,7 @@ import net.minecraft.util.*;
 import build.world.*;
 import CoroUtil.world.location.*;
 import net.minecraft.entity.*;
+import net.minecraft.util.Vec3;
 import net.tropicraft.entity.koa.*;
 import net.minecraft.world.*;
 import net.minecraft.nbt.*;
@@ -18,29 +19,29 @@ public class TownKoaVillage extends TownObject implements ICustomGen
     public int areaWidth;
     public int areaHeight;
     public int direction;
-    
+
     public TownKoaVillage() {
         this.areaLength = TownKoaVillageGenHelper.areaLength;
         this.areaWidth = TownKoaVillageGenHelper.areaWidth;
         this.areaHeight = TownKoaVillageGenHelper.areaHeight;
         this.direction = 1;
     }
-    
+
     public void tickUpdate() {
         super.tickUpdate();
         if (this.getWorld().getTotalWorldTime() % 20L == 0L) {}
     }
-    
+
     public void initFirstTime() {
         super.initFirstTime();
         this.generateSpawnCoords();
         this.genStructure();
     }
-    
+
     public void genStructure() {
         this.genSchematic();
     }
-    
+
     public void genSchematic() {
         final int yOffset = 0;
         final Build mainStructureData = new Build(this.spawn.posX, this.spawn.posY + yOffset, this.spawn.posZ, CoroUtilFile.getSaveFolderPath() + "TCSchematics" + File.separator + "koavillage");
@@ -55,12 +56,12 @@ public class TownKoaVillage extends TownObject implements ICustomGen
         this.areaHeight = mainStructureData.map_sizeY;
         BuildServerTicks.buildMan.addBuild(bj);
     }
-    
+
     public void spawnEntitiesForce() {
         System.out.println("Spawning koa village population for village: " + this.spawn);
         this.tickMonitorPersistantMembers();
     }
-    
+
     public void generateSpawnCoords() {
         final int y = 2;
         this.registerSpawnLocation(new SpawnLocationData(this.getRotatedCoordsWithRelFromCorner(77, 2 + y, 37), "shaman"));
@@ -76,16 +77,16 @@ public class TownKoaVillage extends TownObject implements ICustomGen
         this.registerSpawnLocation(this.getRotatedCoordsWithRelFromCorner(63, 1 + y, 57), new String[] { "fisher", "hunter" });
         this.registerSpawnLocation(this.getRotatedCoordsWithRelFromCorner(69, 1 + y, 71), new String[] { "fisher", "hunter" });
     }
-    
+
     public ChunkCoordinates getRotatedCoordsWithRelFromCorner(final int x, final int y, final int z) {
         final ChunkCoordinates coords = new ChunkCoordinates(x, y, z);
         return BuildManager.rotateNew(coords, this.direction, Vec3.createVectorHelper(0.0, 0.0, 0.0), Vec3.createVectorHelper((double)this.areaWidth, (double)this.areaHeight, (double)this.areaLength));
     }
-    
+
     public void addEntity(final String unitType, final EntityLivingBase ent, final int parMemberID) {
         super.addEntity(unitType, ent);
     }
-    
+
     public void spawnMemberAtSpawnLocation(final SpawnLocationData parData) {
         super.spawnMemberAtSpawnLocation(parData);
         EntityKoaBase ent = null;
@@ -110,22 +111,22 @@ public class TownKoaVillage extends TownObject implements ICustomGen
             ent.onSpawnWithEgg((IEntityLivingData)null);
         }
     }
-    
+
     public void genPassPre(final World world, final BuildJob parBuildJob, final int parPass) {
         if (parPass == -1) {
             this.spawnEntitiesForce();
         }
     }
-    
+
     public NBTTagCompound getInitNBTTileEntity() {
         return null;
     }
-    
+
     public void readFromNBT(final NBTTagCompound var1) {
         super.readFromNBT(var1);
         this.direction = var1.getInteger("direction");
     }
-    
+
     public void writeToNBT(final NBTTagCompound var1) {
         super.writeToNBT(var1);
         var1.setInteger("direction", this.direction);

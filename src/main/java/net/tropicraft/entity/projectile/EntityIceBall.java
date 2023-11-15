@@ -19,11 +19,11 @@ public class EntityIceBall extends EntityThrowableUsefull
     public boolean hasDeathTicked;
     @SideOnly(Side.CLIENT)
     public ParticleBehaviors pm;
-    
+
     public EntityIceBall(final World world) {
         super(world);
     }
-    
+
     public EntityIceBall(final World world, final EntityLivingBase EntityLivingBase) {
         super(world, EntityLivingBase);
         final float speed = 0.7f;
@@ -33,11 +33,11 @@ public class EntityIceBall extends EntityThrowableUsefull
         this.motionY = -MathHelper.sin((-this.rotationPitch + this.func_70183_g()) / 180.0f * 3.1415927f) * f;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed, 1.0f);
     }
-    
+
     public EntityIceBall(final World world, final double d, final double d1, final double d2) {
         super(world, d, d1, d2);
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
         if (!this.worldObj.isRemote) {
@@ -56,11 +56,11 @@ public class EntityIceBall extends EntityThrowableUsefull
             this.tickAnimate();
         }
     }
-    
+
     protected float getGravityVelocity() {
         return 0.0f;
     }
-    
+
     public MovingObjectPosition tickEntityCollision(final Vec3 vec3, final Vec3 vec31) {
         MovingObjectPosition movingobjectposition = null;
         Entity entity = null;
@@ -68,7 +68,7 @@ public class EntityIceBall extends EntityThrowableUsefull
         final double d0 = 0.0;
         final EntityLivingBase EntityLivingBase = this.getThrower();
         for (int j = 0; j < list.size(); ++j) {
-            final Entity entity2 = list.get(j);
+            final Entity entity2 = (Entity) list.get(j);
             if (entity2.canBeCollidedWith() && entity2 != EntityLivingBase && this.ticksInAir >= 4) {
                 entity = entity2;
                 break;
@@ -79,7 +79,7 @@ public class EntityIceBall extends EntityThrowableUsefull
         }
         return movingobjectposition;
     }
-    
+
     protected void onImpact(final MovingObjectPosition movingobjectposition) {
         if (movingobjectposition.entityHit != null && !this.worldObj.isRemote) {
             final byte byte0 = 5;
@@ -102,14 +102,14 @@ public class EntityIceBall extends EntityThrowableUsefull
             this.tickDeath();
         }
     }
-    
+
     public void setDead() {
         if (this.worldObj.isRemote) {
             this.tickDeath();
         }
         super.setDead();
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void tickAnimate() {
         for (int amount = 3 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i < amount; ++i) {
@@ -125,7 +125,7 @@ public class EntityIceBall extends EntityThrowableUsefull
             this.pm.particles.add(entityfx);
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void tickDeath() {
         if (!this.hasDeathTicked) {

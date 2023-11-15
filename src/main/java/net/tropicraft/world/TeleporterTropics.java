@@ -19,7 +19,7 @@ public class TeleporterTropics extends Teleporter
     private final Random random;
     private final LongHashMap destinationCoordinateCache;
     private final List destinationCoordinateKeys;
-    
+
     public TeleporterTropics(final WorldServer world) {
         super(world);
         this.destinationCoordinateCache = new LongHashMap();
@@ -29,7 +29,7 @@ public class TeleporterTropics extends Teleporter
         this.world = world;
         this.random = new Random(world.getSeed());
     }
-    
+
     public void placeInPortal(final Entity entity, final double d, final double d2, final double d3, final float f) {
         final long startTime = System.currentTimeMillis();
         if (!this.placeInExistingPortal(entity, d, d2, d3, f)) {
@@ -39,7 +39,7 @@ public class TeleporterTropics extends Teleporter
         final long finishTime = System.currentTimeMillis();
         System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0f);
     }
-    
+
     public boolean placeInExistingPortal(final Entity entity, final double d, final double d2, final double d3, final float f) {
         final int searchArea = 148;
         double closestPortal = -1.0;
@@ -84,7 +84,7 @@ public class TeleporterTropics extends Teleporter
         }
         if (closestPortal >= 0.0) {
             if (notInCache) {
-                this.destinationCoordinateCache.add(j1, (Object)new Teleporter.PortalPosition((Teleporter)this, foundX, foundY, foundZ, this.world.getTotalWorldTime()));
+                this.destinationCoordinateCache.add(j1, new PortalPosition(foundX, foundY, foundZ, this.world.getTotalWorldTime()));
                 this.destinationCoordinateKeys.add(j1);
             }
             final int x = foundX;
@@ -156,7 +156,7 @@ public class TeleporterTropics extends Teleporter
         }
         return false;
     }
-    
+
     public boolean makePortal(final Entity entity) {
         final int searchArea = 16;
         double closestSpot = -1.0;
@@ -211,7 +211,7 @@ public class TeleporterTropics extends Teleporter
         this.buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
         return true;
     }
-    
+
     public int getTerrainHeightAt(final int x, final int z) {
         for (int y = 100; y > 0; --y) {
             final Block block = this.world.getBlock(x, y, z);
@@ -221,7 +221,7 @@ public class TeleporterTropics extends Teleporter
         }
         return 0;
     }
-    
+
     public void buildTeleporterAt(final int x, int y, final int z, final Entity entity) {
         y = ((y < 9) ? 9 : y);
         for (int yOffset = 4; yOffset >= -7; --yOffset) {
@@ -273,13 +273,13 @@ public class TeleporterTropics extends Teleporter
             }
         }
     }
-    
+
     public void removeStalePortalLocations(final long par1) {
         if (par1 % 100L == 0L) {
             final Iterator iterator = this.destinationCoordinateKeys.iterator();
             final long j = par1 - 600L;
             while (iterator.hasNext()) {
-                final Long olong = iterator.next();
+                final Long olong = (Long) iterator.next();
                 final Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.getValueByKey((long)olong);
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
@@ -288,7 +288,7 @@ public class TeleporterTropics extends Teleporter
             }
         }
     }
-    
+
     private List<Block> getValidBuildBlocks() {
         return Arrays.asList((Block)Blocks.sand, (Block)Blocks.grass, Blocks.dirt, (Block)TCBlockRegistry.purifiedSand);
     }
