@@ -1,13 +1,12 @@
 package net.tropicraft.world.worldgen;
 
-import java.util.*;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.tropicraft.registry.TCBlockRegistry;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.init.*;
-import net.minecraft.world.*;
-import net.minecraftforge.common.util.*;
-import net.tropicraft.registry.*;
+import java.util.Random;
 
 public class WorldGenCoffeePlant extends TCGenBase {
 
@@ -20,70 +19,73 @@ public class WorldGenCoffeePlant extends TCGenBase {
     public boolean generate(final int x, final int y, final int z) {
         final int nx = x + this.rand.nextInt(8) - this.rand.nextInt(8);
         final int nz = z + this.rand.nextInt(8) - this.rand.nextInt(8);
-        final int ny = y;
-        if (!this.worldObj.isAirBlock(nx, ny, nz) || this.worldObj.getBlock(nx, ny - 1, nz) != Blocks.grass) {
+
+        if (!isValidLocation(nx, y, nz)) {
             return false;
         }
-        ForgeDirection viableDirection = ForgeDirection.UNKNOWN;
+
+        ForgeDirection viableDirection = findViableDirection(nx, y, nz);
+
+        if (viableDirection == ForgeDirection.UNKNOWN) {
+            return false;
+        }
+
+        placeBlocks(nx, y, nz, viableDirection);
+
+        return true;
+    }
+
+    private boolean isValidLocation(int x, int y, int z) {
+        return this.worldObj.isAirBlock(x, y, z) && this.worldObj.getBlock(x, y - 1, z) == Blocks.grass;
+    }
+
+    private ForgeDirection findViableDirection(int x, int y, int z) {
         for (final ForgeDirection dir : WorldGenCoffeePlant.cardinalDirections) {
-            final int neighborx = nx + dir.offsetX;
-            final int neighborz = nz + dir.offsetZ;
-            if (this.worldObj.getBlock(neighborx, ny - 1, neighborz)
-                .getMaterial() == Material.water) {
-                viableDirection = dir;
-                break;
+            final int neighborx = x + dir.offsetX;
+            final int neighborz = z + dir.offsetZ;
+            if (this.worldObj.getBlock(neighborx, y - 1, neighborz).getMaterial() == Material.water) {
+                return dir;
             }
         }
-        if (viableDirection == ForgeDirection.UNKNOWN) {
-            for (final ForgeDirection dir : WorldGenCoffeePlant.cardinalDirections) {
-                final int neighborx = nx + dir.offsetX;
-                final int neighborz = nz + dir.offsetZ;
-                if (this.worldObj.isAirBlock(neighborx, ny, neighborz)
-                    && this.worldObj.getBlock(neighborx, ny - 1, neighborz) == Blocks.grass) {
-                    if (!this.worldObj.isAirBlock(neighborx, ny - 2, neighborz)) {
-                        boolean surrounded = true;
-                        for (final ForgeDirection surroundingDir : WorldGenCoffeePlant.cardinalDirections) {
-                            final int surroundingx = neighborx + surroundingDir.offsetX;
-                            final int surroundingz = neighborz + surroundingDir.offsetZ;
-                            if (!this.worldObj.isAirBlock(surroundingx, ny, surroundingz)
-                                || this.worldObj.getBlock(surroundingx, ny - 1, surroundingz) != Blocks.grass) {
-                                surrounded = false;
-                                break;
-                            }
-                        }
-                        if (surrounded) {
-                            viableDirection = dir;
-                            break;
-                        }
-                    }
-                }
+        return checkSurrounded(x, y, z);
+    }
+
+    private ForgeDirection checkSurrounded(int x, int y, int z) {
+        for (final ForgeDirection dir : WorldGenCoffeePlant.cardinalDirections) {
+            final int neighborx = x + dir.offsetX;
+            final int neighborz = z + dir.offsetZ;
+            if (this.worldObj.isAirBlock(neighborx, y, neighborz)
+                && this.worldObj.getBlock(neighborx, y - 1, neighborz) == Blocks.grass
+                && !this.worldObj.isAirBlock(neighborx, y - 2, neighborz)
+                && isSurrounded(neighborx, y, neighborz)) {
+                return dir;
             }
         }
-        if (viableDirection == ForgeDirection.UNKNOWN) {
-            return false;
-        }
-        this.worldObj.setBlock(
-            nx + viableDirection.offsetX,
-            ny - 1,
-            nz + viableDirection.offsetZ,
-            Blocks.water,
-            0,
-            WorldGenCoffeePlant.blockGenNotifyFlag);
-        this.worldObj.setBlock(nx, ny - 1, nz, Blocks.farmland, 7, WorldGenCoffeePlant.blockGenNotifyFlag);
-        for (int i = 0; i < 3 && this.worldObj.isAirBlock(nx, ny + i, nz); ++i) {
-            this.worldObj.setBlock(
-                nx,
-                ny + i,
-                nz,
-                (Block) TCBlockRegistry.coffeePlant,
-                6,
-                WorldGenCoffeePlant.blockGenNotifyFlag);
+        return ForgeDirection.UNKNOWN;
+    }
+
+    private boolean isSurrounded(int x, int y, int z) {
+        for (final ForgeDirection surroundingDir : WorldGenCoffeePlant.cardinalDirections) {
+            final int surroundingx = x + surroundingDir.offsetX;
+            final int surroundingz = z + surroundingDir.offsetZ;
+            if (!this.worldObj.isAirBlock(surroundingx, y, surroundingz)
+                || this.worldObj.getBlock(surroundingx, y - 1, surroundingz) != Blocks.grass) {
+                return false;
+            }
         }
         return true;
     }
 
+    private void placeBlocks(int x, int y, int z, ForgeDirection direction) {
+        this.worldObj.setBlock(x + direction.offsetX, y - 1, z + direction.offsetZ, Blocks.water, 0, WorldGenCoffeePlant.blockGenNotifyFlag);
+        this.worldObj.setBlock(x, y - 1, z, Blocks.farmland, 7, WorldGenCoffeePlant.blockGenNotifyFlag);
+        for (int i = 0; i < 3 && this.worldObj.isAirBlock(x, y + i, z); ++i) {
+            this.worldObj.setBlock(x, y + i, z, TCBlockRegistry.coffeePlant, 6, WorldGenCoffeePlant.blockGenNotifyFlag);
+        }
+    }
+
     static {
-        cardinalDirections = new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
-            ForgeDirection.WEST };
+        cardinalDirections = new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.EAST, ForgeDirection.SOUTH,
+            ForgeDirection.WEST};
     }
 }

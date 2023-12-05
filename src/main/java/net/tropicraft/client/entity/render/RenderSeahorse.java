@@ -24,7 +24,7 @@ public class RenderSeahorse extends RenderLiving {
         final float f, final float f1) {
         GL11.glPushMatrix();
         GL11.glTranslated(x, y - 2.2, z);
-        super.doRender((EntityLiving) seahorse, x, y, z, f, f1);
+        super.doRender(seahorse, x, y, z, f, f1);
         GL11.glPopMatrix();
     }
 

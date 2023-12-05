@@ -7,11 +7,6 @@ import net.minecraft.tileentity.*;
 import net.minecraft.world.*;
 
 public abstract class TCDirectionalGen extends TCGenBase {
-
-    public static final int Z_PLUS = 0;
-    public static final int Z_MINUS = 1;
-    public static final int X_PLUS = 2;
-    public static final int X_MINUS = 3;
     public int originX;
     public int originZ;
     public int dir;
@@ -59,20 +54,26 @@ public abstract class TCDirectionalGen extends TCGenBase {
             case 2: {
                 this.worldObj
                     .setBlock(this.originX + i, j, this.originZ + k, block, meta, TCDirectionalGen.blockGenNotifyFlag);
+                break;
             }
             case 0: {
                 this.worldObj
                     .setBlock(this.originX + k, j, this.originZ - i, block, meta, TCDirectionalGen.blockGenNotifyFlag);
+                break;
             }
             case 3: {
                 this.worldObj
                     .setBlock(this.originX - i, j, this.originZ - k, block, meta, TCDirectionalGen.blockGenNotifyFlag);
+                break;
             }
             case 1: {
                 this.worldObj
                     .setBlock(this.originX - k, j, this.originZ + i, block, meta, TCDirectionalGen.blockGenNotifyFlag);
+                break;
             }
-            default: {}
+            default: {
+                break;
+            }
         }
     }
 

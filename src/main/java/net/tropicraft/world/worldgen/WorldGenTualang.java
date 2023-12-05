@@ -13,8 +13,8 @@ public class WorldGenTualang extends TCGenBase {
     private static final int WOOD_META = 1;
     private static final Block LEAF_BLOCK;
     private static final int LEAF_META = 1;
-    private int baseHeight;
-    private int maxHeight;
+    private final int baseHeight;
+    private final int maxHeight;
 
     public WorldGenTualang(final World world, final Random random, final int maxHeight, final int baseHeight) {
         super(world, random);
@@ -84,7 +84,7 @@ public class WorldGenTualang extends TCGenBase {
     }
 
     static {
-        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = TCBlockRegistry.logs;
+        LEAF_BLOCK = TCBlockRegistry.rainforestLeaves;
     }
 }

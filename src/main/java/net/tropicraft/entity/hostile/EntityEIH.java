@@ -12,6 +12,8 @@ import net.minecraft.world.*;
 import net.tropicraft.entity.*;
 import net.tropicraft.registry.*;
 
+import java.util.Objects;
+
 public class EntityEIH extends EntityLand implements IMob {
 
     public static final int DATAWATCHER_ANGER_STATE = 16;
@@ -26,7 +28,7 @@ public class EntityEIH extends EntityLand implements IMob {
     public void entityInit() {
         super.entityInit();
         this.getDataWatcher()
-            .addObject(16, (Object) 0);
+            .addObject(16, 0);
     }
 
     public void applyEntityAttributes() {
@@ -67,16 +69,16 @@ public class EntityEIH extends EntityLand implements IMob {
             if (entity instanceof EntityPlayer) {
                 if (!((EntityPlayer) entity).capabilities.isCreativeMode) {
                     final EntityPlayer entityplayer = (EntityPlayer) entity;
-                    if (this.getDistanceToEntity((Entity) entityplayer) < 10.0f) {
+                    if (this.getDistanceToEntity(entityplayer) < 10.0f) {
                         this.setAwake(true);
                         final ItemStack itemstack = entityplayer.inventory.getCurrentItem();
                         if (itemstack != null && this.isAwake()
-                            && itemstack.getItem() == Item.getItemFromBlock((Block) TCBlockRegistry.chunkOHead)) {
+                            && itemstack.getItem() == Item.getItemFromBlock(TCBlockRegistry.chunkOHead)) {
                             this.setAngry(true);
                             this.setImmobile(false);
                         }
                     }
-                    if (this.getDistanceToEntity((Entity) entityplayer) < 3.0f
+                    if (this.getDistanceToEntity(entityplayer) < 3.0f
                         && this.worldObj.difficultySetting.getDifficultyId()
                             > EnumDifficulty.PEACEFUL.getDifficultyId()) {
                         this.setAwake(false);
@@ -101,7 +103,7 @@ public class EntityEIH extends EntityLand implements IMob {
 
     private void getPlayerToHurt() {
         if (this.entityToAttack == null) {
-            this.entityToAttack = (Entity) this.worldObj.getClosestPlayerToEntity((Entity) this, 10.0);
+            this.entityToAttack = this.worldObj.getClosestPlayerToEntity(this, 10.0);
         } else if (this.getDistanceToEntity(this.entityToAttack) > 16.0f) {
             this.entityToAttack = null;
         }
@@ -109,7 +111,7 @@ public class EntityEIH extends EntityLand implements IMob {
 
     protected Entity findPlayerToAttack() {
         if (this.isAngry()) {
-            return (Entity) this.worldObj.getClosestPlayerToEntity((Entity) this, 16.0);
+            return this.worldObj.getClosestPlayerToEntity(this, 16.0);
         }
         return null;
     }
@@ -119,21 +121,21 @@ public class EntityEIH extends EntityLand implements IMob {
             final EntityPlayer entityplayer = (EntityPlayer) damagesource.getSourceOfDamage();
             final ItemStack itemstack = entityplayer.inventory.getCurrentItem();
             if (itemstack != null) {
-                if (itemstack.getItem()
+                if (Objects.requireNonNull(itemstack.getItem())
                     .canHarvestBlock(Blocks.iron_ore, itemstack)) {
                     super.attackEntityFrom(damagesource, f);
                 } else {
-                    final int b = this.rand.nextInt(1);
+                    final int b = 0;
                     if (b == 0) {
                         this.worldObj.playSoundAtEntity(
-                            (Entity) this,
+                            this,
                             this.tcSound("headlaughing"),
                             1.0f,
                             1.2f / (this.rand.nextFloat() * 0.2f + 0.9f));
                     }
                     if (b == 1) {
                         this.worldObj.playSoundAtEntity(
-                            (Entity) this,
+                            this,
                             this.tcSound("headlaughing2"),
                             1.0f,
                             1.2f / (this.rand.nextFloat() * 0.2f + 0.9f));
@@ -162,7 +164,7 @@ public class EntityEIH extends EntityLand implements IMob {
                 && entity.boundingBox.minY < this.boundingBox.maxY) {
                     this.attackTime = 120;
                     final byte damage = 7;
-                    entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase) this), (float) damage);
+                    entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
                 }
             if (this.getDistanceToEntity(entity) > 10.0) {
                 this.setImmobile(true);
@@ -182,7 +184,7 @@ public class EntityEIH extends EntityLand implements IMob {
 
     protected void dropFewItems(final boolean recentlyHit, final int looting) {
         for (int j = 2 + this.rand.nextInt(1 + looting), k = 0; k < j; ++k) {
-            this.dropItem(Item.getItemFromBlock((Block) TCBlockRegistry.chunkOHead), 1);
+            this.dropItem(Item.getItemFromBlock(TCBlockRegistry.chunkOHead), 1);
         }
     }
 
@@ -236,41 +238,41 @@ public class EntityEIH extends EntityLand implements IMob {
     }
 
     public boolean isImmobile() {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 0x1) != 0x0;
+        return (this.dataWatcher.getWatchableObjectInt(16) & 0x1) != 0x0;
     }
 
     public void setImmobile(final boolean flag) {
-        final byte byte0 = this.dataWatcher.getWatchableObjectByte(16);
+        final int int0 = this.dataWatcher.getWatchableObjectInt(16);
         if (flag) {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 | 0x1));
+            this.dataWatcher.updateObject(16, (int0 | 0x1));
         } else {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 & 0xFFFFFFFE));
+            this.dataWatcher.updateObject(16, (int0 & 0xFFFFFFFE));
         }
     }
 
     public boolean isAngry() {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 0x2) != 0x0;
+        return (this.dataWatcher.getWatchableObjectInt(16) & 0x2) != 0x0;
     }
 
     public void setAngry(final boolean flag) {
-        final byte byte0 = this.dataWatcher.getWatchableObjectByte(16);
+        final int int0 = this.dataWatcher.getWatchableObjectInt(16);
         if (flag) {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 | 0x2));
+            this.dataWatcher.updateObject(16, (int0 | 0x2));
         } else {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 & 0xFFFFFFFD));
+            this.dataWatcher.updateObject(16, (int0 & 0xFFFFFFFD));
         }
     }
 
     public boolean isAwake() {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 0x4) != 0x0;
+        return (this.dataWatcher.getWatchableObjectInt(16) & 0x4) != 0x0;
     }
 
     public void setAwake(final boolean flag) {
-        final byte byte0 = this.dataWatcher.getWatchableObjectByte(16);
+        final int int0 = this.dataWatcher.getWatchableObjectInt(16);
         if (flag) {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 | 0x4));
+            this.dataWatcher.updateObject(16, (int0 | 0x4));
         } else {
-            this.dataWatcher.updateObject(16, (Object) (byte) (byte0 & 0xFFFFFFFB));
+            this.dataWatcher.updateObject(16, (int0 & 0xFFFFFFFB));
         }
     }
 }

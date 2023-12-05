@@ -43,8 +43,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
             this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
             this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
             this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
-            this.spawnableMonsterList
-                .add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
         }
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(VMonkey.class, 20, 1, 3));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityIguana.class, 20, 1, 1));
@@ -53,8 +52,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTropiSkeleton.class, 25, 1, 8));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityAshenHunter.class, 2, 3, 12));
         this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(Failgull.class, 30, 5, 15));
-        this.spawnableWaterCreatureList
-            .add(new BiomeGenBase.SpawnListEntry(EntityTropicalFish.class, 10, 1, 12));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityTropicalFish.class, 10, 1, 12));
         this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityEagleRay.class, 6, 1, 3));
         this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySeaTurtle.class, 6, 1, 3));
         this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySeahorse.class, 6, 1, 3));
@@ -67,65 +65,70 @@ public class BiomeGenTropicraft extends BiomeGenBase {
 
     public void decorate(final World world, final Random rand, final int x, final int z) {
         final BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+        int i;
+        int k;
+
         if (biome == BiomeGenTropicraft.tropicsOcean && rand.nextInt(5) == 0) {
             new WorldGenCoral().generate(world, rand, x + 6 + rand.nextInt(4), 64, z + 6 + rand.nextInt(4));
         }
+
+        i = this.randCoord(rand, x, 16);
+        k = this.randCoord(rand, z, 16);
+
         if (rand.nextInt(2) == 0) {
-            final int i = this.randCoord(rand, x, 16);
-            final int k = this.randCoord(rand, z, 16);
             new WorldGenBamboo(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(50) == 0) {
-            final int i = this.randCoord(rand, x, 16);
-            final int k = this.randCoord(rand, z, 16);
             new WorldGenEIH(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(3) == 0) {
-            final int i = this.randCoord(rand, x, 16);
-            final int k = this.randCoord(rand, z, 16);
-            new WorldGenTallFlower(world, rand, (Block) TCBlockRegistry.tallFlowers, 0, 1)
-                .generate(i, this.getTerrainHeightAt(world, i, k), k);
+            int terrainHeight = this.getTerrainHeightAt(world, i, k);
+            if (terrainHeight > 0 && world.isAirBlock(i, terrainHeight, k)) {
+                new WorldGenTallFlower(world, rand, TCBlockRegistry.tallFlowers, 0, 1)
+                    .generate(i, terrainHeight, k);
+            }
         }
+
         if (rand.nextInt(3) == 0) {
-            final int i = this.randCoord(rand, x, 16);
-            final int k = this.randCoord(rand, z, 16);
-            new WorldGenTallFlower(world, rand, (Block) TCBlockRegistry.pineapple, 7, 8)
-                .generate(i, this.getTerrainHeightAt(world, i, k), k);
+            int terrainHeight = this.getTerrainHeightAt(world, i, k);
+            if (terrainHeight > 0 && world.isAirBlock(i, terrainHeight, k)) {
+                new WorldGenTallFlower(world, rand, TCBlockRegistry.pineapple, 7, 8)
+                    .generate(i, terrainHeight, k);
+            }
         }
-        int i = this.randCoord(rand, x, 16);
-        int k = this.randCoord(rand, z, 16);
-        new WorldGenTropicraftFlowers(
-            world,
-            rand,
-            (Block) TCBlockRegistry.flowers,
-            BiomeGenTropicraft.DEFAULT_FLOWER_META).generate(i, this.getTerrainHeightAt(world, i, k), k);
+
+        int terrainHeight = this.getTerrainHeightAt(world, i, k);
+        if (terrainHeight > 0 && world.isAirBlock(i, terrainHeight, k)) {
+            new WorldGenTropicraftFlowers(
+                world,
+                rand,
+                TCBlockRegistry.flowers,
+                BiomeGenTropicraft.DEFAULT_FLOWER_META).generate(i, terrainHeight, k);
+        }
         if (rand.nextInt(300) == 0) {
-            i = this.randCoord(rand, x, 16);
-            k = this.randCoord(rand, z, 16);
             new WorldGenSunkenShip(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(3) == 0) {
-            i = this.randCoord(rand, x, 16);
-            k = this.randCoord(rand, z, 16);
             new WorldGenTropicraftCurvedPalm(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(3) == 0) {
-            i = this.randCoord(rand, x, 16);
-            k = this.randCoord(rand, z, 16);
             new WorldGenTropicraftLargePalmTrees(false)
                 .generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(3) == 0) {
-            i = this.randCoord(rand, x, 16);
-            k = this.randCoord(rand, z, 16);
             new WorldGenTropicraftNormalPalms(false).generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         if (rand.nextInt(4) == 0) {
-            i = this.randCoord(rand, x, 16);
-            k = this.randCoord(rand, z, 16);
-            new WorldGenTallGrass((Block) Blocks.tallgrass, 1)
+            new WorldGenTallGrass(Blocks.tallgrass, 1)
                 .generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
         }
+
         for (int a = 0; a < 25; ++a) {
             new WorldGenWaterfall(world, rand)
                 .generate(this.randCoord(rand, x, 16), 63 + rand.nextInt(193), this.randCoord(rand, z, 16));
@@ -133,10 +136,14 @@ public class BiomeGenTropicraft extends BiomeGenBase {
     }
 
     public int getTerrainHeightAt(final World world, final int x, final int z) {
-        for (int y = world.getHeightValue(x, z) + 1; y > 0; --y) {
-            final Block id = world.getBlock(x, y, z);
+        int height = world.getHeightValue(x, z);
+        for (int y = height + 1; y > 0; --y) {
+            Block id = world.getBlock(x, y, z);
             if (id == Blocks.grass || id == Blocks.dirt || id == Blocks.sand) {
                 return y + 1;
+            }
+            if (id.getMaterial().isSolid()) {
+                break;
             }
         }
         return 0;

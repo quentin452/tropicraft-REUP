@@ -73,10 +73,10 @@ public class EntitySeaTurtle extends EntityAmphibian {
     }
 
     public boolean isUserRiding() {
-        return (this.dataWatcher.getWatchableObjectByte(17) & 0x1) != 0x0;
+        return (this.dataWatcher.getWatchableObjectInt(17) & 0x1) != 0x0;
     }
 
     public void setUserRiding(final boolean flag) {
-        this.dataWatcher.updateObject(17, (Object) (byte) (flag ? 1 : 0));
+        this.dataWatcher.updateObject(17,(flag ? 1 : 0));
     }
 }

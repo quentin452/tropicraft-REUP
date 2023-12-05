@@ -17,44 +17,51 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen {
     }
 
     public boolean generate(final int i, int j, final int k) {
-        j = Integer.MAX_VALUE;
         this.setOrigin(i, k);
         final int width = (this.rand.nextInt(2) + 3) * 2;
         final int length = this.rand.nextInt(6) + 10;
         final int halfWidth = width / 2;
         boolean hasGennedTunnel = false;
+
+        int terrainHeight;
         for (int z = 0; z < length; ++z) {
             for (int x = 0; x < width; ++x) {
-                if (this.getTerrainHeightWithDir(x, z) < j) {
-                    j = this.getTerrainHeightWithDir(x, z);
+                terrainHeight = this.getTerrainHeightWithDir(x, z);
+                if (terrainHeight < j) {
+                    j = terrainHeight;
                 }
             }
         }
+
         for (int y = j; this.worldObj.getBlock(i, y, k) != Blocks.air; ++y) {
             if (this.worldObj.getBlock(i, y, k) == TCBlockRegistry.tropicsWater) {
                 return false;
             }
         }
+
         for (int z = 0; z < length; ++z) {
             int x = 0;
-            Label_0157: while (x < width) {
-                while (true) {
-                    for (int y2 = 0; y2 < 4; ++y2) {
-                        if (this.worldObj.getBlock(x, y2 + j, z) == TCBlockRegistry.logs) {
-                            ++x;
-                            continue Label_0157;
-                        } else if (this.rand.nextInt(4) != 0) {
-                            this.placeBlockWithDir(x, y2 + j, z, Blocks.air, 0);
-                        }
+            while (x < width) {
+                for (int y2 = 0; y2 < 4; ++y2) {
+                    terrainHeight = j + y2;
+                    if (this.worldObj.getBlock(x, terrainHeight, z) == TCBlockRegistry.logs) {
+                        ++x;
+                    } else if (this.rand.nextInt(4) != 0) {
+                        this.placeBlockWithDir(x, terrainHeight, z, Blocks.air, 0);
                     }
-                    this.placeBlockWithDir(x, j, z, TCBlockRegistry.logs, 1);
-                    if (z == 0) {
-                        if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, j + 1, z, TCBlockRegistry.palmFence, 0);
-                            this.placeBlockWithDir(x, j + 2, z, TCBlockRegistry.palmFence, 0);
-                        } else {
-                            this.placeBlockWithDir(x, j + 1, z, TCBlockRegistry.singleSlabs, 2);
-                            this.placeBlockWithDir(x, j + 2, z, TCBlockRegistry.palmFence, 0);
+                }
+
+                terrainHeight = j;
+                this.placeBlockWithDir(x, terrainHeight, z, TCBlockRegistry.logs, 1);
+
+                if (z == 0) {
+                    if (x == 0 || x == width - 1) {
+                        this.placeBlockWithDir(x, j + 1, z, TCBlockRegistry.palmFence, 0);
+                        this.placeBlockWithDir(x, j + 2, z, TCBlockRegistry.palmFence, 0);
+                    } else {
+                        this.placeBlockWithDir(x, j + 1, z, TCBlockRegistry.singleSlabs, 2);
+                        this.placeBlockWithDir(x, j + 2, z, TCBlockRegistry.palmFence, 0);
+
                         }
                     } else if (z == 1) {
                         if (x == 0 || x == width - 1) {
@@ -90,7 +97,6 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen {
                     x++;
                 }
             }
-        }
         return true;
     }
 

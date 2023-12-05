@@ -49,13 +49,13 @@ public class WorldGenUpTree extends TCGenBase {
             }
         }
         final int radius = this.rand.nextInt(2) + 3;
-        this.genCircle(i, j + height, k, (double) radius, 0.0, WorldGenUpTree.LEAF_BLOCK, 1, false);
+        this.genCircle(i, j + height, k, radius, 0.0, WorldGenUpTree.LEAF_BLOCK, 1, false);
         this.genCircle(
             i,
             j + height + 1,
             k,
-            (double) (radius + 2),
-            (double) radius,
+            (radius + 2),
+            radius,
             WorldGenUpTree.LEAF_BLOCK,
             1,
             false);
@@ -63,8 +63,8 @@ public class WorldGenUpTree extends TCGenBase {
             i,
             j + height + 2,
             k,
-            (double) (radius + 3),
-            (double) (radius + 2),
+            (radius + 3),
+            (radius + 2),
             WorldGenUpTree.LEAF_BLOCK,
             1,
             false);
@@ -72,7 +72,7 @@ public class WorldGenUpTree extends TCGenBase {
     }
 
     static {
-        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = TCBlockRegistry.logs;
+        LEAF_BLOCK = TCBlockRegistry.rainforestLeaves;
     }
 }

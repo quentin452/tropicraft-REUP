@@ -47,6 +47,6 @@ public class WorldGenBamboo extends TCGenBase {
     }
 
     static {
-        BAMBOO_BLOCK = (Block) TCBlockRegistry.bambooChute;
+        BAMBOO_BLOCK = TCBlockRegistry.bambooChute;
     }
 }

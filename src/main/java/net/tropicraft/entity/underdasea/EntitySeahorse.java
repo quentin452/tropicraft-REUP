@@ -15,31 +15,31 @@ public class EntitySeahorse extends EntityTropicraftWaterMob {
 
     public EntitySeahorse(final World par1World, final int color) {
         this(par1World);
-        this.setColor((byte) color);
+        this.setColor(color);
     }
 
     @Override
     public void entityInit() {
-        this.dataWatcher.addObject(30, (Object) 0);
+        this.dataWatcher.addObject(30, 0);
         super.entityInit();
     }
 
     public void writeEntityToNBT(final NBTTagCompound nbt) {
-        nbt.setByte("Color", (byte) this.getColor());
+        nbt.setInteger("Color", this.getColor());
         super.writeEntityToNBT(nbt);
     }
 
     public void readEntityFromNBT(final NBTTagCompound nbt) {
-        this.setColor(nbt.getByte("Color"));
+        this.setColor(nbt.getInteger("Color"));
         super.readEntityFromNBT(nbt);
     }
 
-    public byte getColor() {
-        return this.dataWatcher.getWatchableObjectByte(30);
+    public int getColor() {
+        return this.dataWatcher.getWatchableObjectInt(30);
     }
 
-    public void setColor(final byte color) {
-        this.dataWatcher.updateObject(30, (Object) color);
+    public void setColor(final int color) {
+        this.dataWatcher.updateObject(30, color);
     }
 
     public String getColorName() {

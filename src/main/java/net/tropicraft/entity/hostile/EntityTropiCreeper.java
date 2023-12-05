@@ -35,7 +35,7 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
         this.explosionRadius = 3;
         this.experienceValue = 8;
         if (this.agent == null) {
-            this.agent = new AIAgent((ICoroAI) this, false);
+            this.agent = new AIAgent(this, false);
         }
         this.agent.moveLeadTicks = 0;
         this.agent.shouldAvoid = false;
@@ -72,21 +72,21 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
 
     public void writeEntityToNBT(final NBTTagCompound par1NBTTagCompound) {
         super.writeEntityToNBT(par1NBTTagCompound);
-        if (this.dataWatcher.getWatchableObjectByte(17) == 1) {
+        if (this.dataWatcher.getWatchableObjectInt(17) == 1) {
             par1NBTTagCompound.setBoolean("powered", true);
         }
         par1NBTTagCompound.setShort("Fuse", (short) this.fuseTime);
-        par1NBTTagCompound.setByte("ExplosionRadius", (byte) this.explosionRadius);
+        par1NBTTagCompound.setInteger("ExplosionRadius", this.explosionRadius);
     }
 
     public void readEntityFromNBT(final NBTTagCompound par1NBTTagCompound) {
         super.readEntityFromNBT(par1NBTTagCompound);
-        this.dataWatcher.updateObject(17, (Object) (byte) (par1NBTTagCompound.getBoolean("powered") ? 1 : 0));
+        this.dataWatcher.updateObject(17,(par1NBTTagCompound.getBoolean("powered") ? 1 : 0));
         if (par1NBTTagCompound.hasKey("Fuse")) {
             this.fuseTime = par1NBTTagCompound.getShort("Fuse");
         }
         if (par1NBTTagCompound.hasKey("ExplosionRadius")) {
-            this.explosionRadius = par1NBTTagCompound.getByte("ExplosionRadius");
+            this.explosionRadius = par1NBTTagCompound.getInteger("ExplosionRadius");
         }
     }
 
@@ -126,7 +126,7 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
                         y = this.worldObj.getHeightValue(x, z);
                         final Block block = this.worldObj.getBlock(x, y - 1, z);
                         if (block.getMaterial() != Material.water && !CoroUtilBlock.isAir(block)) {
-                            this.worldObj.setBlock(x, y, z, (Block) TCBlockRegistry.flowers, this.rand.nextInt(7), 3);
+                            this.worldObj.setBlock(x, y, z, TCBlockRegistry.flowers, this.rand.nextInt(7), 3);
                         }
                     }
                 }
@@ -135,7 +135,7 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
     }
 
     public void onDeathBySelf() {
-        int y = (int) this.posY + 3;
+        int y;
         final int xo = this.rand.nextInt(3) + 2;
         final int zo = this.rand.nextInt(3) + 2;
         for (int x = (int) this.posX - xo; x < (int) this.posX + xo; ++x) {
@@ -149,18 +149,18 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
                             && this.worldObj.getBlock(x, y, z) != TCBlockRegistry.coconut) {
                             final int flowerType = this.rand.nextInt(7);
                             if (TCBlockRegistry.flowers.canPlaceBlockAt(this.worldObj, x, y, z)) {
-                                this.worldObj.setBlock(x, y, z, (Block) TCBlockRegistry.flowers, flowerType, 3);
+                                this.worldObj.setBlock(x, y, z, TCBlockRegistry.flowers, flowerType, 3);
                             } else {
                                 this.entityDropItem(
-                                    new ItemStack((Block) TCBlockRegistry.flowers, 1, flowerType),
+                                    new ItemStack(TCBlockRegistry.flowers, 1, flowerType),
                                     0.5f);
                             }
                         } else if (this.rand.nextInt(10) < 7
                             && !CoroUtilBlock
-                                .isEqual(this.worldObj.getBlock(x, y, z), (Block) TCBlockRegistry.bambooBundle)
-                            && !CoroUtilBlock.isEqual(this.worldObj.getBlock(x, y, z), (Block) TCBlockRegistry.coconut)
-                            && CoroUtilBlock.isEqual(this.worldObj.getBlock(x, y - 1, z), (Block) Blocks.grass)) {
-                                this.worldObj.setBlock(x, y, z, (Block) Blocks.tallgrass, 1, 3);
+                                .isEqual(this.worldObj.getBlock(x, y, z), TCBlockRegistry.bambooBundle)
+                            && !CoroUtilBlock.isEqual(this.worldObj.getBlock(x, y, z), TCBlockRegistry.coconut)
+                            && CoroUtilBlock.isEqual(this.worldObj.getBlock(x, y - 1, z), Blocks.grass)) {
+                                this.worldObj.setBlock(x, y, z, Blocks.tallgrass, 1, 3);
                             } else if (this.rand.nextInt(10) < 8
                                 && this.worldObj.getBlock(x, y - 1, z) != TCBlockRegistry.bambooBundle
                                 && !CoroUtilBlock.isAir(this.worldObj.getBlock(x, y - 1, z))) {
@@ -186,7 +186,7 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
     }
 
     public boolean getPowered() {
-        return this.dataWatcher.getWatchableObjectByte(17) == 1;
+        return this.dataWatcher.getWatchableObjectInt(17) == 1;
     }
 
     @SideOnly(Side.CLIENT)
@@ -195,16 +195,16 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
     }
 
     public int getCreeperState() {
-        return this.dataWatcher.getWatchableObjectByte(16);
+        return this.dataWatcher.getWatchableObjectInt(16);
     }
 
     public void setCreeperState(final int par1) {
-        this.dataWatcher.updateObject(16, (Object) (byte) par1);
+        this.dataWatcher.updateObject(16, par1);
     }
 
     public void onStruckByLightning(final EntityLightningBolt par1EntityLightningBolt) {
         super.onStruckByLightning(par1EntityLightningBolt);
-        this.dataWatcher.updateObject(17, (Object) 1);
+        this.dataWatcher.updateObject(17, 1);
     }
 
     public void updateAITasks() {
@@ -213,7 +213,7 @@ public class EntityTropiCreeper extends EntityCoroAI implements IMob {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, (Object) (-1));
-        this.dataWatcher.addObject(17, (Object) 0);
+        this.dataWatcher.addObject(16, -1);
+        this.dataWatcher.addObject(17, 0);
     }
 }

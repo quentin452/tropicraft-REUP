@@ -27,10 +27,8 @@ public class BiomeGenRainforest extends BiomeGenTropicraft {
             return;
         }
         if (rand.nextInt(80) == 0) {
-            final int cx = x;
-            final int cz = z;
-            final int xx = rand.nextInt(16) + cx + 8;
-            final int zz = rand.nextInt(16) + cz + 8;
+            final int xx = rand.nextInt(16) + x + 8;
+            final int zz = rand.nextInt(16) + z + 8;
             new WorldGenHomeTree(world, rand).generate(xx, 0, zz);
         }
         if (rand.nextInt(70) == 0) {

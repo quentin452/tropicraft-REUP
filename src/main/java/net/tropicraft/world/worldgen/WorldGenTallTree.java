@@ -89,29 +89,9 @@ public class WorldGenTallTree extends TCGenBase {
                 final int nz = k + this.rand.nextInt(9) - 4;
                 final int leafSize = this.rand.nextInt(3) + 5;
                 this.genCircle(nx, y + 3, nz, (leafSize - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
-                this.genCircle(
-                    nx,
-                    y + 2,
-                    nz,
-                    (leafSize - 1),
-                    (leafSize - 3),
-                    WorldGenTallTree.LEAF_BLOCK,
-                    1,
-                    false);
-                this.genCircle(
-                    nx,
-                    y + 1,
-                    nz,
-                    leafSize,
-                    (leafSize - 1),
-                    WorldGenTallTree.LEAF_BLOCK,
-                    1,
-                    false);
-                this.placeBlockLine(
-                    new int[] { i, y - 2, k },
-                    new int[] { nx, y + 2, nz },
-                    WorldGenTallTree.WOOD_BLOCK,
-                    1);
+                this.genCircle(nx, y + 2, nz, (leafSize - 1), (leafSize - 3), WorldGenTallTree.LEAF_BLOCK, 1, false);
+                this.genCircle(nx, y + 1, nz, leafSize, (leafSize - 1), WorldGenTallTree.LEAF_BLOCK, 1, false);
+                this.placeBlockLine(new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, WorldGenTallTree.WOOD_BLOCK, 1);
                 for (int x3 = nx - leafSize; x3 <= nx + leafSize; ++x3) {
                     for (int z3 = nz - leafSize; z3 <= nz + leafSize; ++z3) {
                         for (int y3 = y; y3 <= y + 2; ++y3) {
@@ -125,24 +105,8 @@ public class WorldGenTallTree extends TCGenBase {
         }
         final int leafSize2 = this.rand.nextInt(5) + 9;
         this.genCircle(i, j + height, k, leafSize2 - 2, 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
-        this.genCircle(
-            i,
-            j + height - 1,
-            k,
-            (leafSize2 - 1),
-            (leafSize2 - 4),
-            WorldGenTallTree.LEAF_BLOCK,
-            1,
-            false);
-        this.genCircle(
-            i,
-            j + height - 2,
-            k,
-            leafSize2,
-            (leafSize2 - 1),
-            WorldGenTallTree.LEAF_BLOCK,
-            1,
-            false);
+        this.genCircle(i, j + height - 1, k, (leafSize2 - 1), (leafSize2 - 4), WorldGenTallTree.LEAF_BLOCK, 1, false);
+        this.genCircle(i, j + height - 2, k, leafSize2, (leafSize2 - 1), WorldGenTallTree.LEAF_BLOCK, 1, false);
         for (int x = i - leafSize2; x <= i + leafSize2; ++x) {
             for (int z = k - leafSize2; z <= k + leafSize2; ++z) {
                 for (int y4 = j + height + 3; y4 <= j + height + 6; ++y4) {
@@ -159,24 +123,12 @@ public class WorldGenTallTree extends TCGenBase {
         for (int m = 2; m <= 5; ++m) {
             if (Blocks.vine.canPlaceBlockOnSide(this.worldObj, i, j, k, m)
                 && this.worldObj.getBlock(i, j, k) == Blocks.air) {
-                this.worldObj.setBlock(
-                    i,
-                    j,
-                    k,
-                    Blocks.vine,
-                    1 << Direction.facingToDirection[Facing.oppositeSide[m]],
-                    WorldGenTallTree.blockGenNotifyFlag);
+                this.worldObj.setBlock(i, j, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
                 for (int length = this.rand.nextInt(4) + 4, y = j - 1; y > j - length; --y) {
                     if (this.worldObj.getBlock(i, y, k) != Blocks.air) {
                         return true;
                     }
-                    this.worldObj.setBlock(
-                        i,
-                        y,
-                        k,
-                        Blocks.vine,
-                        1 << Direction.facingToDirection[Facing.oppositeSide[m]],
-                        WorldGenTallTree.blockGenNotifyFlag);
+                    this.worldObj.setBlock(i, y, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
                 }
                 return true;
             }

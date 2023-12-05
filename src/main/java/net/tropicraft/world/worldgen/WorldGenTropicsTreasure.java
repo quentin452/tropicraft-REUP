@@ -19,57 +19,63 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         super(worldObj, rand);
     }
 
-    public boolean generate(final int i, int j, final int k) {
+    public boolean generate(final int startX, int startY, final int startZ) {
         final int depth = this.rand.nextInt(2) + 2;
         int tries = 0;
-        Label_0015: while (tries < 10) {
-            final int x = i + this.rand.nextInt(8) - this.rand.nextInt(8);
-            final int z = k + this.rand.nextInt(8) - this.rand.nextInt(8);
+        final int maxTries = 10;
+        while (tries < maxTries) {
+            int x = startX + this.rand.nextInt(8) - this.rand.nextInt(8);
+            int z = startZ + this.rand.nextInt(8) - this.rand.nextInt(8);
             int y;
             int sandArea;
-            Label_0427: while (true) {
-                for (j = (y = this.getTerrainHeightAt(x, z) - 1); y > j - depth; --y) {
-                    if (!WorldGenTropicsTreasure.sandBlocks.contains(this.worldObj.getBlock(x, y, z))) {
-                        ++tries;
-                        continue Label_0015;
-                    }
+            for (y = this.getTerrainHeightAt(x, z) - 1; y > y - depth; --y) {
+                if (!WorldGenTropicsTreasure.sandBlocks.contains(this.worldObj.getBlock(x, y, z))) {
+                    ++tries;
+                    break;
                 }
+            }
+            if (y <= startY - depth) {
                 sandArea = 3;
+                boolean shouldContinue = false;
                 for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; ++surroundZ) {
                     for (int surroundX = x - sandArea; surroundX <= x + sandArea; ++surroundX) {
-                        if (!WorldGenTropicsTreasure.sandBlocks
-                            .contains(this.worldObj.getBlock(surroundX, j, surroundZ))) {
-                            continue Label_0427;
+                        if (!WorldGenTropicsTreasure.sandBlocks.contains(this.worldObj.getBlock(surroundX, y, surroundZ))) {
+                            shouldContinue = true;
+                            break;
+                        }
+                    }
+                    if (shouldContinue) {
+                        break;
+                    }
+                }
+                if (shouldContinue) {
+                    continue;
+                }
+                for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; ++surroundZ) {
+                    for (int surroundX = x - sandArea; surroundX <= x + sandArea; ++surroundX) {
+                        if (this.rand.nextFloat() < 0.2f) {
+                            this.worldObj.setBlock(surroundX, y, surroundZ, TCBlockRegistry.purifiedSand);
                         }
                     }
                 }
-                break;
-            }
-            for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; ++surroundZ) {
-                for (int surroundX = x - sandArea; surroundX <= x + sandArea; ++surroundX) {
-                    if (this.rand.nextFloat() < 0.2f) {
-                        this.worldObj.setBlock(surroundX, j, surroundZ, TCBlockRegistry.purifiedSand);
+                this.worldObj.setBlock(x, y, z, TCBlockRegistry.bambooChest);
+                final TileEntityChest tileEntityChest = (TileEntityChest) this.worldObj.getTileEntity(x, y, z);
+                if (tileEntityChest == null) {
+                    return false;
+                }
+                boolean hasAddedMap = false;
+                for (int e = 0; e < 8; ++e) {
+                    final ItemStack itemStack = this.pickCheckLootItem(this.worldObj, this.rand, x, y, z);
+                    if (itemStack.getItem() != Items.map || !hasAddedMap) {
+                        if (itemStack.getItem() == Items.map) {
+                            hasAddedMap = true;
+                            this.initializeMap(this.worldObj, itemStack, x, y, z);
+                        }
+                        tileEntityChest.setInventorySlotContents(this.rand.nextInt(tileEntityChest.getSizeInventory()), itemStack);
                     }
                 }
+                return true;
             }
-            this.worldObj.setBlock(x, y, z, TCBlockRegistry.bambooChest);
-            final TileEntityChest tileentitychest = (TileEntityChest) this.worldObj.getTileEntity(x, y, z);
-            if (tileentitychest == null) {
-                return false;
-            }
-            boolean hasAddedMap = false;
-            for (int e = 0; e < 8; ++e) {
-                final ItemStack itemstack = this.pickCheckLootItem(this.worldObj, this.rand, x, y, z);
-                if (itemstack.getItem() != Items.map || !hasAddedMap) {
-                    if (itemstack.getItem() == Items.map) {
-                        hasAddedMap = true;
-                        this.initializeMap(this.worldObj, itemstack, x, y, z);
-                    }
-                    tileentitychest
-                        .setInventorySlotContents(this.rand.nextInt(tileentitychest.getSizeInventory()), itemstack);
-                }
-            }
-            return true;
         }
         return true;
     }

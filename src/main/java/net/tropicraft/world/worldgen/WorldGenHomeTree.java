@@ -277,9 +277,9 @@ public class WorldGenHomeTree extends TCGenBase {
         return this.worldObj.setBlock(i, j, k, woodID2, meta, 0);
     }
 
-    public boolean genCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius,
-        final Block id, final int meta, final boolean solid) {
-        boolean hasGenned = false;
+    public List<ChunkCoordinates> genCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius,
+                                            final Block id, final int meta, final boolean solid) {
+        List<ChunkCoordinates> generatedCoordinates = new ArrayList<>();
         final double outerRadiusSquared = outerRadius * outerRadius;
         final double innerRadiusSquared = innerRadius * innerRadius;
         for (int x = (int) (-outerRadius) + i; x < (int) outerRadius + i; ++x) {
@@ -291,12 +291,12 @@ public class WorldGenHomeTree extends TCGenBase {
                         || bID == Blocks.flowing_water
                         || bID == TCBlockRegistry.tropicsWater
                         || solid) && this.placeBlock(x, j, z, id, meta, solid)) {
-                        hasGenned = true;
+                        generatedCoordinates.add(new ChunkCoordinates(x, j, z));
                     }
                 }
             }
         }
-        return hasGenned;
+        return generatedCoordinates;
     }
 
     public ArrayList<int[]> placeBlockLine(final int[] ai, final int[] ai1, final Block i, final int meta) {

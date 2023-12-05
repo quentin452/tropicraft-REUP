@@ -28,15 +28,8 @@ public class WorldGenTallFlower extends TCGenBase {
             final int k2 = k + this.rand.nextInt(8) - this.rand.nextInt(8);
             if (this.worldObj.isAirBlock(i2, j2, k2) && this.worldObj.isAirBlock(i2, j2 + 1, k2)
                 && this.plantBlock.canBlockStay(this.worldObj, i2, j2, k2)) {
-                this.worldObj
-                    .setBlock(i2, j2, k2, this.plantBlock, this.plantBottomMeta, WorldGenTallFlower.blockGenNotifyFlag);
-                this.worldObj.setBlock(
-                    i2,
-                    j2 + 1,
-                    k2,
-                    this.plantBlock,
-                    this.plantTopMeta,
-                    WorldGenTallFlower.blockGenNotifyFlag);
+                this.worldObj.setBlock(i2, j2, k2, this.plantBlock, this.plantBottomMeta, WorldGenTallFlower.blockGenNotifyFlag);
+                this.worldObj.setBlock(i2, j2 + 1, k2, this.plantBlock, this.plantTopMeta, WorldGenTallFlower.blockGenNotifyFlag);
             }
         }
         return true;
