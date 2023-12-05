@@ -1,11 +1,11 @@
 package net.tropicraft.world.biomes;
 
-import java.util.*;
-
-import net.minecraft.block.*;
-import net.minecraft.world.*;
-import net.tropicraft.registry.*;
-import net.tropicraft.world.worldgen.*;
+import java.util.Random;
+import net.minecraft.world.World;
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.world.worldgen.WorldGenTropicraftFlowers;
+import net.tropicraft.world.worldgen.WorldGenTropicraftFruitTrees;
+import net.tropicraft.world.worldgen.WorldGenTropicsTreasure;
 
 public class BiomeGenTropics extends BiomeGenTropicraft {
 
@@ -21,6 +21,9 @@ public class BiomeGenTropics extends BiomeGenTropicraft {
             System.out.println("decoration disabled via BiomeGenTropics.DISABLEDECORATION, " + this);
             return;
         }
+
+        super.decorate(world, rand, x, z);
+
         int i = this.randCoord(rand, x, 16);
         int k = this.randCoord(rand, z, 16);
 
@@ -41,6 +44,5 @@ public class BiomeGenTropics extends BiomeGenTropicraft {
             k = this.randCoord(rand, z, 16);
             new WorldGenTropicsTreasure(world, rand).generate(i, this.getTerrainHeightAt(world, i, k), k);
         }
-        super.decorate(world, rand, x, z);
     }
 }

@@ -52,8 +52,6 @@ public abstract class TCGenBase extends WorldGenerator {
         return generatedPositions;
     }
 
-
-
     public boolean checkCircle(final int i, final int j, final int k, final double outerRadius,
         final double innerRadius, final List allowedBlockList) {
         for (int x = (int) (-outerRadius - 2.0) + i; x < (int) (outerRadius + 2.0) + i; ++x) {
