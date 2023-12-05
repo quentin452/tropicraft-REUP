@@ -50,12 +50,12 @@ public class ChunkProviderTropicraft implements IChunkProvider {
         this.caveGenerator = new MapGenTropicsCaves();
         this.volcanoGen = new MapGenVolcano(worldObj, true);
         this.groveGen = new MapGenUndergroundGrove(worldObj);
-        this.coalGen = (WorldGenerator) new WorldGenMinable(Blocks.coal_ore, 16);
-        this.lapisGen = (WorldGenerator) new WorldGenMinable(Blocks.lapis_ore, 6);
-        this.ironGen = (WorldGenerator) new WorldGenMinable(Blocks.iron_ore, 8);
-        this.eudialyteGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.eudialyteOre, 6);
-        this.zirconGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.zirconOre, 4);
-        this.azuriteGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.azuriteOre, 2);
+        this.coalGen = new WorldGenMinable(Blocks.coal_ore, 16);
+        this.lapisGen = new WorldGenMinable(Blocks.lapis_ore, 6);
+        this.ironGen = new WorldGenMinable(Blocks.iron_ore, 8);
+        this.eudialyteGen = new WorldGenMinable(TCBlockRegistry.eudialyteOre, 6);
+        this.zirconGen = new WorldGenMinable(TCBlockRegistry.zirconOre, 4);
+        this.azuriteGen = new WorldGenMinable(TCBlockRegistry.azuriteOre, 2);
         this.seed = seed;
     }
 
@@ -251,31 +251,31 @@ public class ChunkProviderTropicraft implements IChunkProvider {
     public void replaceBlocksForBiome(final int x, final int z, final Block[] blocks, final byte[] metas,
         final BiomeGenBase[] biomes) {
         final int sandType = this.rand.nextInt(200);
-        Block sandBlock = null;
-        short sandMetadata = 0;
+        Block sandBlock;
+        short sandMetadata;
         switch (sandType) {
             case 0: {
-                sandBlock = (Block) TCBlockRegistry.mineralSands;
+                sandBlock = TCBlockRegistry.mineralSands;
                 sandMetadata = 0;
                 break;
             }
             case 1: {
-                sandBlock = (Block) TCBlockRegistry.mineralSands;
+                sandBlock = TCBlockRegistry.mineralSands;
                 sandMetadata = 1;
                 break;
             }
             case 2: {
-                sandBlock = (Block) TCBlockRegistry.mineralSands;
+                sandBlock = TCBlockRegistry.mineralSands;
                 sandMetadata = 2;
                 break;
             }
             case 3: {
-                sandBlock = (Block) TCBlockRegistry.mineralSands;
+                sandBlock = TCBlockRegistry.mineralSands;
                 sandMetadata = 3;
                 break;
             }
             default: {
-                sandBlock = (Block) Blocks.sand;
+                sandBlock = Blocks.sand;
                 sandMetadata = 0;
                 break;
             }
@@ -289,8 +289,7 @@ public class ChunkProviderTropicraft implements IChunkProvider {
                 final BiomeGenTropicraft biome = (BiomeGenTropicraft) biomes[i1 + l * 16];
                 final Block top = biome.topBlock;
                 final Block filler = biome.fillerBlock;
-                final Block bfiller;
-                Block btop = bfiller = sandBlock;
+                Block btop = sandBlock;
                 if (biome == BiomeGenTropicraft.tropicsOcean) {
                     btop = biome.sandBlock;
                     sandMetadata = 0;
@@ -343,7 +342,7 @@ public class ChunkProviderTropicraft implements IChunkProvider {
         this.rand.setSeed(i * l1 + j * l2 ^ this.worldObj.getSeed());
         biome.decorate(this.worldObj, this.rand, x, z);
         this.generateOres(x, z);
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, (BiomeGenBase) biome, x + 8, z + 8, 16, 16, this.rand);
+        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biome, x + 8, z + 8, 16, 16, this.rand);
         BlockSand.fallInstantly = false;
     }
 

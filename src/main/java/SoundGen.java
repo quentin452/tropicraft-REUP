@@ -10,7 +10,7 @@ public class SoundGen {
             final ArrayList<String> soundNames = new ArrayList<String>();
             final String initialPath = "assets/tropicraft/";
             while (entries.hasMoreElements()) {
-                final ZipEntry entry = (ZipEntry) entries.nextElement();
+                final ZipEntry entry = entries.nextElement();
                 if (!entry.isDirectory() && entry.toString()
                     .endsWith(".ogg")) {
                     String name = entry.toString();
@@ -22,9 +22,9 @@ public class SoundGen {
                 }
             }
             final HashMap<String, ArrayList<String>> numbered = new HashMap<String, ArrayList<String>>();
-            for (int i = 0; i < soundNames.size(); ++i) {
+            for (String soundName : soundNames) {
                 final String oriName;
-                String name2 = oriName = soundNames.get(i);
+                String name2 = oriName = soundName;
                 boolean isNum = true;
                 boolean isNumbered = false;
                 while (isNum) {
@@ -39,7 +39,7 @@ public class SoundGen {
                 if (isNumbered) {
                     ArrayList<String> numbers = numbered.get(name2);
                     if (numbers == null) {
-                        numbers = new ArrayList<String>();
+                        numbers = new ArrayList<>();
                         numbered.put(name2, numbers);
                     }
                     numbers.add(oriName);
@@ -67,21 +67,21 @@ public class SoundGen {
                 final boolean isRecord = name3.startsWith("records");
                 final String category = isRecord ? "record" : (name3.contains("wpn_portal") ? "player" : "neutral");
                 final String ingameName = name3.replaceAll("\\/", ".");
-                sb.append("  \"" + ingameName + "\": { \n");
-                sb.append("    \"category\": \"" + category + "\",\n");
+                sb.append("  \"").append(ingameName).append("\": { \n");
+                sb.append("    \"category\": \"").append(category).append("\",\n");
                 sb.append("    \"sounds\": [\n");
                 if (isRecord) {
                     sb.append("      {\n");
-                    sb.append("        \"name\": \"" + name3 + "\",\n        \"stream\": true\n");
+                    sb.append("        \"name\": \"").append(name3).append("\",\n        \"stream\": true\n");
                     sb.append("      }\n");
                 } else {
                     ArrayList<String> soundPaths = numbered.get(oriName2);
                     if (soundPaths == null) {
-                        soundPaths = new ArrayList<String>();
+                        soundPaths = new ArrayList<>();
                         soundPaths.add(name3);
                     }
                     for (int k = 0; k < soundPaths.size(); ++k) {
-                        sb.append("      \"" + soundPaths.get(k) + "\"");
+                        sb.append("      \"").append(soundPaths.get(k)).append("\"");
                         if (k != soundPaths.size() - 1) {
                             sb.append(",\n");
                         } else {
@@ -98,7 +98,7 @@ public class SoundGen {
                 }
             }
             sb.append("}");
-            System.out.println(sb.toString());
+            System.out.println(sb);
         } catch (Exception e2) {
             e2.printStackTrace();
         }

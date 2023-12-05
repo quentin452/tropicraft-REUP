@@ -34,23 +34,23 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
         if (world.getBlock(i, j + 1, k) == TCBlockRegistry.palmLeaves
             || world.getBlock(i, j + 2, k) == TCBlockRegistry.palmLeaves) {
             if (world.isAirBlock(i + 1, j, k) && random.nextInt(chance) == 0) {
-                world.setBlock(i + 1, j, k, (Block) TCBlockRegistry.coconut);
+                world.setBlock(i + 1, j, k, TCBlockRegistry.coconut);
                 world.setBlockMetadataWithNotify(i, j, k, 0, 3);
             }
             if (world.isAirBlock(i - 1, j, k) && random.nextInt(chance) == 0) {
-                world.setBlock(i - 1, j, k, (Block) TCBlockRegistry.coconut);
+                world.setBlock(i - 1, j, k, TCBlockRegistry.coconut);
                 world.setBlockMetadataWithNotify(i, j, k, 0, 3);
             }
             if (world.isAirBlock(i, j, k - 1) && random.nextInt(chance) == 0) {
-                world.setBlock(i, j, k - 1, (Block) TCBlockRegistry.coconut);
+                world.setBlock(i, j, k - 1, TCBlockRegistry.coconut);
                 world.setBlockMetadataWithNotify(i, j, k, 0, 3);
             }
             if (world.isAirBlock(i, j, k + 1) && random.nextInt(chance) == 0) {
-                world.setBlock(i, j, k + 1, (Block) TCBlockRegistry.coconut);
+                world.setBlock(i, j, k + 1, TCBlockRegistry.coconut);
                 world.setBlockMetadataWithNotify(i, j, k, 0, 3);
             }
             if (world.isAirBlock(i, j - 1, k) && random.nextInt(chance) == 0) {
-                world.setBlock(i, j - 1, k, (Block) TCBlockRegistry.coconut);
+                world.setBlock(i, j - 1, k, TCBlockRegistry.coconut);
                 world.setBlockMetadataWithNotify(i, j, k, 0, 3);
             }
         }
@@ -131,7 +131,7 @@ public class BlockTropicraftLog extends BlockTropicraftMulti {
     }
 
     public Item getItemDropped(final int p_149650_1_, final Random rand, final int p_149650_3_) {
-        return Item.getItemFromBlock((Block) this);
+        return Item.getItemFromBlock(this);
     }
 
     public boolean canSustainLeaves(final IBlockAccess world, final int x, final int y, final int z) {

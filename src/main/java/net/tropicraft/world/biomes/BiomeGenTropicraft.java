@@ -40,29 +40,29 @@ public class BiomeGenTropicraft extends BiomeGenBase {
         this.spawnableWaterCreatureList.clear();
         if (biomeID == ConfigBiomes.rainforestMountainsID || biomeID == ConfigBiomes.rainforestHillsID
             || biomeID == ConfigBiomes.rainforestPlainsID) {
-            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityTreeFrogBlue.class, 25, 1, 2));
-            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityTreeFrogGreen.class, 25, 1, 2));
-            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityTreeFrogRed.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogBlue.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogGreen.class, 25, 1, 2));
+            this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogRed.class, 25, 1, 2));
             this.spawnableMonsterList
-                .add(new BiomeGenBase.SpawnListEntry((Class) EntityTreeFrogYellow.class, 25, 1, 2));
+                .add(new BiomeGenBase.SpawnListEntry(EntityTreeFrogYellow.class, 25, 1, 2));
         }
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) VMonkey.class, 20, 1, 3));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityIguana.class, 20, 1, 1));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityTropiCreeper.class, 2, 1, 2));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityEIH.class, 10, 1, 1));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityTropiSkeleton.class, 25, 1, 8));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) EntityAshenHunter.class, 2, 3, 12));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) Failgull.class, 30, 5, 15));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(VMonkey.class, 20, 1, 3));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityIguana.class, 20, 1, 1));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTropiCreeper.class, 2, 1, 2));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityEIH.class, 10, 1, 1));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityTropiSkeleton.class, 25, 1, 8));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(EntityAshenHunter.class, 2, 3, 12));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(Failgull.class, 30, 5, 15));
         this.spawnableWaterCreatureList
-            .add(new BiomeGenBase.SpawnListEntry((Class) EntityTropicalFish.class, 10, 1, 12));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntityEagleRay.class, 6, 1, 3));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntitySeaTurtle.class, 6, 1, 3));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntitySeahorse.class, 6, 1, 3));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntityMarlin.class, 10, 1, 3));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntityManOWar.class, 4, 1, 2));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntityStarfish.class, 4, 1, 4));
-        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry((Class) EntitySeaUrchin.class, 4, 1, 4));
-        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry((Class) SpiderAdult.class, 50, 1, 3));
+            .add(new BiomeGenBase.SpawnListEntry(EntityTropicalFish.class, 10, 1, 12));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityEagleRay.class, 6, 1, 3));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySeaTurtle.class, 6, 1, 3));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySeahorse.class, 6, 1, 3));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityMarlin.class, 10, 1, 3));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityManOWar.class, 4, 1, 2));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityStarfish.class, 4, 1, 4));
+        this.spawnableWaterCreatureList.add(new BiomeGenBase.SpawnListEntry(EntitySeaUrchin.class, 4, 1, 4));
+        this.spawnableMonsterList.add(new BiomeGenBase.SpawnListEntry(SpiderAdult.class, 50, 1, 3));
     }
 
     public void decorate(final World world, final Random rand, final int x, final int z) {

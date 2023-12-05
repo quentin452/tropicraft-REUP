@@ -7,10 +7,10 @@ import net.minecraft.world.*;
 
 public class WorldGenTallFlower extends TCGenBase {
 
-    private int FLOWER_TRIES;
-    private Block plantBlock;
-    private int plantBottomMeta;
-    private int plantTopMeta;
+    private final int FLOWER_TRIES;
+    private final Block plantBlock;
+    private final int plantBottomMeta;
+    private final int plantTopMeta;
 
     public WorldGenTallFlower(final World world, final Random rand, final Block plantBlock, final int plantBottomMeta,
         final int plantTopMeta) {

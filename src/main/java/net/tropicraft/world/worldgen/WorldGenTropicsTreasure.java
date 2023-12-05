@@ -25,8 +25,8 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         Label_0015: while (tries < 10) {
             final int x = i + this.rand.nextInt(8) - this.rand.nextInt(8);
             final int z = k + this.rand.nextInt(8) - this.rand.nextInt(8);
-            int y = 0;
-            int sandArea = 0;
+            int y;
+            int sandArea;
             Label_0427: while (true) {
                 for (j = (y = this.getTerrainHeightAt(x, z) - 1); y > j - depth; --y) {
                     if (!WorldGenTropicsTreasure.sandBlocks.contains(this.worldObj.getBlock(x, y, z))) {
@@ -48,11 +48,11 @@ public class WorldGenTropicsTreasure extends TCGenBase {
             for (int surroundZ = z - sandArea; surroundZ <= z + sandArea; ++surroundZ) {
                 for (int surroundX = x - sandArea; surroundX <= x + sandArea; ++surroundX) {
                     if (this.rand.nextFloat() < 0.2f) {
-                        this.worldObj.setBlock(surroundX, j, surroundZ, (Block) TCBlockRegistry.purifiedSand);
+                        this.worldObj.setBlock(surroundX, j, surroundZ, TCBlockRegistry.purifiedSand);
                     }
                 }
             }
-            this.worldObj.setBlock(x, y, z, (Block) TCBlockRegistry.bambooChest);
+            this.worldObj.setBlock(x, y, z, TCBlockRegistry.bambooChest);
             final TileEntityChest tileentitychest = (TileEntityChest) this.worldObj.getTileEntity(x, y, z);
             if (tileentitychest == null) {
                 return false;
@@ -60,7 +60,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
             boolean hasAddedMap = false;
             for (int e = 0; e < 8; ++e) {
                 final ItemStack itemstack = this.pickCheckLootItem(this.worldObj, this.rand, x, y, z);
-                if (itemstack != null && (itemstack.getItem() != Items.map || !hasAddedMap)) {
+                if (itemstack.getItem() != Items.map || !hasAddedMap) {
                     if (itemstack.getItem() == Items.map) {
                         hasAddedMap = true;
                         this.initializeMap(this.worldObj, itemstack, x, y, z);
@@ -106,7 +106,7 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         mapItem.setItemDamage(worldObj.getUniqueDataId("map"));
         final String mapName = "map_" + mapItem.getItemDamage();
         final MapData data = new MapData(mapName);
-        worldObj.setItemData(mapName, (WorldSavedData) data);
+        worldObj.setItemData(mapName, data);
         data.xCenter = x;
         data.zCenter = z;
         data.scale = 3;
@@ -114,23 +114,23 @@ public class WorldGenTropicsTreasure extends TCGenBase {
     }
 
     static {
-        treasureList = new ArrayList<Item>();
-        sandBlocks = new ArrayList<Block>();
+        treasureList = new ArrayList<>();
+        sandBlocks = new ArrayList<>();
         WorldGenTropicsTreasure.treasureList.add(Items.iron_ingot);
         WorldGenTropicsTreasure.treasureList.add(Items.gold_ingot);
         WorldGenTropicsTreasure.treasureList.add(Items.diamond);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.ore);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.ore);
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.shells);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.scaleHelmet);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.scaleBoots);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.scaleChestplate);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.scaleLeggings);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.scaleHelmet);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.scaleBoots);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.scaleChestplate);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.scaleLeggings);
         WorldGenTropicsTreasure.treasureList.add(Items.golden_apple);
         WorldGenTropicsTreasure.treasureList.add(Items.arrow);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.swordEudialyte);
-        WorldGenTropicsTreasure.treasureList.add((Item) TCItemRegistry.swordZircon);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.swordEudialyte);
+        WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.swordZircon);
         WorldGenTropicsTreasure.treasureList.add(Items.gold_nugget);
-        WorldGenTropicsTreasure.treasureList.add((Item) Items.map);
+        WorldGenTropicsTreasure.treasureList.add(Items.map);
         WorldGenTropicsTreasure.treasureList.add(Items.spider_eye);
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.recordTradeWinds);
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.recordEasternIsles);
@@ -138,8 +138,8 @@ public class WorldGenTropicsTreasure extends TCGenBase {
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.recordLowTide);
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.recordSummering);
         WorldGenTropicsTreasure.treasureList.add(TCItemRegistry.recordTheTribe);
-        WorldGenTropicsTreasure.sandBlocks.add((Block) Blocks.sand);
+        WorldGenTropicsTreasure.sandBlocks.add(Blocks.sand);
         WorldGenTropicsTreasure.sandBlocks.add(Blocks.sandstone);
-        WorldGenTropicsTreasure.sandBlocks.add((Block) TCBlockRegistry.purifiedSand);
+        WorldGenTropicsTreasure.sandBlocks.add(TCBlockRegistry.purifiedSand);
     }
 }

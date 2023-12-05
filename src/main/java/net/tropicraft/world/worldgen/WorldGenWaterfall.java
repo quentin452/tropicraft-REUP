@@ -79,6 +79,6 @@ public class WorldGenWaterfall extends TCDirectionalGen {
     }
 
     static {
-        WATER_BLOCK = (Block) TCBlockRegistry.tropicsWater;
+        WATER_BLOCK = TCBlockRegistry.tropicsWater;
     }
 }

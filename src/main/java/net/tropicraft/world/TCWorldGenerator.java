@@ -28,7 +28,6 @@ public class TCWorldGenerator implements IWorldGenerator {
             chunkZ *= 16;
             if (world.provider.dimensionId == 0) {
                 final WorldType terrainType = world.provider.terrainType;
-                final WorldType terrainType2 = world.provider.terrainType;
                 if (terrainType != WorldType.FLAT) {
                     final int k = chunkX + random.nextInt(16) + 8;
                     int l = random.nextInt(62) + 64;
@@ -39,7 +38,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                             new WorldGenTropicraftFlowers(
                                 world,
                                 random,
-                                (Block) TCBlockRegistry.flowers,
+                                    TCBlockRegistry.flowers,
                                 BiomeGenTropicraft.DEFAULT_FLOWER_META).generate(world, random, k, l, i1);
                         }
                     }
@@ -50,8 +49,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                     if (ConfigGenRates.genPalmsInOverworld && random.nextInt(12) == 0) {
                         final BiomeGenBase biome = world.getWorldChunkManager()
                             .getBiomeGenAt(cx, cz);
-                        if (((ConfigGenRates.genOverworldPalmsInBeachOnly && biome == BiomeGenBase.beach)
-                            || !ConfigGenRates.genOverworldPalmsInBeachOnly)
+                        if ((!ConfigGenRates.genOverworldPalmsInBeachOnly || biome == BiomeGenBase.beach)
                             && (ConfigGenRates.palmChanceOfGenInOverworld < 0
                                 || random.nextFloat() < ConfigGenRates.palmChanceOfGenInOverworld / 100.0f)) {
                             for (int j4 = 0; j4 < ConfigGenRates.palmPopulationFactorInOverworld; ++j4) {
@@ -68,7 +66,7 @@ public class TCWorldGenerator implements IWorldGenerator {
                     }
                     if (ConfigGenRates.genPineapplesInOverworld && random.nextInt(8) == 0) {
                         l = random.nextInt(62) + 64;
-                        new WorldGenTallFlower(world, random, (Block) TCBlockRegistry.pineapple, 7, 8)
+                        new WorldGenTallFlower(world, random, TCBlockRegistry.pineapple, 7, 8)
                             .generate(world, random, k, l, i1);
                     }
                     if (ConfigGenRates.genBambooInOverworld && random.nextInt(3) == 0) {

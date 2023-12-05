@@ -9,8 +9,8 @@ import net.tropicraft.registry.*;
 public class WorldGenTropicraftFlowers extends TCGenBase {
 
     private static final int FLOWER_TRIES = 35;
-    private Block plantBlock;
-    private int[] metadata;
+    private final Block plantBlock;
+    private final int[] metadata;
 
     public WorldGenTropicraftFlowers(final World world, final Random rand, final Block plantBlock,
         final int[] metadata) {

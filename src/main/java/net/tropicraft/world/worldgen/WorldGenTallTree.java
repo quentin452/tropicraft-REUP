@@ -88,13 +88,13 @@ public class WorldGenTallTree extends TCGenBase {
                 final int nx = i + this.rand.nextInt(9) - 4;
                 final int nz = k + this.rand.nextInt(9) - 4;
                 final int leafSize = this.rand.nextInt(3) + 5;
-                this.genCircle(nx, y + 3, nz, (double) (leafSize - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
+                this.genCircle(nx, y + 3, nz, (leafSize - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
                 this.genCircle(
                     nx,
                     y + 2,
                     nz,
-                    (double) (leafSize - 1),
-                    (double) (leafSize - 3),
+                    (leafSize - 1),
+                    (leafSize - 3),
                     WorldGenTallTree.LEAF_BLOCK,
                     1,
                     false);
@@ -102,8 +102,8 @@ public class WorldGenTallTree extends TCGenBase {
                     nx,
                     y + 1,
                     nz,
-                    (double) leafSize,
-                    (double) (leafSize - 1),
+                    leafSize,
+                    (leafSize - 1),
                     WorldGenTallTree.LEAF_BLOCK,
                     1,
                     false);
@@ -124,13 +124,13 @@ public class WorldGenTallTree extends TCGenBase {
             }
         }
         final int leafSize2 = this.rand.nextInt(5) + 9;
-        this.genCircle(i, j + height, k, (double) (leafSize2 - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
+        this.genCircle(i, j + height, k, leafSize2 - 2, 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
         this.genCircle(
             i,
             j + height - 1,
             k,
-            (double) (leafSize2 - 1),
-            (double) (leafSize2 - 4),
+            (leafSize2 - 1),
+            (leafSize2 - 4),
             WorldGenTallTree.LEAF_BLOCK,
             1,
             false);
@@ -138,8 +138,8 @@ public class WorldGenTallTree extends TCGenBase {
             i,
             j + height - 2,
             k,
-            (double) leafSize2,
-            (double) (leafSize2 - 1),
+            leafSize2,
+            (leafSize2 - 1),
             WorldGenTallTree.LEAF_BLOCK,
             1,
             false);
@@ -185,7 +185,7 @@ public class WorldGenTallTree extends TCGenBase {
     }
 
     static {
-        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = TCBlockRegistry.logs;
+        LEAF_BLOCK = TCBlockRegistry.rainforestLeaves;
     }
 }

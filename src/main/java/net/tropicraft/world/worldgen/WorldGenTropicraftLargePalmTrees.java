@@ -11,19 +11,19 @@ import net.tropicraft.registry.*;
 
 public class WorldGenTropicraftLargePalmTrees extends WorldGenerator {
 
-    private Block wood;
-    private Block tropicsLeaves;
+    private final Block wood;
+    private final Block tropicsLeaves;
     protected Random rand;
 
     public WorldGenTropicraftLargePalmTrees() {
-        this.wood = (Block) TCBlockRegistry.logs;
-        this.tropicsLeaves = (Block) TCBlockRegistry.palmLeaves;
+        this.wood = TCBlockRegistry.logs;
+        this.tropicsLeaves = TCBlockRegistry.palmLeaves;
     }
 
     public WorldGenTropicraftLargePalmTrees(final boolean flag) {
         super(flag);
-        this.wood = (Block) TCBlockRegistry.logs;
-        this.tropicsLeaves = (Block) TCBlockRegistry.palmLeaves;
+        this.wood = TCBlockRegistry.logs;
+        this.tropicsLeaves = TCBlockRegistry.palmLeaves;
     }
 
     public boolean generate(final World world, final Random random, final int i, int j, final int k) {
@@ -69,28 +69,28 @@ public class WorldGenTropicraftLargePalmTrees extends WorldGenerator {
         for (int y = 0; y <= height; ++y) {
             this.setBlockAndMetadata(world, i, j + y, k, this.wood, 0);
         }
-        this.setBlockAndMetadata(world, i + 0, j + height + 1, k - 7, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 1, k - 7, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 1, k - 6, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 1, k - 6, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 5, j + height + 1, k - 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 5, j + height + 1, k - 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 6, j + height + 1, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 1, k - 1, this.wood, 0);
+        this.setBlockAndMetadata(world, i, j + height + 1, k - 1, this.wood, 0);
         this.setBlockAndMetadata(world, i + 6, j + height + 1, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 7, j + height + 1, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 1, j + height + 1, k + 0, this.wood, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 1, k + 0, this.wood, 0);
-        this.setBlockAndMetadata(world, i + 1, j + height + 1, k + 0, this.wood, 0);
-        this.setBlockAndMetadata(world, i + 7, j + height + 1, k + 0, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 7, j + height + 1, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 1, j + height + 1, k, this.wood, 0);
+        this.setBlockAndMetadata(world, i, j + height + 1, k, this.wood, 0);
+        this.setBlockAndMetadata(world, i + 1, j + height + 1, k, this.wood, 0);
+        this.setBlockAndMetadata(world, i + 7, j + height + 1, k, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 6, j + height + 1, k + 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 1, k + 1, this.wood, 0);
+        this.setBlockAndMetadata(world, i, j + height + 1, k + 1, this.wood, 0);
         this.setBlockAndMetadata(world, i + 6, j + height + 1, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 5, j + height + 1, k + 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 5, j + height + 1, k + 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 1, k + 6, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 1, k + 6, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 1, k + 7, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 2, k - 6, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 1, k + 7, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 2, k - 6, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 4, j + height + 2, k - 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 2, k - 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 2, k - 5, this.tropicsLeaves, 0);
@@ -116,23 +116,23 @@ public class WorldGenTropicraftLargePalmTrees extends WorldGenerator {
         this.setBlockAndMetadata(world, i - 3, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 2, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 2, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 2, k - 1, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 2, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 3, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 4, j + height + 2, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 5, j + height + 2, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 6, j + height + 2, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 1, j + height + 2, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 2, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 1, j + height + 2, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 6, j + height + 2, k + 0, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 6, j + height + 2, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 1, j + height + 2, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 2, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 1, j + height + 2, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 6, j + height + 2, k, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 5, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 4, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 3, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 2, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 2, k + 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 2, k + 1, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 2, j + height + 2, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 3, j + height + 2, k + 1, this.tropicsLeaves, 0);
@@ -158,43 +158,43 @@ public class WorldGenTropicraftLargePalmTrees extends WorldGenerator {
         this.setBlockAndMetadata(world, i - 1, j + height + 2, k + 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 2, k + 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 4, j + height + 2, k + 5, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 2, k + 6, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k - 5, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 2, k + 6, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k - 5, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 4, j + height + 3, k - 4, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k - 4, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k - 4, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 4, j + height + 3, k - 4, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 3, j + height + 3, k - 3, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k - 3, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k - 3, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 3, j + height + 3, k - 3, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 2, j + height + 3, k - 2, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k - 2, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k - 2, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 2, j + height + 3, k - 2, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 3, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k - 1, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k - 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 3, k - 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 5, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 4, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 3, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 2, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i - 1, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 1, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 2, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 3, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 4, j + height + 3, k + 0, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 5, j + height + 3, k + 0, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 5, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 4, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 3, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 2, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i - 1, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 1, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 2, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 3, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 4, j + height + 3, k, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i + 5, j + height + 3, k, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 1, j + height + 3, k + 1, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k + 1, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 1, j + height + 3, k + 1, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 2, j + height + 3, k + 2, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k + 2, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k + 2, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 2, j + height + 3, k + 2, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 3, j + height + 3, k + 3, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k + 3, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k + 3, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 3, j + height + 3, k + 3, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i - 4, j + height + 3, k + 4, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k + 4, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k + 4, this.tropicsLeaves, 0);
         this.setBlockAndMetadata(world, i + 4, j + height + 3, k + 4, this.tropicsLeaves, 0);
-        this.setBlockAndMetadata(world, i + 0, j + height + 3, k + 5, this.tropicsLeaves, 0);
+        this.setBlockAndMetadata(world, i, j + height + 3, k + 5, this.tropicsLeaves, 0);
         for (int y = 0; y <= height; ++y) {
             BlockTropicraftLog.spawnCoconuts(world, i, j + y, k, random, 2);
         }

@@ -47,7 +47,7 @@ public class Tropicraft {
         MixerRecipes.addMixerRecipes();
         Tropicraft.proxy.registerBooks();
         TCCraftingRegistry.init();
-        Tropicraft.eventChannel.register((Object) new TCPacketEvents());
+        Tropicraft.eventChannel.register(new TCPacketEvents());
     }
 
     @Mod.EventHandler

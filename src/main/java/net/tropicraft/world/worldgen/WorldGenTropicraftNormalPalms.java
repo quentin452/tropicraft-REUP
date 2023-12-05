@@ -12,24 +12,24 @@ import net.tropicraft.registry.*;
 public class WorldGenTropicraftNormalPalms extends WorldGenerator {
 
     boolean notify;
-    private Block wood;
-    private Block palmLeaves;
+    private final Block wood;
+    private final Block palmLeaves;
 
     public WorldGenTropicraftNormalPalms() {
-        this.wood = (Block) TCBlockRegistry.logs;
-        this.palmLeaves = (Block) TCBlockRegistry.palmLeaves;
+        this.wood = TCBlockRegistry.logs;
+        this.palmLeaves = TCBlockRegistry.palmLeaves;
         this.notify = false;
     }
 
     public WorldGenTropicraftNormalPalms(final boolean flag) {
         super(flag);
-        this.wood = (Block) TCBlockRegistry.logs;
-        this.palmLeaves = (Block) TCBlockRegistry.palmLeaves;
+        this.wood = TCBlockRegistry.logs;
+        this.palmLeaves = TCBlockRegistry.palmLeaves;
         this.notify = flag;
     }
 
     public boolean generate(final World world, final Random random, final int i, int j, final int k) {
-        final int b = random.nextInt(2);
+        random.nextInt(2);
         final byte height = (byte) (random.nextInt(4) + 6);
         boolean flag = true;
         if (j < 1 || j + height + 1 > 128) {
