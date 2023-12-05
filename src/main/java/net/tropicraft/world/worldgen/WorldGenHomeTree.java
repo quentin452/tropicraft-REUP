@@ -1,30 +1,31 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
-import net.minecraft.init.*;
-import net.minecraft.tileentity.*;
 import java.util.*;
-import net.minecraft.util.*;
-import net.tropicraft.registry.*;
-import net.minecraft.item.*;
 
-public class WorldGenHomeTree extends TCGenBase
-{
+import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.registry.*;
+
+public class WorldGenHomeTree extends TCGenBase {
+
     private final Block woodID;
     private final int woodMeta = 1;
     private final Block leafID;
     private final int leafMeta = 0;
     private ArrayList<BranchNode> branchList;
     private int trunkRadius;
-    
+
     public WorldGenHomeTree(final World world, final Random random) {
         super(world, random);
-        this.woodID = (Block)TCBlockRegistry.logs;
-        this.leafID = (Block)TCBlockRegistry.rainforestLeaves;
+        this.woodID = (Block) TCBlockRegistry.logs;
+        this.leafID = (Block) TCBlockRegistry.rainforestLeaves;
         this.branchList = new ArrayList<BranchNode>();
     }
-    
+
     public boolean generate(final int i, int j, final int k) {
         j = 127;
         this.trunkRadius = this.rand.nextInt(3) + 7;
@@ -45,7 +46,7 @@ public class WorldGenHomeTree extends TCGenBase
         this.generateBranches(top[0], top[1], height + j);
         return true;
     }
-    
+
     public int[] generateTrunk(final int i, final int j, final int k, final int height) {
         int bn = 0;
         int chanceToDisplace = 0;
@@ -70,9 +71,11 @@ public class WorldGenHomeTree extends TCGenBase
                     this.worldObj.setBlock(spawnerX, y + 1, spawnerZ, Blocks.mob_spawner);
                     final StringBuilder sb = new StringBuilder(String.format("%s.", "tropicraft"));
                     sb.append(this.rand.nextBoolean() ? "AshenHunter" : "Iguana");
-                    final TileEntityMobSpawner spawner = (TileEntityMobSpawner)this.worldObj.getTileEntity(spawnerX, y + 1, spawnerZ);
+                    final TileEntityMobSpawner spawner = (TileEntityMobSpawner) this.worldObj
+                        .getTileEntity(spawnerX, y + 1, spawnerZ);
                     if (spawner != null) {
-                        spawner.func_145881_a().setEntityName(sb.toString());
+                        spawner.func_145881_a()
+                            .setEntityName(sb.toString());
                     }
                 }
             }
@@ -88,10 +91,10 @@ public class WorldGenHomeTree extends TCGenBase
                     int branchX1 = trunkX;
                     int branchZ1 = trunkZ;
                     final double angle2 = this.rand.nextDouble() * 3.141592 * 2.0;
-                    branchX1 += (int)(this.trunkRadius * Math.sin(angle2));
-                    branchZ1 += (int)(this.trunkRadius * Math.cos(angle2));
-                    final int branchX2 = (int)(branchLength * Math.sin(angle2) + branchX1);
-                    final int branchZ2 = (int)(branchLength * Math.cos(angle2) + branchZ1);
+                    branchX1 += (int) (this.trunkRadius * Math.sin(angle2));
+                    branchZ1 += (int) (this.trunkRadius * Math.cos(angle2));
+                    final int branchX2 = (int) (branchLength * Math.sin(angle2) + branchX1);
+                    final int branchZ2 = (int) (branchLength * Math.cos(angle2) + branchZ1);
                     final int branchY2 = this.rand.nextInt(4) + 4;
                     this.branchList.add(new BranchNode(branchX1, y, branchZ1, branchX2, y + branchY2, branchZ2));
                     ++bn;
@@ -103,8 +106,7 @@ public class WorldGenHomeTree extends TCGenBase
                     if (this.rand.nextBoolean()) {
                         trunkZ += zDisplace;
                     }
-                }
-                else if (this.rand.nextBoolean()) {
+                } else if (this.rand.nextBoolean()) {
                     trunkZ += zDisplace;
                     if (this.rand.nextBoolean()) {
                         trunkZ += xDisplace;
@@ -114,8 +116,8 @@ public class WorldGenHomeTree extends TCGenBase
             }
             this.placeBlock(trunkX, y, trunkZ, Blocks.log, 0, false);
         }
-        this.worldObj.setBlock(trunkX - 1, height + j, trunkZ - 1, (Block)TCBlockRegistry.bambooChest);
-        final TileEntityChest chest = (TileEntityChest)this.worldObj.getTileEntity(trunkX - 1, height + j, trunkZ - 1);
+        this.worldObj.setBlock(trunkX - 1, height + j, trunkZ - 1, (Block) TCBlockRegistry.bambooChest);
+        final TileEntityChest chest = (TileEntityChest) this.worldObj.getTileEntity(trunkX - 1, height + j, trunkZ - 1);
         if (chest != null) {
             for (int treasure = this.rand.nextInt(6) + 4, x = 0; x < treasure; ++x) {
                 chest.setInventorySlotContents(this.rand.nextInt(chest.getSizeInventory()), this.randLoot());
@@ -123,20 +125,71 @@ public class WorldGenHomeTree extends TCGenBase
         }
         return new int[] { trunkX, trunkZ };
     }
-    
+
     public void generateBranches(final int topX, final int topZ, final int height) {
         for (int x = 0; x < this.branchList.size(); ++x) {
             final BranchNode bnode = this.branchList.get(x);
             final int lSize = 3;
-            if (this.checkBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 }, this.standardAllowedBlocks) || this.checkBlockLine(new int[] { bnode.x1 + 1, bnode.y1, bnode.z1 }, new int[] { bnode.x2 + 1, bnode.y2, bnode.z2 }, this.standardAllowedBlocks) || this.checkBlockLine(new int[] { bnode.x1 - 1, bnode.y1, bnode.z1 }, new int[] { bnode.x2 - 1, bnode.y2, bnode.z2 }, this.standardAllowedBlocks) || this.checkBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 + 1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 + 1 }, this.standardAllowedBlocks) || this.checkBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 - 1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 - 1 }, this.standardAllowedBlocks) || this.checkBlockLine(new int[] { bnode.x1, bnode.y1 - 1, bnode.z1 }, new int[] { bnode.x2, bnode.y2 - 1, bnode.z2 }, this.standardAllowedBlocks)) {
-                this.placeBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 }, this.woodID, 1);
-                this.placeBlockLine(new int[] { bnode.x1 + 1, bnode.y1, bnode.z1 }, new int[] { bnode.x2 + 1, bnode.y2, bnode.z2 }, this.woodID, 1);
-                this.placeBlockLine(new int[] { bnode.x1 - 1, bnode.y1, bnode.z1 }, new int[] { bnode.x2 - 1, bnode.y2, bnode.z2 }, this.woodID, 1);
-                this.placeBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 + 1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 + 1 }, this.woodID, 1);
-                this.placeBlockLine(new int[] { bnode.x1, bnode.y1, bnode.z1 - 1 }, new int[] { bnode.x2, bnode.y2, bnode.z2 - 1 }, this.woodID, 1);
-                this.placeBlockLine(new int[] { bnode.x1, bnode.y1 - 1, bnode.z1 }, new int[] { bnode.x2, bnode.y2 - 1, bnode.z2 }, this.woodID, 1);
+            if (this.checkBlockLine(
+                new int[] { bnode.x1, bnode.y1, bnode.z1 },
+                new int[] { bnode.x2, bnode.y2, bnode.z2 },
+                this.standardAllowedBlocks)
+                || this.checkBlockLine(
+                    new int[] { bnode.x1 + 1, bnode.y1, bnode.z1 },
+                    new int[] { bnode.x2 + 1, bnode.y2, bnode.z2 },
+                    this.standardAllowedBlocks)
+                || this.checkBlockLine(
+                    new int[] { bnode.x1 - 1, bnode.y1, bnode.z1 },
+                    new int[] { bnode.x2 - 1, bnode.y2, bnode.z2 },
+                    this.standardAllowedBlocks)
+                || this.checkBlockLine(
+                    new int[] { bnode.x1, bnode.y1, bnode.z1 + 1 },
+                    new int[] { bnode.x2, bnode.y2, bnode.z2 + 1 },
+                    this.standardAllowedBlocks)
+                || this.checkBlockLine(
+                    new int[] { bnode.x1, bnode.y1, bnode.z1 - 1 },
+                    new int[] { bnode.x2, bnode.y2, bnode.z2 - 1 },
+                    this.standardAllowedBlocks)
+                || this.checkBlockLine(
+                    new int[] { bnode.x1, bnode.y1 - 1, bnode.z1 },
+                    new int[] { bnode.x2, bnode.y2 - 1, bnode.z2 },
+                    this.standardAllowedBlocks)) {
+                this.placeBlockLine(
+                    new int[] { bnode.x1, bnode.y1, bnode.z1 },
+                    new int[] { bnode.x2, bnode.y2, bnode.z2 },
+                    this.woodID,
+                    1);
+                this.placeBlockLine(
+                    new int[] { bnode.x1 + 1, bnode.y1, bnode.z1 },
+                    new int[] { bnode.x2 + 1, bnode.y2, bnode.z2 },
+                    this.woodID,
+                    1);
+                this.placeBlockLine(
+                    new int[] { bnode.x1 - 1, bnode.y1, bnode.z1 },
+                    new int[] { bnode.x2 - 1, bnode.y2, bnode.z2 },
+                    this.woodID,
+                    1);
+                this.placeBlockLine(
+                    new int[] { bnode.x1, bnode.y1, bnode.z1 + 1 },
+                    new int[] { bnode.x2, bnode.y2, bnode.z2 + 1 },
+                    this.woodID,
+                    1);
+                this.placeBlockLine(
+                    new int[] { bnode.x1, bnode.y1, bnode.z1 - 1 },
+                    new int[] { bnode.x2, bnode.y2, bnode.z2 - 1 },
+                    this.woodID,
+                    1);
+                this.placeBlockLine(
+                    new int[] { bnode.x1, bnode.y1 - 1, bnode.z1 },
+                    new int[] { bnode.x2, bnode.y2 - 1, bnode.z2 },
+                    this.woodID,
+                    1);
                 if (bnode.y2 + 1 <= height) {
-                    this.placeBlockLine(new int[] { bnode.x1, bnode.y1 + 1, bnode.z1 }, new int[] { bnode.x2, bnode.y2 + 1, bnode.z2 }, this.woodID, 1);
+                    this.placeBlockLine(
+                        new int[] { bnode.x1, bnode.y1 + 1, bnode.z1 },
+                        new int[] { bnode.x2, bnode.y2 + 1, bnode.z2 },
+                        this.woodID,
+                        1);
                 }
                 this.genLeafCircle(bnode.x2, bnode.y2 - 1, bnode.z2, lSize + 5, lSize + 3, this.leafID, 0, true);
                 this.genLeafCircle(bnode.x2, bnode.y2, bnode.z2, lSize + 6, 0, this.leafID, 0, true);
@@ -146,8 +199,9 @@ public class WorldGenHomeTree extends TCGenBase
         }
         final int topBranches = this.rand.nextInt(6) + 6;
     }
-    
-    public boolean genTopBranch(final int i, final int j, final int k, final int sX, final int sY, final int sZ, final int topX, final int topZ) {
+
+    public boolean genTopBranch(final int i, final int j, final int k, final int sX, final int sY, final int sZ,
+        final int topX, final int topZ) {
         final ArrayList<Block> allowedBlocks = new ArrayList<Block>(this.standardAllowedBlocks);
         allowedBlocks.add(this.woodID);
         allowedBlocks.add(this.leafID);
@@ -156,22 +210,33 @@ public class WorldGenHomeTree extends TCGenBase
         final ArrayList<int[]> lines = new ArrayList<int[]>();
         for (int x = i - branchSize; x < i + branchSize; ++x) {
             for (int z = k - branchSize; z < k + branchSize; ++z) {
-                if ((x - i) * (x - i) + (z - k) * (z - k) < branchSize * branchSize && (x - topX) * (x - topX) + (z - topZ) * (z - topZ) < this.trunkRadius * this.trunkRadius && !this.checkBlockLine(new int[] { x, j, z }, new int[] { sX + (i - x), sY, sZ + (k - z) }, (List)allowedBlocks)) {
+                if ((x - i) * (x - i) + (z - k) * (z - k) < branchSize * branchSize
+                    && (x - topX) * (x - topX) + (z - topZ) * (z - topZ) < this.trunkRadius * this.trunkRadius
+                    && !this.checkBlockLine(
+                        new int[] { x, j, z },
+                        new int[] { sX + (i - x), sY, sZ + (k - z) },
+                        (List) allowedBlocks)) {
                     return false;
                 }
             }
         }
         for (int x = i - branchSize; x < i + branchSize; ++x) {
             for (int z = k - branchSize; z < k + branchSize; ++z) {
-                if ((x - i) * (x - i) + (z - k) * (z - k) < branchSize * branchSize && (x - topX) * (x - topX) + (z - topZ) * (z - topZ) < this.trunkRadius * this.trunkRadius) {
-                    this.placeBlockLine(new int[] { x, j, z }, new int[] { sX + (i - x), sY, sZ + (k - z) }, this.woodID, 1);
+                if ((x - i) * (x - i) + (z - k) * (z - k) < branchSize * branchSize
+                    && (x - topX) * (x - topX) + (z - topZ) * (z - topZ) < this.trunkRadius * this.trunkRadius) {
+                    this.placeBlockLine(
+                        new int[] { x, j, z },
+                        new int[] { sX + (i - x), sY, sZ + (k - z) },
+                        this.woodID,
+                        1);
                 }
             }
         }
         return true;
     }
-    
-    public void genLeafCircle(final int x, final int y, final int z, final int outerRadius, final int innerRadius, final Block leafID2, final int meta, final boolean vines) {
+
+    public void genLeafCircle(final int x, final int y, final int z, final int outerRadius, final int innerRadius,
+        final Block leafID2, final int meta, final boolean vines) {
         final int outerRadiusSquared = outerRadius * outerRadius;
         final int innerRadiusSquared = innerRadius * innerRadius;
         for (int i = -outerRadius + x; i < outerRadius + x; ++i) {
@@ -188,7 +253,7 @@ public class WorldGenHomeTree extends TCGenBase
             }
         }
     }
-    
+
     public void genVines(final int i, final int j, final int k) {
         final int length = this.rand.nextInt(15) + 8;
         final int dir = this.rand.nextInt(4);
@@ -196,10 +261,14 @@ public class WorldGenHomeTree extends TCGenBase
             this.placeBlock(i, y, k, Blocks.vine, dir, false);
         }
     }
-    
-    public boolean placeBlock(final int i, final int j, final int k, final Block woodID2, final int meta, final boolean force) {
+
+    public boolean placeBlock(final int i, final int j, final int k, final Block woodID2, final int meta,
+        final boolean force) {
         final Block bID = this.worldObj.getBlock(i, j, k);
-        if (!force && bID != Blocks.water && bID != Blocks.flowing_water && bID != TCBlockRegistry.tropicsWater && bID != Blocks.air) {
+        if (!force && bID != Blocks.water
+            && bID != Blocks.flowing_water
+            && bID != TCBlockRegistry.tropicsWater
+            && bID != Blocks.air) {
             return false;
         }
         if (meta == 0) {
@@ -207,17 +276,21 @@ public class WorldGenHomeTree extends TCGenBase
         }
         return this.worldObj.setBlock(i, j, k, woodID2, meta, 0);
     }
-    
-    public boolean genCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius, final Block id, final int meta, final boolean solid) {
+
+    public boolean genCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius,
+        final Block id, final int meta, final boolean solid) {
         boolean hasGenned = false;
         final double outerRadiusSquared = outerRadius * outerRadius;
         final double innerRadiusSquared = innerRadius * innerRadius;
-        for (int x = (int)(-outerRadius) + i; x < (int)outerRadius + i; ++x) {
-            for (int z = (int)(-outerRadius) + k; z < (int)outerRadius + k; ++z) {
+        for (int x = (int) (-outerRadius) + i; x < (int) outerRadius + i; ++x) {
+            for (int z = (int) (-outerRadius) + k; z < (int) outerRadius + k; ++z) {
                 final double d = (x - i) * (x - i) + (z - k) * (z - k);
                 if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
                     final Block bID = this.worldObj.getBlock(x, j, z);
-                    if ((bID == Blocks.air || bID == Blocks.water || bID == Blocks.flowing_water || bID == TCBlockRegistry.tropicsWater || solid) && this.placeBlock(x, j, z, id, meta, solid)) {
+                    if ((bID == Blocks.air || bID == Blocks.water
+                        || bID == Blocks.flowing_water
+                        || bID == TCBlockRegistry.tropicsWater
+                        || solid) && this.placeBlock(x, j, z, id, meta, solid)) {
                         hasGenned = true;
                     }
                 }
@@ -225,7 +298,7 @@ public class WorldGenHomeTree extends TCGenBase
         }
         return hasGenned;
     }
-    
+
     public ArrayList<int[]> placeBlockLine(final int[] ai, final int[] ai1, final Block i, final int meta) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
@@ -246,12 +319,11 @@ public class WorldGenHomeTree extends TCGenBase
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -262,8 +334,9 @@ public class WorldGenHomeTree extends TCGenBase
         }
         return places;
     }
-    
-    public ArrayList<int[]> checkAndPlaceBlockLine(final int[] ai, final int[] ai1, final Block i, final int meta, final List a) {
+
+    public ArrayList<int[]> checkAndPlaceBlockLine(final int[] ai, final int[] ai1, final Block i, final int meta,
+        final List a) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -283,12 +356,11 @@ public class WorldGenHomeTree extends TCGenBase
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         int k = 0;
         for (int l = ai2[j] + byte4; k != l; k += byte4) {
@@ -309,20 +381,20 @@ public class WorldGenHomeTree extends TCGenBase
         }
         return places;
     }
-    
+
     public ItemStack randLoot() {
         final int picker = this.rand.nextInt(18);
         if (picker < 6) {
             return new ItemStack(TCItemRegistry.bambooChute, this.rand.nextInt(20) + 1);
         }
         if (picker < 8) {
-            return new ItemStack((Item)TCItemRegistry.coconutBomb, this.rand.nextInt(3) + 1);
+            return new ItemStack((Item) TCItemRegistry.coconutBomb, this.rand.nextInt(3) + 1);
         }
         if (picker < 10) {
-            return new ItemStack((Item)TCItemRegistry.scale, this.rand.nextInt(3) + 1);
+            return new ItemStack((Item) TCItemRegistry.scale, this.rand.nextInt(3) + 1);
         }
         if (picker < 14) {
-            return new ItemStack((Item)TCItemRegistry.cookedFrogLeg, this.rand.nextInt(4) + 1);
+            return new ItemStack((Item) TCItemRegistry.cookedFrogLeg, this.rand.nextInt(4) + 1);
         }
         if (picker <= 15) {
             return new ItemStack(TCItemRegistry.recordTradeWinds, 1);
@@ -330,18 +402,18 @@ public class WorldGenHomeTree extends TCGenBase
         if (picker == 16) {
             return new ItemStack(TCItemRegistry.recordEasternIsles, 1);
         }
-        return new ItemStack((Item)TCItemRegistry.ore, 1, 3);
+        return new ItemStack((Item) TCItemRegistry.ore, 1, 3);
     }
-    
-    private class BranchNode
-    {
+
+    private class BranchNode {
+
         public int x1;
         public int y1;
         public int z1;
         public int x2;
         public int y2;
         public int z2;
-        
+
         public BranchNode(final int i, final int j, final int k, final int x, final int y, final int z) {
             this.x1 = i;
             this.y1 = j;

@@ -1,26 +1,28 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
+
+import net.minecraft.block.*;
 import net.minecraft.init.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
 
-public class WorldGenEIH extends TCGenBase
-{
+public class WorldGenEIH extends TCGenBase {
+
     private static final int CHUNK_SIZE_Y = 256;
     private static final Block EIH_BLOCK;
-    
+
     public WorldGenEIH(final World worldObj, final Random rand) {
         super(worldObj, rand);
     }
-    
+
     public boolean generate(final int i, int j, final int k) {
         final byte height = 5;
         if (j < 1 || j + height + 1 > 256) {
             return false;
         }
-        if ((this.worldObj.getBlock(i, j - 1, k) == Blocks.dirt || this.worldObj.getBlock(i, j - 1, k) == Blocks.grass) && this.worldObj.getBlock(i, j, k) == Blocks.air) {
+        if ((this.worldObj.getBlock(i, j - 1, k) == Blocks.dirt || this.worldObj.getBlock(i, j - 1, k) == Blocks.grass)
+            && this.worldObj.getBlock(i, j, k) == Blocks.air) {
             ++j;
             this.worldObj.setBlock(i + 0, j + 0, k + 2, WorldGenEIH.EIH_BLOCK);
             this.worldObj.setBlock(i + 0, j + 0, k + 3, WorldGenEIH.EIH_BLOCK);
@@ -198,8 +200,9 @@ public class WorldGenEIH extends TCGenBase
         }
         return true;
     }
-    
-    private void placeEye(final World worldObj, final int x, final int y, final int z, final int eye_rand, final Random rand) {
+
+    private void placeEye(final World worldObj, final int x, final int y, final int z, final int eye_rand,
+        final Random rand) {
         int meta = 0;
         Block block = null;
         switch (eye_rand) {
@@ -225,7 +228,7 @@ public class WorldGenEIH extends TCGenBase
                 break;
             }
             case 6: {
-                block = (Block)TCBlockRegistry.oreBlocks;
+                block = (Block) TCBlockRegistry.oreBlocks;
                 meta = rand.nextInt(3);
                 break;
             }
@@ -236,8 +239,8 @@ public class WorldGenEIH extends TCGenBase
         }
         worldObj.setBlock(x, y, z, block, meta, WorldGenEIH.blockGenNotifyFlag);
     }
-    
+
     static {
-        EIH_BLOCK = (Block)TCBlockRegistry.chunkOHead;
+        EIH_BLOCK = (Block) TCBlockRegistry.chunkOHead;
     }
 }

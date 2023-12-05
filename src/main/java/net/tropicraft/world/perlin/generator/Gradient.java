@@ -1,17 +1,18 @@
 package net.tropicraft.world.perlin.generator;
 
-import net.tropicraft.world.perlin.*;
 import java.util.*;
 
-public class Gradient extends NoiseModule
-{
+import net.tropicraft.world.perlin.*;
+
+public class Gradient extends NoiseModule {
+
     private final FishyNoise noiseGen;
     private final double offsetX;
     private final double offsetY;
     private final double offsetZ;
     private final int numOctaves;
     private final double persistance;
-    
+
     public Gradient(final long seed, final int nOctaves, final double p) {
         this.numOctaves = nOctaves;
         this.persistance = p;
@@ -21,12 +22,12 @@ public class Gradient extends NoiseModule
         this.offsetZ = rand.nextDouble() / 2.0 + 0.01;
         this.noiseGen = new FishyNoise(seed);
     }
-    
+
     @Override
     public double getNoise(final double i) {
         return this.getNoise(i, 0.0);
     }
-    
+
     @Override
     public double getNoise(double i, double j) {
         i *= this.frequency;
@@ -41,7 +42,7 @@ public class Gradient extends NoiseModule
         }
         return val;
     }
-    
+
     @Override
     public double getNoise(double i, double j, double k) {
         i *= this.frequency;

@@ -1,59 +1,67 @@
 package net.tropicraft.item.armor;
 
-import net.minecraftforge.common.*;
 import java.util.*;
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.item.*;
+
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.entity.*;
-import net.minecraft.util.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraftforge.common.*;
 
-public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor
-{
+import cpw.mods.fml.relauncher.*;
+
+public class ItemTropicraftArmor extends ItemArmor implements ISpecialArmor {
+
     private String modArmorName;
     @SideOnly(Side.CLIENT)
     public static List[] fxLayers;
-    
+
     public ItemTropicraftArmor(final ItemArmor.ArmorMaterial material, final int renderIndex, final int armorType) {
         super(material, renderIndex, armorType);
         this.modArmorName = material.name();
     }
-    
+
     public String getUnlocalizedName() {
         return String.format("item.%s%s", "tropicraft:", this.getActualName(super.getUnlocalizedName()));
     }
-    
+
     public String getUnlocalizedName(final ItemStack itemStack) {
         return String.format("item.%s%s", "tropicraft:", this.getActualName(super.getUnlocalizedName()));
     }
-    
+
     protected String getActualName(final String unlocalizedName) {
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
     }
-    
+
     protected String getTexturePath(final String name) {
         return "tropicraft:textures/models/armor/" + name;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(this.getUnlocalizedName().substring(this.getUnlocalizedName().indexOf(".") + 1));
+        this.itemIcon = iconRegister.registerIcon(
+            this.getUnlocalizedName()
+                .substring(
+                    this.getUnlocalizedName()
+                        .indexOf(".") + 1));
     }
-    
+
     public String getArmorTexture(final ItemStack stack, final Entity entity, final int slot, final String type) {
         return this.getTexturePath(String.format("%s_layer_" + ((slot == 2) ? 2 : 1) + ".png", this.modArmorName));
     }
-    
-    public ISpecialArmor.ArmorProperties getProperties(final EntityLivingBase player, final ItemStack armor, final DamageSource source, final double damage, final int slot) {
+
+    public ISpecialArmor.ArmorProperties getProperties(final EntityLivingBase player, final ItemStack armor,
+        final DamageSource source, final double damage, final int slot) {
         return new ISpecialArmor.ArmorProperties(10, (source == DamageSource.inFire) ? 1.0 : 0.3, Integer.MAX_VALUE);
     }
-    
+
     public int getArmorDisplay(final EntityPlayer player, final ItemStack armor, final int slot) {
         return 3;
     }
-    
-    public void damageArmor(final EntityLivingBase entity, final ItemStack stack, final DamageSource source, final int damage, final int slot) {
+
+    public void damageArmor(final EntityLivingBase entity, final ItemStack stack, final DamageSource source,
+        final int damage, final int slot) {
         stack.damageItem(damage, entity);
     }
 }

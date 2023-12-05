@@ -1,15 +1,17 @@
 package net.tropicraft.command;
 
-import net.minecraft.command.*;
-import net.minecraft.util.*;
-import CoroUtil.world.location.*;
-import net.tropicraft.world.location.*;
-import net.minecraft.entity.player.*;
-import CoroUtil.world.*;
 import java.util.*;
 
-public class CommandTropicraft extends CommandBase
-{
+import net.minecraft.command.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.util.*;
+import net.tropicraft.world.location.*;
+
+import CoroUtil.world.*;
+import CoroUtil.world.location.*;
+
+public class CommandTropicraft extends CommandBase {
+
     public String getCommandName() {
         return "tc";
     }
@@ -30,7 +32,8 @@ public class CommandTropicraft extends CommandBase
                         y = 64;
                     }
                     final TownKoaVillage village = new TownKoaVillage();
-                    final WorldDirector wd = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);
+                    final WorldDirector wd = WorldDirectorManager.instance()
+                        .getCoroUtilWorldDirector(player.worldObj);
                     final int newID = wd.lookupTickingManagedLocations.size();
                     village.initData(newID, player.worldObj.provider.dimensionId, new ChunkCoordinates(x, y, z));
                     village.initFirstTime();
@@ -46,23 +49,27 @@ public class CommandTropicraft extends CommandBase
                     TownKoaVillageGenHelper.hookTryGenVillage(new ChunkCoordinates(x, y, z), player.worldObj);
                 }
                 case "village_clear" -> {
-                    final WorldDirector wd2 = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);
-                    for (final Map.Entry<Integer, ManagedLocation> entry : wd2.lookupTickingManagedLocations.entrySet()) {
-                        entry.getValue().cleanup();
+                    final WorldDirector wd2 = WorldDirectorManager.instance()
+                        .getCoroUtilWorldDirector(player.worldObj);
+                    for (final Map.Entry<Integer, ManagedLocation> entry : wd2.lookupTickingManagedLocations
+                        .entrySet()) {
+                        entry.getValue()
+                            .cleanup();
                         wd2.removeTickingLocation(entry.getValue());
                     }
                 }
                 case "village_regen" -> {
-                    final WorldDirector wd2 = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);
+                    final WorldDirector wd2 = WorldDirectorManager.instance()
+                        .getCoroUtilWorldDirector(player.worldObj);
                     for (final ManagedLocation ml : wd2.lookupTickingManagedLocations.values()) {
                         ml.initFirstTime();
                     }
                 }
                 case "village_repopulate" -> {
-                    final WorldDirector wd2 = WorldDirectorManager.instance().getCoroUtilWorldDirector(player.worldObj);
+                    final WorldDirector wd2 = WorldDirectorManager.instance()
+                        .getCoroUtilWorldDirector(player.worldObj);
                     for (final ManagedLocation ml : wd2.lookupTickingManagedLocations.values()) {
-                        if (ml instanceof TownKoaVillage) {
-                        }
+                        if (ml instanceof TownKoaVillage) {}
                     }
                 }
             }

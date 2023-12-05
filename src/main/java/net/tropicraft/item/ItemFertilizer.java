@@ -1,20 +1,21 @@
 package net.tropicraft.item;
 
-import net.minecraft.item.*;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.minecraft.world.*;
 import net.tropicraft.registry.*;
-import net.minecraft.init.*;
-import net.minecraft.block.*;
 
-public class ItemFertilizer extends ItemTropicraft
-{
+public class ItemFertilizer extends ItemTropicraft {
+
     public ItemFertilizer() {
         this.maxStackSize = 64;
         this.setCreativeTab(TCCreativeTabRegistry.tabMaterials);
     }
-    
-    public boolean onItemUse(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, final int i, final int j, final int k, final int l, final float par8, final float par9, final float par10) {
+
+    public boolean onItemUse(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, final int i,
+        final int j, final int k, final int l, final float par8, final float par9, final float par10) {
         final Block block = world.getBlock(i, j, k);
         if (block == TCBlockRegistry.saplings) {
             if (!world.isRemote) {
@@ -25,8 +26,9 @@ public class ItemFertilizer extends ItemTropicraft
         }
         boolean decrementStack = false;
         if (block instanceof IGrowable) {
-            final IGrowable igrowable = (IGrowable)block;
-            if (igrowable.func_149851_a(world, i, j, k, world.isRemote) && !world.isRemote && igrowable.func_149852_a(world, world.rand, i, j, k)) {
+            final IGrowable igrowable = (IGrowable) block;
+            if (igrowable.func_149851_a(world, i, j, k, world.isRemote) && !world.isRemote
+                && igrowable.func_149852_a(world, world.rand, i, j, k)) {
                 decrementStack = true;
                 igrowable.func_149853_b(world, world.rand, i, j, k);
             }
@@ -35,8 +37,7 @@ public class ItemFertilizer extends ItemTropicraft
             if (!world.isRemote) {
                 decrementStack = true;
                 int j2 = 0;
-            Label_0481_Outer:
-                while (j2 < 128) {
+                Label_0481_Outer: while (j2 < 128) {
                     int k2 = i;
                     int l2 = j + 1;
                     int i2 = k;
@@ -59,21 +60,33 @@ public class ItemFertilizer extends ItemTropicraft
                             continue;
                         }
                         if (ItemFertilizer.itemRand.nextInt(9) == 0) {
-                            world.setBlock(k2, l2, i2, (Block)TCBlockRegistry.flowers, ItemFertilizer.itemRand.nextInt(16), 3);
+                            world.setBlock(
+                                k2,
+                                l2,
+                                i2,
+                                (Block) TCBlockRegistry.flowers,
+                                ItemFertilizer.itemRand.nextInt(16),
+                                3);
                             continue;
                         }
                         if (ItemFertilizer.itemRand.nextInt(9) == 0) {
-                            world.setBlock(k2, l2, i2, (Block)TCBlockRegistry.flowers, ItemFertilizer.itemRand.nextInt(16), 3);
+                            world.setBlock(
+                                k2,
+                                l2,
+                                i2,
+                                (Block) TCBlockRegistry.flowers,
+                                ItemFertilizer.itemRand.nextInt(16),
+                                3);
                             continue;
                         }
                         if (ItemFertilizer.itemRand.nextInt(9) == 0) {
-                            world.setBlock(k2, l2, i2, (Block)TCBlockRegistry.pineapple, 7, 3);
-                            world.setBlock(k2, l2 + 1, i2, (Block)TCBlockRegistry.pineapple, 8, 3);
+                            world.setBlock(k2, l2, i2, (Block) TCBlockRegistry.pineapple, 7, 3);
+                            world.setBlock(k2, l2 + 1, i2, (Block) TCBlockRegistry.pineapple, 8, 3);
                             continue;
                         }
                         if (ItemFertilizer.itemRand.nextInt(8) == 0) {
-                            world.setBlock(k2, l2, i2, (Block)TCBlockRegistry.tallFlowers, 0, 3);
-                            world.setBlock(k2, l2 + 1, i2, (Block)TCBlockRegistry.tallFlowers, 1, 3);
+                            world.setBlock(k2, l2, i2, (Block) TCBlockRegistry.tallFlowers, 0, 3);
+                            world.setBlock(k2, l2 + 1, i2, (Block) TCBlockRegistry.tallFlowers, 1, 3);
                         }
                         continue;
                     }

@@ -1,35 +1,36 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.block.*;
-import net.tropicraft.registry.*;
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.init.*;
-import net.tropicraft.block.*;
 
-public class WorldGenTropicraftNormalPalms extends WorldGenerator
-{
+import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.*;
+import net.tropicraft.block.*;
+import net.tropicraft.registry.*;
+
+public class WorldGenTropicraftNormalPalms extends WorldGenerator {
+
     boolean notify;
     private Block wood;
     private Block palmLeaves;
-    
+
     public WorldGenTropicraftNormalPalms() {
-        this.wood = (Block)TCBlockRegistry.logs;
-        this.palmLeaves = (Block)TCBlockRegistry.palmLeaves;
+        this.wood = (Block) TCBlockRegistry.logs;
+        this.palmLeaves = (Block) TCBlockRegistry.palmLeaves;
         this.notify = false;
     }
-    
+
     public WorldGenTropicraftNormalPalms(final boolean flag) {
         super(flag);
-        this.wood = (Block)TCBlockRegistry.logs;
-        this.palmLeaves = (Block)TCBlockRegistry.palmLeaves;
+        this.wood = (Block) TCBlockRegistry.logs;
+        this.palmLeaves = (Block) TCBlockRegistry.palmLeaves;
         this.notify = flag;
     }
-    
+
     public boolean generate(final World world, final Random random, final int i, int j, final int k) {
         final int b = random.nextInt(2);
-        final byte height = (byte)(random.nextInt(4) + 6);
+        final byte height = (byte) (random.nextInt(4) + 6);
         boolean flag = true;
         if (j < 1 || j + height + 1 > 128) {
             return false;
@@ -49,8 +50,7 @@ public class WorldGenTropicraftNormalPalms extends WorldGenerator
                         if (!world.isAirBlock(k2, l, i2) && j2 != this.palmLeaves) {
                             flag = false;
                         }
-                    }
-                    else {
+                    } else {
                         flag = false;
                     }
                 }
@@ -68,7 +68,7 @@ public class WorldGenTropicraftNormalPalms extends WorldGenerator
             }
             j = ground;
         }
-        this.setBlockAndMetadata(world, i, j - 1, k, (Block)Blocks.sand, 0);
+        this.setBlockAndMetadata(world, i, j - 1, k, (Block) Blocks.sand, 0);
         this.setBlockAndMetadata(world, i, j + height + 2, k, this.palmLeaves, 0);
         this.setBlockAndMetadata(world, i, j + height + 1, k + 1, this.palmLeaves, 0);
         this.setBlockAndMetadata(world, i, j + height + 1, k + 2, this.palmLeaves, 0);
@@ -108,8 +108,9 @@ public class WorldGenTropicraftNormalPalms extends WorldGenerator
         }
         return true;
     }
-    
-    protected void setBlockAndMetadata(final World par1World, final int par2, final int par3, final int par4, final Block par5, final int par6) {
+
+    protected void setBlockAndMetadata(final World par1World, final int par2, final int par3, final int par4,
+        final Block par5, final int par6) {
         par1World.setBlock(par2, par3, par4, par5, par6, 3);
     }
 }

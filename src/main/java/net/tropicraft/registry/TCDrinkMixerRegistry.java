@@ -1,31 +1,32 @@
 package net.tropicraft.registry;
 
-import net.tropicraft.drinks.*;
-import net.minecraft.item.*;
-import net.tropicraft.item.*;
-import net.tropicraft.block.tileentity.*;
 import java.util.*;
 
-public class TCDrinkMixerRegistry
-{
+import net.minecraft.item.*;
+import net.tropicraft.block.tileentity.*;
+import net.tropicraft.drinks.*;
+import net.tropicraft.item.*;
+
+public class TCDrinkMixerRegistry {
+
     private static TCDrinkMixerRegistry instance;
     private List<MixerRecipe> recipes;
-    
+
     private TCDrinkMixerRegistry() {
         this.recipes = new LinkedList<MixerRecipe>();
     }
-    
+
     public static TCDrinkMixerRegistry getInstance() {
         if (TCDrinkMixerRegistry.instance == null) {
             TCDrinkMixerRegistry.instance = new TCDrinkMixerRegistry();
         }
         return TCDrinkMixerRegistry.instance;
     }
-    
+
     public void registerRecipe(final MixerRecipe recipe) {
         this.recipes.add(recipe);
     }
-    
+
     public boolean isRegisteredIngredient(final ItemStack item) {
         if (item.getItem() != null && item.getItem() == TCItemRegistry.cocktail) {
             return true;
@@ -39,17 +40,19 @@ public class TCDrinkMixerRegistry
         }
         return false;
     }
-    
+
     public boolean isRegisteredIngredient(final Item item) {
         return this.isRegisteredIngredient(new ItemStack(item, 1, 0));
     }
-    
+
     public ItemStack getResult(final ItemStack[] ingredients) {
         for (final MixerRecipe recipe : this.recipes) {
-            if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[0]) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[1])) {
+            if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[0])
+                && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[1])) {
                 return ItemCocktail.makeCocktail(recipe);
             }
-            if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[1]) && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[0])) {
+            if (ItemStack.areItemStacksEqual(recipe.getIngredients()[0].getIngredient(), ingredients[1])
+                && ItemStack.areItemStacksEqual(recipe.getIngredients()[1].getIngredient(), ingredients[0])) {
                 return ItemCocktail.makeCocktail(recipe);
             }
         }
@@ -57,13 +60,13 @@ public class TCDrinkMixerRegistry
         is.addAll(TileEntityEIHMixer.listIngredients(ingredients[0]));
         is.addAll(TileEntityEIHMixer.listIngredients(ingredients[1]));
         Collections.sort(is);
-        return ItemCocktail.makeCocktail((Ingredient[])is.toArray(new Ingredient[is.size()]));
+        return ItemCocktail.makeCocktail((Ingredient[]) is.toArray(new Ingredient[is.size()]));
     }
-    
+
     public List<MixerRecipe> getRecipes() {
         return this.recipes;
     }
-    
+
     static {
         TCDrinkMixerRegistry.instance = null;
     }

@@ -2,14 +2,14 @@ package net.tropicraft.world.genlayer;
 
 import net.minecraft.world.gen.layer.*;
 
-public class GenLayerTropicraftSmooth extends GenLayerTropicraft
-{
+public class GenLayerTropicraftSmooth extends GenLayerTropicraft {
+
     public GenLayerTropicraftSmooth(final long seed, final GenLayerTropicraft parent) {
         super(seed);
         super.parent = parent;
         this.setZoom(1);
     }
-    
+
     public int[] getInts(final int x, final int y, final int width, final int length) {
         final int x2 = x - 1;
         final int y2 = y - 1;
@@ -25,15 +25,13 @@ public class GenLayerTropicraftSmooth extends GenLayerTropicraft
                 final int forwardY = biomeMap[i + 1 + (j + 2) * width2];
                 int cur = biomeMap[i + 1 + (j + 1) * width2];
                 if (backX == forwardX && backY == forwardY) {
-                    this.initChunkSeed((long)(i + x), (long)(j + y));
+                    this.initChunkSeed((long) (i + x), (long) (j + y));
                     if (this.nextInt(2) == 0) {
                         cur = backX;
-                    }
-                    else {
+                    } else {
                         cur = backY;
                     }
-                }
-                else {
+                } else {
                     if (backX == forwardX) {
                         cur = backX;
                     }
@@ -46,7 +44,7 @@ public class GenLayerTropicraftSmooth extends GenLayerTropicraft
         }
         return resultMap;
     }
-    
+
     public void setZoom(final int zoom) {
         this.zoom = zoom;
         this.parent.setZoom(zoom);

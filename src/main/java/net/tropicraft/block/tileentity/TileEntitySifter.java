@@ -1,20 +1,21 @@
 package net.tropicraft.block.tileentity;
 
-import net.minecraft.tileentity.*;
 import java.util.*;
-import net.tropicraft.registry.*;
-import net.minecraft.item.*;
-import net.minecraft.block.*;
-import net.minecraft.entity.item.*;
-import net.minecraft.entity.*;
-import net.minecraft.block.material.*;
-import net.minecraft.init.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.play.server.*;
-import net.minecraft.network.*;
 
-public class TileEntitySifter extends TileEntity
-{
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.item.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
+import net.minecraft.network.play.server.*;
+import net.minecraft.tileentity.*;
+import net.tropicraft.registry.*;
+
+public class TileEntitySifter extends TileEntity {
+
     public static final int SIFT_TIME = 80;
     public boolean isSifting;
     public int currentSiftTime;
@@ -22,13 +23,13 @@ public class TileEntitySifter extends TileEntity
     public double yaw;
     public double yaw2;
     public ItemStack siftItem;
-    
+
     public TileEntitySifter() {
         this.yaw2 = 0.0;
         this.rand = new Random();
         this.currentSiftTime = 80;
     }
-    
+
     public void updateEntity() {
         if (this.currentSiftTime > 0 && this.isSifting) {
             --this.currentSiftTime;
@@ -46,53 +47,54 @@ public class TileEntitySifter extends TileEntity
             this.setSifting(false, 0, -1.0f);
         }
     }
-    
+
     public void dumpResults(final double x, final double y, final double z, final SiftType type) {
         if (type == SiftType.HEATED) {
-            float refinedAmt = this.getTagCompound(this.siftItem).getFloat("AmtRefined");
+            float refinedAmt = this.getTagCompound(this.siftItem)
+                .getFloat("AmtRefined");
             if (this.siftItem.getItem() == TCItemRegistry.ore) {
                 refinedAmt = this.refine(refinedAmt);
             }
-            if (this.siftItem.getItem() == Item.getItemFromBlock((Block)TCBlockRegistry.mineralSands) && this.siftItem.getItemDamage() == 3) {
-                this.siftItem = new ItemStack((Item)TCItemRegistry.ore, 1, 5);
+            if (this.siftItem.getItem() == Item.getItemFromBlock((Block) TCBlockRegistry.mineralSands)
+                && this.siftItem.getItemDamage() == 3) {
+                this.siftItem = new ItemStack((Item) TCItemRegistry.ore, 1, 5);
             }
             if (refinedAmt == 100.0f) {
-                this.siftItem = new ItemStack((Item)TCItemRegistry.ore, 1, 6);
+                this.siftItem = new ItemStack((Item) TCItemRegistry.ore, 1, 6);
             }
-            this.getTagCompound(this.siftItem).setFloat("AmtRefined", refinedAmt);
+            this.getTagCompound(this.siftItem)
+                .setFloat("AmtRefined", refinedAmt);
             this.spawn(this.siftItem, x, y, z);
-            this.spawn(new ItemStack((Block)TCBlockRegistry.purifiedSand), x, y, z);
-        }
-        else {
+            this.spawn(new ItemStack((Block) TCBlockRegistry.purifiedSand), x, y, z);
+        } else {
             this.dumpBeachResults(x, y, z);
         }
     }
-    
+
     private void dumpBeachResults(final double x, final double y, final double z) {
         int dumpCount = this.rand.nextInt(3) + 1;
-        this.spawn(new ItemStack((Block)TCBlockRegistry.purifiedSand), x, y, z);
+        this.spawn(new ItemStack((Block) TCBlockRegistry.purifiedSand), x, y, z);
         while (dumpCount > 0) {
             --dumpCount;
             ItemStack stack;
             if (this.rand.nextInt(10) == 0) {
                 stack = this.getRareItem();
-            }
-            else {
+            } else {
                 stack = this.getCommonItem();
             }
             this.spawn(stack, x, y, z);
         }
     }
-    
+
     private void spawn(final ItemStack stack, final double x, final double y, final double z) {
         if (this.worldObj.isRemote) {
             return;
         }
         final EntityItem eitem = new EntityItem(this.worldObj, x, y, z, stack);
         eitem.setLocationAndAngles(x, y, z, 0.0f, 0.0f);
-        this.worldObj.spawnEntityInWorld((Entity)eitem);
+        this.worldObj.spawnEntityInWorld((Entity) eitem);
     }
-    
+
     private ItemStack getCommonItem() {
         final int dmg = this.rand.nextInt(8);
         switch (dmg) {
@@ -108,7 +110,7 @@ public class TileEntitySifter extends TileEntity
             }
         }
     }
-    
+
     private ItemStack getRareItem() {
         final int dmg = this.rand.nextInt(8);
         switch (dmg) {
@@ -128,17 +130,17 @@ public class TileEntitySifter extends TileEntity
                 return new ItemStack(Items.glass_bottle, 1);
             }
             case 5: {
-                return new ItemStack((Item)TCItemRegistry.pearl, 1, 0);
+                return new ItemStack((Item) TCItemRegistry.pearl, 1, 0);
             }
             case 6: {
-                return new ItemStack((Item)TCItemRegistry.pearl, 1, 1);
+                return new ItemStack((Item) TCItemRegistry.pearl, 1, 1);
             }
             default: {
                 return new ItemStack(TCItemRegistry.shells, 1, 3);
             }
         }
     }
-    
+
     private float refine(final float refinedAmt) {
         if (refinedAmt == 0.0f) {
             return 33.333f;
@@ -151,28 +153,31 @@ public class TileEntitySifter extends TileEntity
         }
         return 0.0f;
     }
-    
+
     public boolean isHeatedSifter() {
         final Block block = this.worldObj.getBlock(this.xCoord, this.yCoord - 1, this.zCoord);
         return block.getMaterial() == Material.fire || block.getMaterial() == Material.lava;
     }
-    
+
     public void setSifting(final boolean flag, final int type, final float refined) {
         this.isSifting = flag;
-        this.siftItem = ((type == -1) ? null : ((type == 1) ? new ItemStack((Block)Blocks.sand) : ((type == 2) ? new ItemStack((Block)TCBlockRegistry.mineralSands, 1, 3) : new ItemStack((Item)TCItemRegistry.ore, 1, 5))));
+        this.siftItem = ((type == -1) ? null
+            : ((type == 1) ? new ItemStack((Block) Blocks.sand)
+                : ((type == 2) ? new ItemStack((Block) TCBlockRegistry.mineralSands, 1, 3)
+                    : new ItemStack((Item) TCItemRegistry.ore, 1, 5))));
         if (this.siftItem.getItem() == TCItemRegistry.ore) {
-            this.getTagCompound(this.siftItem).setFloat("AmtRefined", refined);
-        }
-        else {
+            this.getTagCompound(this.siftItem)
+                .setFloat("AmtRefined", refined);
+        } else {
             System.err.println("stack is null : (");
         }
         this.sync();
     }
-    
+
     public boolean isSifting() {
         return this.isSifting;
     }
-    
+
     public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.isSifting = nbt.getBoolean("isSifting");
@@ -181,7 +186,7 @@ public class TileEntitySifter extends TileEntity
         final NBTTagCompound itemtagcompound = itemtaglist.getCompoundTagAt(0);
         this.siftItem = ItemStack.loadItemStackFromNBT(itemtagcompound);
     }
-    
+
     public void writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setBoolean("isSifting", this.isSifting);
@@ -190,35 +195,34 @@ public class TileEntitySifter extends TileEntity
         if (this.siftItem != null) {
             final NBTTagCompound siftItemTagCompound = new NBTTagCompound();
             this.siftItem.writeToNBT(siftItemTagCompound);
-            nbttaglist.appendTag((NBTBase)siftItemTagCompound);
+            nbttaglist.appendTag((NBTBase) siftItemTagCompound);
         }
-        nbt.setTag("Item", (NBTBase)nbttaglist);
+        nbt.setTag("Item", (NBTBase) nbttaglist);
     }
-    
+
     public NBTTagCompound getTagCompound(final ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
         return stack.getTagCompound();
     }
-    
+
     public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
     }
-    
+
     public void sync() {
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
-    
+
     public Packet getDescriptionPacket() {
         final NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
-        return (Packet)new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, nbttagcompound);
+        return (Packet) new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, nbttagcompound);
     }
-    
-    public enum SiftType
-    {
-        REGULAR, 
+
+    public enum SiftType {
+        REGULAR,
         HEATED;
     }
 }

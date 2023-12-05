@@ -1,16 +1,16 @@
 package net.tropicraft.drinks;
 
-import net.tropicraft.registry.*;
-import net.minecraft.item.*;
 import java.util.*;
 
-public final class MixerRecipes
-{
+import net.minecraft.item.*;
+import net.tropicraft.registry.*;
+
+public final class MixerRecipes {
+
     private static Map<Drink, Ingredient[]> drinkToIngredientsMap;
-    
-    private MixerRecipes() {
-    }
-    
+
+    private MixerRecipes() {}
+
     public static void addMixerRecipes() {
         registerMixerRecipe(Drink.limeade, Ingredient.lime, Ingredient.sugar, Ingredient.waterBucket);
         registerMixerRecipe(Drink.caipirinha, Ingredient.lime, Ingredient.sugarcane, Ingredient.waterBucket);
@@ -20,20 +20,22 @@ public final class MixerRecipes
         registerMixerRecipe(Drink.pinaColada, Ingredient.pineapple, Ingredient.coconutChunk);
         registerMixerRecipe(Drink.pinaColada, Ingredient.pineappleChunks, Ingredient.coconut);
     }
-    
+
     private static void registerMixerRecipe(final Drink result, final Ingredient... ingredients) {
-        TCDrinkMixerRegistry.getInstance().registerRecipe(new MixerRecipe(result, ingredients));
+        TCDrinkMixerRegistry.getInstance()
+            .registerRecipe(new MixerRecipe(result, ingredients));
         MixerRecipes.drinkToIngredientsMap.put(result, ingredients);
     }
-    
+
     public static ItemStack getItemStack(final Drink drink) {
         final List<ItemStack> stack = new ArrayList<ItemStack>();
         for (final Ingredient i : MixerRecipes.drinkToIngredientsMap.get(drink)) {
             stack.add(i.getIngredient());
         }
-        return TCDrinkMixerRegistry.getInstance().getResult(stack.toArray(new ItemStack[stack.size()]));
+        return TCDrinkMixerRegistry.getInstance()
+            .getResult(stack.toArray(new ItemStack[stack.size()]));
     }
-    
+
     static {
         MixerRecipes.drinkToIngredientsMap = new HashMap<Drink, Ingredient[]>();
     }

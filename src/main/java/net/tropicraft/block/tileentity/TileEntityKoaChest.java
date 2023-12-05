@@ -1,20 +1,22 @@
 package net.tropicraft.block.tileentity;
 
-import net.minecraft.tileentity.*;
+import java.util.*;
+
+import net.minecraft.block.*;
+import net.minecraft.entity.*;
 import net.minecraft.inventory.*;
+import net.minecraft.nbt.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.tropicraft.entity.koa.*;
-import net.minecraft.entity.*;
+import net.tropicraft.registry.*;
+
 import CoroUtil.*;
 import CoroUtil.componentAI.*;
-import net.minecraft.util.*;
-import java.util.*;
-import net.tropicraft.registry.*;
-import net.minecraft.nbt.*;
-import net.minecraft.block.*;
 
-public class TileEntityKoaChest extends TileEntityChest implements IInventory
-{
+public class TileEntityKoaChest extends TileEntityChest implements IInventory {
+
     private boolean unbreakable;
     private int delay;
     public int housePop;
@@ -25,7 +27,7 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
     private int hunters;
     private int fishers;
     private boolean needListUpdate;
-    
+
     public TileEntityKoaChest() {
         this.unbreakable = false;
         this.housePop = 2;
@@ -40,7 +42,7 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
         }
         this.delay = 80;
     }
-    
+
     public void spawnKoa(final World world) {
         this.updateList();
         final int koaCount = this.getHomeKoaCount();
@@ -52,8 +54,7 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             if (this.hunters < this.housePop_hunters) {
                 ++this.hunters;
                 var2 = new EntityKoaHunter(this.worldObj);
-            }
-            else {
+            } else {
                 ++this.fishers;
                 var2 = new EntityKoaFisher(this.worldObj);
             }
@@ -69,16 +70,17 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             var2.getAIAgent().homeY = this.yCoord;
             var2.getAIAgent().homeZ = this.zCoord;
             this.addToList(var2);
-            this.worldObj.spawnEntityInWorld((Entity)var2);
+            this.worldObj.spawnEntityInWorld((Entity) var2);
             var2.onSpawnWithEgg(null);
-            var2.getAIAgent().spawnedOrNBTReloadedInit();
+            var2.getAIAgent()
+                .spawnedOrNBTReloadedInit();
             if (var6 == null) {
                 continue;
             }
             var6.spawnExplosionParticle();
         }
     }
-    
+
     public void addToList(final EntityKoaBase ent) {
         for (int j = 0; j < this.entIDs.length; ++j) {
             if (this.entIDs[j] == -1) {
@@ -88,24 +90,33 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             }
         }
     }
-    
+
     public void updateList() {
         for (int j = 0; j < this.entIDs.length; ++j) {
             final Entity ent = OldUtil.getEntByPersistantID(this.worldObj, this.entIDs[j]);
             if (ent == null) {
                 this.entIDs[j] = -1;
                 this.entRefs[j] = null;
-            }
-            else if (ent.isDead) {
+            } else if (ent.isDead) {
                 this.entIDs[j] = -1;
                 this.entRefs[j] = null;
             }
         }
     }
-    
+
     public int getHomeKoaCount() {
         final float dist = 160.0f;
-        final List<ICoroAI> ents = (List<ICoroAI>)this.worldObj.getEntitiesWithinAABB((Class)ICoroAI.class, AxisAlignedBB.getBoundingBox((double)this.xCoord, (double)this.yCoord, (double)this.zCoord, (double)(this.xCoord + 1), (double)(this.yCoord + 1), (double)(this.zCoord + 1)).expand((double)dist, (double)(dist / 2.0f), (double)dist));
+        final List<ICoroAI> ents = (List<ICoroAI>) this.worldObj.getEntitiesWithinAABB(
+            (Class) ICoroAI.class,
+            AxisAlignedBB
+                .getBoundingBox(
+                    (double) this.xCoord,
+                    (double) this.yCoord,
+                    (double) this.zCoord,
+                    (double) (this.xCoord + 1),
+                    (double) (this.yCoord + 1),
+                    (double) (this.zCoord + 1))
+                .expand((double) dist, (double) (dist / 2.0f), (double) dist));
         this.hunters = 0;
         this.fishers = 0;
         int existing = 0;
@@ -113,8 +124,10 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             int j = 0;
             j = 0;
             while (j < this.entIDs.length) {
-                final Entity ent = (Entity)ents.get(i);
-                if (ent instanceof EntityKoaBase && ent != null && this.entIDs[j] == ((EntityKoaBase)ent).getAIAgent().entID && ((EntityKoaBase)ent).getAIAgent().entID != -1) {
+                final Entity ent = (Entity) ents.get(i);
+                if (ent instanceof EntityKoaBase && ent != null
+                    && this.entIDs[j] == ((EntityKoaBase) ent).getAIAgent().entID
+                    && ((EntityKoaBase) ent).getAIAgent().entID != -1) {
                     ++existing;
                     if (ent instanceof EntityKoaHunter) {
                         ++this.hunters;
@@ -125,8 +138,7 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
                     }
                     final int dsdf = 0;
                     break;
-                }
-                else {
+                } else {
                     ++j;
                 }
             }
@@ -134,18 +146,19 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
         }
         return existing;
     }
-    
+
     public boolean getCanSpawnHere(final Entity ent) {
         final boolean b1 = !this.worldObj.checkBlockCollision(ent.boundingBox);
-        final boolean b2 = ent.worldObj.getCollidingBoundingBoxes(ent, ent.boundingBox).isEmpty();
+        final boolean b2 = ent.worldObj.getCollidingBoundingBoxes(ent, ent.boundingBox)
+            .isEmpty();
         final boolean b3 = !ent.worldObj.isAnyLiquid(ent.boundingBox);
         return b1 && b3;
     }
-    
+
     public boolean anyPlayerInRange() {
         return this.worldObj.getClosestPlayer(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5, 80.0) != null;
     }
-    
+
     public void updateEntity() {
         super.updateEntity();
         if (!this.anyPlayerInRange()) {
@@ -162,9 +175,8 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
                 for (int i = 0; i < this.entIDs.length; ++i) {
                     final Entity ent = OldUtil.getEntByPersistantID(this.worldObj, this.entIDs[i]);
                     if (ent instanceof EntityKoaBase) {
-                        this.entRefs[i] = (EntityKoaBase)ent;
-                    }
-                    else {
+                        this.entRefs[i] = (EntityKoaBase) ent;
+                    } else {
                         this.entIDs[i] = -1;
                         this.entRefs[i] = null;
                     }
@@ -174,11 +186,11 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             --this.delay;
         }
     }
-    
+
     public String getInvName() {
         return "Koa chest";
     }
-    
+
     public void checkForAdjacentChests() {
         if (this.adjacentChestChecked) {
             return;
@@ -189,16 +201,20 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
         this.adjacentChestXNeg = null;
         this.adjacentChestZPos = null;
         if (this.worldObj.getBlock(this.xCoord - 1, this.yCoord, this.zCoord) == TCBlockRegistry.koaChest) {
-            this.adjacentChestXNeg = (TileEntityKoaChest)this.worldObj.getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
+            this.adjacentChestXNeg = (TileEntityKoaChest) this.worldObj
+                .getTileEntity(this.xCoord - 1, this.yCoord, this.zCoord);
         }
         if (this.worldObj.getBlock(this.xCoord + 1, this.yCoord, this.zCoord) == TCBlockRegistry.koaChest) {
-            this.adjacentChestXPos = (TileEntityKoaChest)this.worldObj.getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
+            this.adjacentChestXPos = (TileEntityKoaChest) this.worldObj
+                .getTileEntity(this.xCoord + 1, this.yCoord, this.zCoord);
         }
         if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord - 1) == TCBlockRegistry.koaChest) {
-            this.adjacentChestZNeg = (TileEntityKoaChest)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
+            this.adjacentChestZNeg = (TileEntityKoaChest) this.worldObj
+                .getTileEntity(this.xCoord, this.yCoord, this.zCoord - 1);
         }
         if (this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord + 1) == TCBlockRegistry.koaChest) {
-            this.adjacentChestZPos = (TileEntityKoaChest)this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
+            this.adjacentChestZPos = (TileEntityKoaChest) this.worldObj
+                .getTileEntity(this.xCoord, this.yCoord, this.zCoord + 1);
         }
         if (this.adjacentChestZNeg != null) {
             this.adjacentChestZNeg.updateContainingBlockInfo();
@@ -213,15 +229,15 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             this.adjacentChestXNeg.updateContainingBlockInfo();
         }
     }
-    
+
     public boolean isUnbreakable() {
         return this.unbreakable;
     }
-    
+
     public void setIsUnbreakable(final boolean flag) {
         this.unbreakable = flag;
     }
-    
+
     public void readFromNBT(final NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
         this.unbreakable = nbttagcompound.getBoolean("unbreakable");
@@ -229,13 +245,12 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             for (int i = 0; i < this.entIDs.length; ++i) {
                 this.entIDs[i] = nbttagcompound.getInteger("entID_" + i);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         this.needListUpdate = true;
     }
-    
+
     public void writeToNBT(final NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setBoolean("unbreakable", this.unbreakable);
@@ -243,13 +258,12 @@ public class TileEntityKoaChest extends TileEntityChest implements IInventory
             for (int i = 0; i < this.entIDs.length; ++i) {
                 nbttagcompound.setInteger("entID_" + i, this.entIDs[i]);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public Block getBlockType() {
-        return (Block)TCBlockRegistry.koaChest;
+        return (Block) TCBlockRegistry.koaChest;
     }
 }

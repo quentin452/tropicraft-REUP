@@ -1,14 +1,15 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
+
+import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.util.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
 
-public class WorldGenTallTree extends TCGenBase
-{
+public class WorldGenTallTree extends TCGenBase {
+
     private static final int VINE_CHANCE = 5;
     private static final int SMALL_LEAF_CHANCE = 3;
     private static final int SECOND_CANOPY_CHANCE = 3;
@@ -16,15 +17,15 @@ public class WorldGenTallTree extends TCGenBase
     private static final int WOOD_META = 1;
     private static final Block LEAF_BLOCK;
     private static final int LEAF_META = 1;
-    
+
     public WorldGenTallTree(final World world, final Random random) {
         super(world, random);
     }
-    
+
     public boolean generate(final World world, final Random random, final int i, final int j, final int k) {
         return this.generate(i, j, k);
     }
-    
+
     public boolean generate(final int i, final int j, final int k) {
         Block blockUnder = this.worldObj.getBlock(i, j - 1, k);
         if (blockUnder != Blocks.dirt && blockUnder != Blocks.grass) {
@@ -87,10 +88,30 @@ public class WorldGenTallTree extends TCGenBase
                 final int nx = i + this.rand.nextInt(9) - 4;
                 final int nz = k + this.rand.nextInt(9) - 4;
                 final int leafSize = this.rand.nextInt(3) + 5;
-                this.genCircle(nx, y + 3, nz, (double)(leafSize - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
-                this.genCircle(nx, y + 2, nz, (double)(leafSize - 1), (double)(leafSize - 3), WorldGenTallTree.LEAF_BLOCK, 1, false);
-                this.genCircle(nx, y + 1, nz, (double)leafSize, (double)(leafSize - 1), WorldGenTallTree.LEAF_BLOCK, 1, false);
-                this.placeBlockLine(new int[] { i, y - 2, k }, new int[] { nx, y + 2, nz }, WorldGenTallTree.WOOD_BLOCK, 1);
+                this.genCircle(nx, y + 3, nz, (double) (leafSize - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
+                this.genCircle(
+                    nx,
+                    y + 2,
+                    nz,
+                    (double) (leafSize - 1),
+                    (double) (leafSize - 3),
+                    WorldGenTallTree.LEAF_BLOCK,
+                    1,
+                    false);
+                this.genCircle(
+                    nx,
+                    y + 1,
+                    nz,
+                    (double) leafSize,
+                    (double) (leafSize - 1),
+                    WorldGenTallTree.LEAF_BLOCK,
+                    1,
+                    false);
+                this.placeBlockLine(
+                    new int[] { i, y - 2, k },
+                    new int[] { nx, y + 2, nz },
+                    WorldGenTallTree.WOOD_BLOCK,
+                    1);
                 for (int x3 = nx - leafSize; x3 <= nx + leafSize; ++x3) {
                     for (int z3 = nz - leafSize; z3 <= nz + leafSize; ++z3) {
                         for (int y3 = y; y3 <= y + 2; ++y3) {
@@ -103,9 +124,25 @@ public class WorldGenTallTree extends TCGenBase
             }
         }
         final int leafSize2 = this.rand.nextInt(5) + 9;
-        this.genCircle(i, j + height, k, (double)(leafSize2 - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
-        this.genCircle(i, j + height - 1, k, (double)(leafSize2 - 1), (double)(leafSize2 - 4), WorldGenTallTree.LEAF_BLOCK, 1, false);
-        this.genCircle(i, j + height - 2, k, (double)leafSize2, (double)(leafSize2 - 1), WorldGenTallTree.LEAF_BLOCK, 1, false);
+        this.genCircle(i, j + height, k, (double) (leafSize2 - 2), 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
+        this.genCircle(
+            i,
+            j + height - 1,
+            k,
+            (double) (leafSize2 - 1),
+            (double) (leafSize2 - 4),
+            WorldGenTallTree.LEAF_BLOCK,
+            1,
+            false);
+        this.genCircle(
+            i,
+            j + height - 2,
+            k,
+            (double) leafSize2,
+            (double) (leafSize2 - 1),
+            WorldGenTallTree.LEAF_BLOCK,
+            1,
+            false);
         for (int x = i - leafSize2; x <= i + leafSize2; ++x) {
             for (int z = k - leafSize2; z <= k + leafSize2; ++z) {
                 for (int y4 = j + height + 3; y4 <= j + height + 6; ++y4) {
@@ -117,25 +154,38 @@ public class WorldGenTallTree extends TCGenBase
         }
         return true;
     }
-    
+
     private boolean genVines(final int i, final int j, final int k) {
         for (int m = 2; m <= 5; ++m) {
-            if (Blocks.vine.canPlaceBlockOnSide(this.worldObj, i, j, k, m) && this.worldObj.getBlock(i, j, k) == Blocks.air) {
-                this.worldObj.setBlock(i, j, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
+            if (Blocks.vine.canPlaceBlockOnSide(this.worldObj, i, j, k, m)
+                && this.worldObj.getBlock(i, j, k) == Blocks.air) {
+                this.worldObj.setBlock(
+                    i,
+                    j,
+                    k,
+                    Blocks.vine,
+                    1 << Direction.facingToDirection[Facing.oppositeSide[m]],
+                    WorldGenTallTree.blockGenNotifyFlag);
                 for (int length = this.rand.nextInt(4) + 4, y = j - 1; y > j - length; --y) {
                     if (this.worldObj.getBlock(i, y, k) != Blocks.air) {
                         return true;
                     }
-                    this.worldObj.setBlock(i, y, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
+                    this.worldObj.setBlock(
+                        i,
+                        y,
+                        k,
+                        Blocks.vine,
+                        1 << Direction.facingToDirection[Facing.oppositeSide[m]],
+                        WorldGenTallTree.blockGenNotifyFlag);
                 }
                 return true;
             }
         }
         return false;
     }
-    
+
     static {
-        WOOD_BLOCK = (Block)TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block)TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
+        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
     }
 }

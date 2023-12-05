@@ -1,34 +1,37 @@
 package net.tropicraft.encyclopedia;
 
-import net.minecraft.item.crafting.*;
-import net.minecraft.item.*;
-import net.minecraft.block.*;
 import java.util.*;
-import net.minecraft.entity.player.*;
 
-public class Encyclopedia extends TropicalBook
-{
+import net.minecraft.block.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.*;
+
+public class Encyclopedia extends TropicalBook {
+
     private HashMap<ItemStack, List<ShapedRecipes>> recipes;
     private HashMap<String, List<ItemStack>> itemEntries;
-    
-    public Encyclopedia(final String savedDataFile, final String contentsFile, final String outsideTexture, final String insideTexture) {
+
+    public Encyclopedia(final String savedDataFile, final String contentsFile, final String outsideTexture,
+        final String insideTexture) {
         super(savedDataFile, contentsFile, outsideTexture, insideTexture);
         this.recipes = new HashMap<ItemStack, List<ShapedRecipes>>();
         this.itemEntries = new HashMap<String, List<ItemStack>>();
     }
-    
+
     @Override
     public boolean hasRecipeList() {
         return true;
     }
-    
+
     public void includeItem(final String itemname, final ItemStack item) {
         if (!this.itemEntries.containsKey(itemname)) {
             this.itemEntries.put(itemname, new ArrayList<ItemStack>());
         }
-        this.itemEntries.get(itemname).add(item);
+        this.itemEntries.get(itemname)
+            .add(item);
     }
-    
+
     public void includeRecipe(final ItemStack result, final Object[] aobj) {
         final Set<ItemStack> recipeContents = new HashSet<ItemStack>();
         this.addItemToRecipeContents(recipeContents, result);
@@ -37,17 +40,16 @@ public class Encyclopedia extends TropicalBook
         int width = 0;
         int height = 0;
         if (aobj[i] instanceof String[]) {
-            final String[] cols = (String[])aobj[i++];
+            final String[] cols = (String[]) aobj[i++];
             for (int j = 0; j < cols.length; ++j) {
                 final String row = cols[j];
                 ++height;
                 width = row.length();
                 recipeString += row;
             }
-        }
-        else {
+        } else {
             while (aobj[i] instanceof String) {
-                final String row2 = (String)aobj[i++];
+                final String row2 = (String) aobj[i++];
                 ++height;
                 width = row2.length();
                 recipeString += row2;
@@ -55,16 +57,14 @@ public class Encyclopedia extends TropicalBook
         }
         final HashMap<Character, ItemStack> charMap = new HashMap<Character, ItemStack>();
         while (i < aobj.length) {
-            final Character itemChar = (Character)aobj[i];
+            final Character itemChar = (Character) aobj[i];
             ItemStack itemStack = null;
             if (aobj[i + 1] instanceof Item) {
-                itemStack = new ItemStack((Item)aobj[i + 1]);
-            }
-            else if (aobj[i + 1] instanceof Block) {
-                itemStack = new ItemStack((Block)aobj[i + 1], 1, -1);
-            }
-            else if (aobj[i + 1] instanceof ItemStack) {
-                itemStack = (ItemStack)aobj[i + 1];
+                itemStack = new ItemStack((Item) aobj[i + 1]);
+            } else if (aobj[i + 1] instanceof Block) {
+                itemStack = new ItemStack((Block) aobj[i + 1], 1, -1);
+            } else if (aobj[i + 1] instanceof ItemStack) {
+                itemStack = (ItemStack) aobj[i + 1];
             }
             charMap.put(itemChar, itemStack);
             this.addItemToRecipeContents(recipeContents, itemStack);
@@ -74,9 +74,9 @@ public class Encyclopedia extends TropicalBook
         for (int slots = 0; slots < width * height; ++slots) {
             final char itemChar2 = recipeString.charAt(slots);
             if (charMap.containsKey(itemChar2)) {
-                slotArray[slots] = charMap.get(itemChar2).copy();
-            }
-            else {
+                slotArray[slots] = charMap.get(itemChar2)
+                    .copy();
+            } else {
                 slotArray[slots] = null;
             }
         }
@@ -86,17 +86,19 @@ public class Encyclopedia extends TropicalBook
             for (final ItemStack key : this.recipes.keySet()) {
                 if (item.isItemEqual(key)) {
                     foundKey = true;
-                    this.recipes.get(key).add(recipe);
+                    this.recipes.get(key)
+                        .add(recipe);
                     break;
                 }
             }
             if (!foundKey) {
                 this.recipes.put(item, new ArrayList<ShapedRecipes>());
-                this.recipes.get(item).add(recipe);
+                this.recipes.get(item)
+                    .add(recipe);
             }
         }
     }
-    
+
     public List<ShapedRecipes> getRecipesForEntry(final int page) {
         final List<ItemStack> entryItems = this.itemEntries.get(this.getPageName(page));
         final List<ShapedRecipes> recipeList = new ArrayList<ShapedRecipes>();
@@ -115,7 +117,7 @@ public class Encyclopedia extends TropicalBook
         }
         return recipeList;
     }
-    
+
     @Override
     public int getContentPageCount(final int page, final ContentMode mode) {
         if (page >= 0 && page < this.getPageCount()) {
@@ -131,7 +133,7 @@ public class Encyclopedia extends TropicalBook
         }
         return 0;
     }
-    
+
     @Override
     public int entriesPerContentPage(final ContentMode mode) {
         if (mode == ContentMode.RECIPE) {
@@ -139,12 +141,12 @@ public class Encyclopedia extends TropicalBook
         }
         return super.entriesPerContentPage(mode);
     }
-    
+
     @Override
     public boolean hasIndexIcons() {
         return true;
     }
-    
+
     @Override
     public ItemStack getPageItemStack(final int page) {
         if (page >= 0 && page < this.getPageCount()) {
@@ -155,7 +157,7 @@ public class Encyclopedia extends TropicalBook
         }
         return null;
     }
-    
+
     @Override
     public void updatePagesFromInventory(final InventoryPlayer inv) {
         for (final ItemStack is : inv.mainInventory) {
@@ -174,7 +176,7 @@ public class Encyclopedia extends TropicalBook
             }
         }
     }
-    
+
     private void addItemToRecipeContents(final Set<ItemStack> items, final ItemStack i) {
         boolean shouldAdd = !items.contains(i);
         for (final ItemStack listItem : items) {
@@ -187,7 +189,7 @@ public class Encyclopedia extends TropicalBook
             items.add(i);
         }
     }
-    
+
     public RecipeEntry getFormattedRecipe(final ShapedRecipes recipe) {
         try {
             final int width = recipe.recipeWidth;
@@ -195,20 +197,19 @@ public class Encyclopedia extends TropicalBook
             final ItemStack[] items = recipe.recipeItems;
             final ItemStack output = recipe.getRecipeOutput();
             return new RecipeEntry(width, height, items, output);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
     }
-    
-    public class RecipeEntry
-    {
+
+    public class RecipeEntry {
+
         public int width;
         public int height;
         public ItemStack[] ingredients;
         public ItemStack output;
-        
+
         public RecipeEntry(final int width, final int height, final ItemStack[] ingredients, final ItemStack output) {
             this.width = width;
             this.height = height;

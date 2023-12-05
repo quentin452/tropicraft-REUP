@@ -1,23 +1,24 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.init.*;
+
+import net.minecraft.block.*;
 import net.minecraft.block.material.*;
+import net.minecraft.init.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
 
-public class WorldGenUpTree extends TCGenBase
-{
+public class WorldGenUpTree extends TCGenBase {
+
     private static final Block WOOD_BLOCK;
     private static final int WOOD_META = 1;
     private static final Block LEAF_BLOCK;
     private static final int LEAF_META = 1;
-    
+
     public WorldGenUpTree(final World world, final Random random) {
         super(world, random);
     }
-    
+
     public boolean generate(final int i, final int j, final int k) {
         final Block blockUnder = this.worldObj.getBlock(i, j - 1, k);
         if (blockUnder != Blocks.grass && blockUnder != Blocks.dirt) {
@@ -48,14 +49,30 @@ public class WorldGenUpTree extends TCGenBase
             }
         }
         final int radius = this.rand.nextInt(2) + 3;
-        this.genCircle(i, j + height, k, (double)radius, 0.0, WorldGenUpTree.LEAF_BLOCK, 1, false);
-        this.genCircle(i, j + height + 1, k, (double)(radius + 2), (double)radius, WorldGenUpTree.LEAF_BLOCK, 1, false);
-        this.genCircle(i, j + height + 2, k, (double)(radius + 3), (double)(radius + 2), WorldGenUpTree.LEAF_BLOCK, 1, false);
+        this.genCircle(i, j + height, k, (double) radius, 0.0, WorldGenUpTree.LEAF_BLOCK, 1, false);
+        this.genCircle(
+            i,
+            j + height + 1,
+            k,
+            (double) (radius + 2),
+            (double) radius,
+            WorldGenUpTree.LEAF_BLOCK,
+            1,
+            false);
+        this.genCircle(
+            i,
+            j + height + 2,
+            k,
+            (double) (radius + 3),
+            (double) (radius + 2),
+            WorldGenUpTree.LEAF_BLOCK,
+            1,
+            false);
         return true;
     }
-    
+
     static {
-        WOOD_BLOCK = (Block)TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block)TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
+        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
     }
 }

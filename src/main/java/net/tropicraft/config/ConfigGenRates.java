@@ -2,8 +2,8 @@ package net.tropicraft.config;
 
 import modconfig.*;
 
-public class ConfigGenRates implements IConfigCategory
-{
+public class ConfigGenRates implements IConfigCategory {
+
     public static final int EIH_CHANCE = 50;
     public static final int SHIPWRECK_CHANCE = 300;
     public static final int TALL_FLOWERS_CHANCE = 3;
@@ -22,18 +22,17 @@ public class ConfigGenRates implements IConfigCategory
     public static boolean genTropicraftInOverworld;
     public static boolean genPineapplesInOverworld;
     public static boolean genBambooInOverworld;
-    
+
     public String getConfigFileName() {
         return "Tropicraft_GenRates";
     }
-    
+
     public String getCategory() {
         return "Tropicraft Gen Rates Config";
     }
-    
-    public void hookUpdatedValues() {
-    }
-    
+
+    public void hookUpdatedValues() {}
+
     static {
         ConfigGenRates.genPalmsInOverworld = true;
         ConfigGenRates.genOverworldPalmsInBeachOnly = false;

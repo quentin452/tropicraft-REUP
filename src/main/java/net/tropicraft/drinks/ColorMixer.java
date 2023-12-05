@@ -1,60 +1,60 @@
 package net.tropicraft.drinks;
 
-public final class ColorMixer
-{
+public final class ColorMixer {
+
     private static ColorMixer instance;
-    
+
     public static ColorMixer getInstance() {
         return ColorMixer.instance;
     }
-    
+
     public void normalizeRGBA(final int[] rgba, final float[] result) {
         result[0] = rgba[0] / 255.0f;
         result[1] = rgba[1] / 255.0f;
         result[2] = rgba[2] / 255.0f;
         result[3] = rgba[3] / 255.0f;
     }
-    
+
     public void denormalizeRGBA(final float[] rgba, final int[] result) {
-        result[0] = (int)(255.0f * rgba[0]);
-        result[1] = (int)(255.0f * rgba[1]);
-        result[2] = (int)(255.0f * rgba[2]);
-        result[3] = (int)(255.0f * rgba[3]);
+        result[0] = (int) (255.0f * rgba[0]);
+        result[1] = (int) (255.0f * rgba[1]);
+        result[2] = (int) (255.0f * rgba[2]);
+        result[3] = (int) (255.0f * rgba[3]);
     }
-    
+
     public void splitRGBA(final long color, final int[] result) {
-        result[0] = (int)(color >> 24 & 0xFFL);
-        result[1] = (int)(color >> 16 & 0xFFL);
-        result[2] = (int)(color >> 8 & 0xFFL);
-        result[3] = (int)(color & 0xFFL);
+        result[0] = (int) (color >> 24 & 0xFFL);
+        result[1] = (int) (color >> 16 & 0xFFL);
+        result[2] = (int) (color >> 8 & 0xFFL);
+        result[3] = (int) (color & 0xFFL);
     }
-    
+
     public long unsplitRGBA(final int[] rgb) {
         return (rgb[0] & 0xFF) << 24 | (rgb[1] & 0xFF) << 16 | (rgb[2] & 0xFF) << 8 | (rgb[3] & 0xFF);
     }
-    
+
     public void normalizeRGB(final int[] rgb, final float[] result) {
         result[0] = rgb[0] / 255.0f;
         result[1] = rgb[1] / 255.0f;
         result[2] = rgb[2] / 255.0f;
     }
-    
+
     public void denormalizeRGB(final float[] rgb, final int[] result) {
-        result[0] = (int)(255.0f * rgb[0]);
-        result[1] = (int)(255.0f * rgb[1]);
-        result[2] = (int)(255.0f * rgb[2]);
+        result[0] = (int) (255.0f * rgb[0]);
+        result[1] = (int) (255.0f * rgb[1]);
+        result[2] = (int) (255.0f * rgb[2]);
     }
-    
+
     public void splitRGB(final int color, final int[] result) {
         result[0] = (color >> 16 & 0xFF);
         result[1] = (color >> 8 & 0xFF);
         result[2] = (color & 0xFF);
     }
-    
+
     public int unsplitRGB(final int[] rgb) {
         return (rgb[0] & 0xFF) << 16 | (rgb[1] & 0xFF) << 8 | (rgb[2] & 0xFF);
     }
-    
+
     public void convertRGBToCMYK(final float[] rgb, final float[] cmyk) {
         final float tempC = 1.0f - rgb[0];
         final float tempM = 1.0f - rgb[1];
@@ -68,7 +68,7 @@ public final class ColorMixer
         cmyk[2] = yellow;
         cmyk[3] = black;
     }
-    
+
     public void convertCMYKToRGB(final float[] cmyk, final float[] rgb) {
         final float c = cmyk[0];
         final float m = cmyk[1];
@@ -84,7 +84,7 @@ public final class ColorMixer
         rgb[1] = g;
         rgb[2] = b;
     }
-    
+
     public void convertRYBToRGB(final float[] ryb, final float[] rgb) {
         float r = ryb[0];
         float y = ryb[1];
@@ -117,7 +117,7 @@ public final class ColorMixer
         rgb[1] = g;
         rgb[2] = b;
     }
-    
+
     public void convertRGBToRYB(final float[] rgb, final float[] ryb) {
         float r = rgb[0];
         float g = rgb[1];
@@ -150,7 +150,7 @@ public final class ColorMixer
         ryb[1] = y;
         ryb[2] = b;
     }
-    
+
     public void mixCMYK(final float[][] cmyks, final float[] result) {
         if (cmyks.length == 0) {
             final int n = 0;
@@ -193,16 +193,16 @@ public final class ColorMixer
             kMax = ((k > kMax) ? k : kMax);
         }
         final int count = cmyks.length;
-        final float c2 = cTotal / (float)Math.sqrt(count + 1);
-        final float i = mTotal / (float)Math.sqrt(count + 1);
-        final float y2 = yTotal / (float)Math.sqrt(count + 1);
-        final float j = kTotal / (float)Math.sqrt(Math.sqrt(count));
+        final float c2 = cTotal / (float) Math.sqrt(count + 1);
+        final float i = mTotal / (float) Math.sqrt(count + 1);
+        final float y2 = yTotal / (float) Math.sqrt(count + 1);
+        final float j = kTotal / (float) Math.sqrt(Math.sqrt(count));
         result[0] = c2;
         result[1] = i;
         result[2] = y2;
         result[3] = j;
     }
-    
+
     public void mixRYB(final float[][] rybs, final float[] result) {
         if (rybs.length == 0) {
             final int n = 0;
@@ -230,16 +230,16 @@ public final class ColorMixer
         }
         final int count = rybs.length;
         float br = rTotal / count;
-        final float r = rTotal / (float)Math.sqrt(Math.sqrt(count - br));
+        final float r = rTotal / (float) Math.sqrt(Math.sqrt(count - br));
         br = yTotal / count;
-        final float y = yTotal / (float)Math.sqrt(Math.sqrt(count - br));
+        final float y = yTotal / (float) Math.sqrt(Math.sqrt(count - br));
         br = bTotal / count;
-        final float b = bTotal / (float)Math.sqrt(Math.sqrt(count - br));
+        final float b = bTotal / (float) Math.sqrt(Math.sqrt(count - br));
         result[0] = r;
         result[1] = y;
         result[2] = b;
     }
-    
+
     public int mixRGBAsCMYK(final int[] rgbs) {
         final float[][] cmyks = new float[rgbs.length][];
         final int[] tempRGBi = new int[3];
@@ -258,7 +258,7 @@ public final class ColorMixer
         final int rgb2 = this.unsplitRGB(tempRGBi);
         return rgb2;
     }
-    
+
     public int mixRGBAsRYB(final int[] rgbs) {
         final float[][] rybs = new float[rgbs.length][];
         final int[] tempRGBi = new int[3];
@@ -277,7 +277,7 @@ public final class ColorMixer
         final int rgb2 = this.unsplitRGB(tempRGBi);
         return rgb2;
     }
-    
+
     public int alphaBlendRGBA(final int bg, final int fg, final float fgAlpha) {
         final float bgRed = (bg >> 16 & 0xFF) / 255.0f;
         final float bgGreen = (bg >> 8 & 0xFF) / 255.0f;
@@ -288,12 +288,12 @@ public final class ColorMixer
         final float outRed = fgRed * fgAlpha + bgRed * (1.0f - fgAlpha);
         final float outGreen = fgGreen * fgAlpha + bgGreen * (1.0f - fgAlpha);
         final float outBlue = fgBlue * fgAlpha + bgBlue * (1.0f - fgAlpha);
-        final int outRedi = (int)(outRed * 255.0f);
-        final int outGreeni = (int)(outGreen * 255.0f);
-        final int outBluei = (int)(outBlue * 255.0f);
+        final int outRedi = (int) (outRed * 255.0f);
+        final int outGreeni = (int) (outGreen * 255.0f);
+        final int outBluei = (int) (outBlue * 255.0f);
         return (outRedi & 0xFF) << 16 | (outGreeni & 0xFF) << 8 | (outBluei & 0xFF);
     }
-    
+
     static {
         ColorMixer.instance = new ColorMixer();
     }

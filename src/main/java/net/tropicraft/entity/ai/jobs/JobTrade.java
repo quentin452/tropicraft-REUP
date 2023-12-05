@@ -1,22 +1,24 @@
 package net.tropicraft.entity.ai.jobs;
 
-import net.tropicraft.block.tileentity.*;
+import java.util.*;
+
+import net.minecraft.block.*;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
-import net.minecraft.block.*;
-import CoroUtil.componentAI.jobSystem.*;
-import net.minecraft.entity.*;
-import net.tropicraft.registry.*;
-import net.minecraft.tileentity.*;
-import net.tropicraft.economy.*;
-import net.tropicraft.*;
-import java.util.*;
-import net.minecraft.util.*;
-import CoroUtil.util.*;
 import net.minecraft.server.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
+import net.tropicraft.*;
+import net.tropicraft.block.tileentity.*;
+import net.tropicraft.economy.*;
+import net.tropicraft.registry.*;
 
-public class JobTrade extends JobBase
-{
+import CoroUtil.componentAI.jobSystem.*;
+import CoroUtil.util.*;
+
+public class JobTrade extends JobBase {
+
     public float tradeDistTrigger;
     public int tradeLastItemOffer;
     public ChunkCoordinates tradeBlockPos;
@@ -33,8 +35,12 @@ public class JobTrade extends JobBase
     public void convertOfferingsToCurrency(final int newCredit) {
         this.offeredItems.clear();
         int leftToConvert;
-        for (leftToConvert = newCredit; leftToConvert > TCKoaCurrencyRegistry.currency.getMaxStackSize(); leftToConvert -= TCKoaCurrencyRegistry.currency.getMaxStackSize()) {
-            this.offeredItems.add(new ItemStack(TCKoaCurrencyRegistry.currency.getItem(), TCKoaCurrencyRegistry.currency.getMaxStackSize()));
+        for (leftToConvert = newCredit; leftToConvert > TCKoaCurrencyRegistry.currency
+            .getMaxStackSize(); leftToConvert -= TCKoaCurrencyRegistry.currency.getMaxStackSize()) {
+            this.offeredItems.add(
+                new ItemStack(
+                    TCKoaCurrencyRegistry.currency.getItem(),
+                    TCKoaCurrencyRegistry.currency.getMaxStackSize()));
         }
         if (leftToConvert > 0) {
             this.offeredItems.add(new ItemStack(TCKoaCurrencyRegistry.currency.getItem(), leftToConvert));
@@ -45,10 +51,10 @@ public class JobTrade extends JobBase
         int value = 0;
         try {
             for (int i = 0; i < this.offeredItems.size(); ++i) {
-                value += ItemValues.getItemEntry((ItemStack)this.offeredItems.get(i)).getTotalValue((ItemStack)this.offeredItems.get(i));
+                value += ItemValues.getItemEntry((ItemStack) this.offeredItems.get(i))
+                    .getTotalValue((ItemStack) this.offeredItems.get(i));
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return value;
@@ -58,31 +64,44 @@ public class JobTrade extends JobBase
         final int value = 0;
         try {
             for (int i = 0; i < this.offeredItems.size(); ++i) {
-                this.activeTrader.inventory.addItemStackToInventory((ItemStack)this.offeredItems.get(i));
+                this.activeTrader.inventory.addItemStackToInventory((ItemStack) this.offeredItems.get(i));
             }
             this.offeredItems.clear();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return value;
     }
 
     public void tick() {
-        if (this.tradeBlockPos != null && (this.ai.targX != this.tradeBlockPos.posX || this.ai.targY != this.tradeBlockPos.posY + 1 || this.ai.targZ != this.tradeBlockPos.posZ) && this.ent.getDistance((double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ) > 15.0) {
-            this.ent.getNavigator().clearPathEntity();
-            this.ai.walkTo((Entity)this.ent, this.tradeBlockPos.posX, this.tradeBlockPos.posY + 1, this.tradeBlockPos.posZ, (float)this.ai.maxPFRange, 600);
+        if (this.tradeBlockPos != null
+            && (this.ai.targX != this.tradeBlockPos.posX || this.ai.targY != this.tradeBlockPos.posY + 1
+                || this.ai.targZ != this.tradeBlockPos.posZ)
+            && this.ent.getDistance(
+                (double) this.tradeBlockPos.posX,
+                (double) this.tradeBlockPos.posY,
+                (double) this.tradeBlockPos.posZ) > 15.0) {
+            this.ent.getNavigator()
+                .clearPathEntity();
+            this.ai.walkTo(
+                (Entity) this.ent,
+                this.tradeBlockPos.posX,
+                this.tradeBlockPos.posY + 1,
+                this.tradeBlockPos.posZ,
+                (float) this.ai.maxPFRange,
+                600);
         }
-        this.idTradeBlock = (Block)TCBlockRegistry.purchasePlate;
+        this.idTradeBlock = (Block) TCBlockRegistry.purchasePlate;
         this.ai.maxDistanceFromHome = 0.5;
         this.tradeDistTrigger = 4.0f;
         if (this.tradeBlockPos == null) {
             this.tradeBlockPos = this.tickFind(this.idTradeBlock, 25);
             if (this.tradeBlockPos != null) {
-                final TileEntity tile = this.ent.worldObj.getTileEntity(this.tradeBlockPos.posX, this.tradeBlockPos.posY, this.tradeBlockPos.posZ);
+                final TileEntity tile = this.ent.worldObj
+                    .getTileEntity(this.tradeBlockPos.posX, this.tradeBlockPos.posY, this.tradeBlockPos.posZ);
                 if (tile != null) {
-                    ((TileEntityPurchasePlate)tile).tradeKoa = this.entInt;
-                    this.tradePlate = (TileEntityPurchasePlate)tile;
+                    ((TileEntityPurchasePlate) tile).tradeKoa = this.entInt;
+                    this.tradePlate = (TileEntityPurchasePlate) tile;
                 }
                 this.ai.homeX = this.tradeBlockPos.posX;
                 this.ai.homeY = this.tradeBlockPos.posY;
@@ -90,15 +109,14 @@ public class JobTrade extends JobBase
             }
         }
         if (this.activeTrader == null) {
-            this.activeTrader = this.ent.worldObj.getClosestPlayerToEntity((Entity)this.ent, (double)this.tradeDistTrigger);
+            this.activeTrader = this.ent.worldObj
+                .getClosestPlayerToEntity((Entity) this.ent, (double) this.tradeDistTrigger);
             if (this.activeTrader != null) {
                 this.tradeStart();
             }
-        }
-        else if (this.ent.getDistanceToEntity((Entity)this.activeTrader) > this.tradeDistTrigger * 1.5) {
+        } else if (this.ent.getDistanceToEntity((Entity) this.activeTrader) > this.tradeDistTrigger * 1.5) {
             this.tradeReset();
-        }
-        else {
+        } else {
             this.tradeTick();
         }
     }
@@ -146,21 +164,21 @@ public class JobTrade extends JobBase
     public void tradeTick() {
         TileEntity tEnt = null;
         if (this.tradeBlockPos != null) {
-            tEnt = this.ent.worldObj.getTileEntity(this.tradeBlockPos.posX, this.tradeBlockPos.posY, this.tradeBlockPos.posZ);
+            tEnt = this.ent.worldObj
+                .getTileEntity(this.tradeBlockPos.posX, this.tradeBlockPos.posY, this.tradeBlockPos.posZ);
         }
         if (this.tradeBlockPos != null && tEnt == null) {
             this.tradeBlockPos = null;
-        }
-        else if (tEnt instanceof TileEntityPurchasePlate) {
-            ((TileEntityPurchasePlate)tEnt).activeTrader = this.activeTrader;
+        } else if (tEnt instanceof TileEntityPurchasePlate) {
+            ((TileEntityPurchasePlate) tEnt).activeTrader = this.activeTrader;
         }
     }
 
     public ChunkCoordinates tickFind(final Block id, final int range) {
         for (int i = 0; i < 30; ++i) {
-            final int randX = (int)this.ent.posX + this.ent.worldObj.rand.nextInt(range) - range / 2;
-            final int randY = (int)this.ent.posY + this.ent.worldObj.rand.nextInt(range) - range / 2;
-            final int randZ = (int)this.ent.posZ + this.ent.worldObj.rand.nextInt(range) - range / 2;
+            final int randX = (int) this.ent.posX + this.ent.worldObj.rand.nextInt(range) - range / 2;
+            final int randY = (int) this.ent.posY + this.ent.worldObj.rand.nextInt(range) - range / 2;
+            final int randZ = (int) this.ent.posZ + this.ent.worldObj.rand.nextInt(range) - range / 2;
             final Block foundID = this.ent.worldObj.getBlock(randX, randY, randZ);
             if (foundID == id) {
                 Tropicraft.dbg("found trade block");
@@ -180,7 +198,17 @@ public class JobTrade extends JobBase
 
     public boolean isAreaSecure() {
         if (this.tradeBlockPos != null) {
-            final List list = this.ent.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this.ent, AxisAlignedBB.getBoundingBox((double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ, (double)this.tradeBlockPos.posX, (double)this.tradeBlockPos.posY, (double)this.tradeBlockPos.posZ).expand(6.0, 3.0, 6.0));
+            final List list = this.ent.worldObj.getEntitiesWithinAABBExcludingEntity(
+                (Entity) this.ent,
+                AxisAlignedBB
+                    .getBoundingBox(
+                        (double) this.tradeBlockPos.posX,
+                        (double) this.tradeBlockPos.posY,
+                        (double) this.tradeBlockPos.posZ,
+                        (double) this.tradeBlockPos.posX,
+                        (double) this.tradeBlockPos.posY,
+                        (double) this.tradeBlockPos.posZ)
+                    .expand(6.0, 3.0, 6.0));
             for (int j = 0; j < list.size(); ++j) {
                 final Entity entity1 = (Entity) list.get(j);
                 if (this.entInt.isEnemy(entity1)) {
@@ -193,16 +221,23 @@ public class JobTrade extends JobBase
 
     public void onIdleTickAct() {
         if (this.activeTrader != null) {
-            this.ent.faceEntity((Entity)this.activeTrader, 15.0f, 15.0f);
-        }
-        else if (this.tradeBlockPos != null) {}
-        if (this.activeTrader == null && this.ent.getNavigator().noPath()) {
+            this.ent.faceEntity((Entity) this.activeTrader, 15.0f, 15.0f);
+        } else if (this.tradeBlockPos != null) {}
+        if (this.activeTrader == null && this.ent.getNavigator()
+            .noPath()) {
             final Random rand = new Random();
             if (this.tradeBlockPos != null && this.ent.worldObj.rand.nextInt(100) == 0) {
                 final int tryX = this.tradeBlockPos.posX;
                 final int tryZ = this.tradeBlockPos.posZ;
-                if (!CoroUtilBlock.isAir(this.ent.worldObj.getBlock(tryX, MathHelper.floor_double(this.ent.posY - 1.0), tryZ))) {
-                    this.ai.walkTo((Entity)this.ent, this.tradeBlockPos.posX, MathHelper.floor_double(this.ent.posY), this.tradeBlockPos.posZ, (float)this.ai.maxPFRange, 600);
+                if (!CoroUtilBlock
+                    .isAir(this.ent.worldObj.getBlock(tryX, MathHelper.floor_double(this.ent.posY - 1.0), tryZ))) {
+                    this.ai.walkTo(
+                        (Entity) this.ent,
+                        this.tradeBlockPos.posX,
+                        MathHelper.floor_double(this.ent.posY),
+                        this.tradeBlockPos.posZ,
+                        (float) this.ai.maxPFRange,
+                        600);
                 }
             }
         }
@@ -220,7 +255,9 @@ public class JobTrade extends JobBase
                 if (this.tradePlate != null) {
                     this.tradePlate.credit = this.getOfferedItemsValue();
                     System.out.println("VERIFY THIS CODE IN hookInteract()");
-                    MinecraftServer.getServer().getConfigurationManager().sendPacketToAllPlayers(this.tradePlate.getDescriptionPacket());
+                    MinecraftServer.getServer()
+                        .getConfigurationManager()
+                        .sendPacketToAllPlayers(this.tradePlate.getDescriptionPacket());
                 }
             }
             return true;

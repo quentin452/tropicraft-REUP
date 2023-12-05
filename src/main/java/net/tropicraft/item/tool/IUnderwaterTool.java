@@ -1,5 +1,4 @@
 package net.tropicraft.item.tool;
 
-public interface IUnderwaterTool
-{
+public interface IUnderwaterTool {
 }

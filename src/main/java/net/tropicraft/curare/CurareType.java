@@ -2,8 +2,8 @@ package net.tropicraft.curare;
 
 import net.minecraft.potion.*;
 
-public class CurareType
-{
+public class CurareType {
+
     public static final CurareType[] curareTypeList;
     public static final CurareType paralysis;
     public static final CurareType poison;
@@ -15,26 +15,26 @@ public class CurareType
     private static final String[] names;
     public int curareId;
     public Potion potion;
-    
+
     public CurareType(final int id, final Potion potion) {
         this.curareId = id;
         this.potion = potion;
         CurareType.curareTypeList[id] = this;
     }
-    
+
     public Potion getPotion() {
         return this.potion;
     }
-    
+
     public static CurareType getCurareFromDamage(final int damage) {
         return CurareType.curareTypeList[damage];
     }
-    
+
     @Override
     public String toString() {
         return CurareType.names[this.curareId];
     }
-    
+
     static {
         curareTypeList = new CurareType[128];
         paralysis = new CurareType(0, Potion.blindness);

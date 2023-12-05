@@ -1,15 +1,16 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.init.*;
+
 import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.world.*;
 import net.tropicraft.block.tileentity.*;
 import net.tropicraft.registry.*;
-import net.minecraft.item.*;
 
-public class WorldGenForestAltarRuin extends TCDirectionalGen
-{
+public class WorldGenForestAltarRuin extends TCDirectionalGen {
+
     public WorldGenForestAltarRuin(final World world, final Random random) {
         super(world, random, random.nextInt(4));
     }
@@ -35,8 +36,7 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
         }
         for (int z = 0; z < length; ++z) {
             int x = 0;
-        Label_0157:
-            while (x < width) {
+            Label_0157: while (x < width) {
                 while (true) {
                     for (int y2 = 0; y2 < 4; ++y2) {
                         if (this.worldObj.getBlock(x, y2 + j, z) == TCBlockRegistry.logs) {
@@ -48,64 +48,61 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
                         }
                     }
                     int y2 = j;
-                    this.placeBlockWithDir(x, y2, z, (Block)TCBlockRegistry.logs, 1);
+                    this.placeBlockWithDir(x, y2, z, (Block) TCBlockRegistry.logs, 1);
                     if (z == 0) {
                         if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.palmFence, 0);
-                            this.placeBlockWithDir(x, y2 + 2, z, (Block)TCBlockRegistry.palmFence, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.palmFence, 0);
+                            this.placeBlockWithDir(x, y2 + 2, z, (Block) TCBlockRegistry.palmFence, 0);
                             continue;
                         }
-                        this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.singleSlabs, 2);
-                        this.placeBlockWithDir(x, y2 + 2, z, (Block)TCBlockRegistry.palmFence, 0);
+                        this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.singleSlabs, 2);
+                        this.placeBlockWithDir(x, y2 + 2, z, (Block) TCBlockRegistry.palmFence, 0);
                         continue;
-                    }
-                    else if (z == 1) {
+                    } else if (z == 1) {
                         if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.palmFence, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.palmFence, 0);
                             continue;
                         }
                         if (x == 1 || x == width - 2) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.chunkOHead, 0);
-                            this.placeBlockWithDir(x, y2 + 2, z, (Block)TCBlockRegistry.flowerPot, 0);
-                            final TileEntityTropicraftFlowerPot pot = (TileEntityTropicraftFlowerPot)this.getTEWithDir(x, y2 + 2, z);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.chunkOHead, 0);
+                            this.placeBlockWithDir(x, y2 + 2, z, (Block) TCBlockRegistry.flowerPot, 0);
+                            final TileEntityTropicraftFlowerPot pot = (TileEntityTropicraftFlowerPot) this
+                                .getTEWithDir(x, y2 + 2, z);
                             if (pot != null) {
-                                pot.setFlowerID((short)(this.rand.nextInt(13) + 1));
+                                pot.setFlowerID((short) (this.rand.nextInt(13) + 1));
                             }
                             continue;
                         }
                         if (x == halfWidth - 1 || x == halfWidth) {
                             this.placeBlockWithDir(x, y2, z, Blocks.netherrack, 0);
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)Blocks.fire, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) Blocks.fire, 0);
                             continue;
                         }
-                        this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.singleSlabs, 2);
+                        this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.singleSlabs, 2);
                         continue;
-                    }
-                    else if (z == 2) {
+                    } else if (z == 2) {
                         if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.palmFence, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.palmFence, 0);
                             continue;
                         }
-                        this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.singleSlabs, 2);
+                        this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.singleSlabs, 2);
                         continue;
-                    }
-                    else if (z % 2 == 1) {
+                    } else if (z % 2 == 1) {
                         if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.palmFence, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.palmFence, 0);
                         }
                         continue;
-                    }
-                    else {
+                    } else {
                         if (x == 0 || x == width - 1) {
-                            this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.tikiTorch, 1);
-                            this.placeBlockWithDir(x, y2 + 2, z, (Block)TCBlockRegistry.tikiTorch, 1);
-                            this.placeBlockWithDir(x, y2 + 3, z, (Block)TCBlockRegistry.tikiTorch, 0);
+                            this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.tikiTorch, 1);
+                            this.placeBlockWithDir(x, y2 + 2, z, (Block) TCBlockRegistry.tikiTorch, 1);
+                            this.placeBlockWithDir(x, y2 + 3, z, (Block) TCBlockRegistry.tikiTorch, 0);
                             continue;
                         }
                         if (x == halfWidth - 1 || x == halfWidth) {
                             continue;
                         }
-                        this.placeBlockWithDir(x, y2 + 1, z, (Block)TCBlockRegistry.palmStairs, this.dir);
+                        this.placeBlockWithDir(x, y2 + 1, z, (Block) TCBlockRegistry.palmStairs, this.dir);
                         if (!hasGennedTunnel) {
                             this.generateTunnel(x, y2, z);
                             hasGennedTunnel = true;
@@ -154,8 +151,8 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
                 dir = this.rand.nextInt(4);
             }
         }
-        this.placeBlockWithDir(i, j, k, (Block)TCBlockRegistry.bambooChest, 0);
-        final TileEntityBambooChest chest = (TileEntityBambooChest)this.getTEWithDir(i, j, k);
+        this.placeBlockWithDir(i, j, k, (Block) TCBlockRegistry.bambooChest, 0);
+        final TileEntityBambooChest chest = (TileEntityBambooChest) this.getTEWithDir(i, j, k);
         if (chest != null) {
             chest.setInventorySlotContents(0, this.randLoot());
         }
@@ -164,17 +161,17 @@ public class WorldGenForestAltarRuin extends TCDirectionalGen
     public ItemStack randLoot() {
         final int picker = this.rand.nextInt(18);
         if (picker < 6) {
-            return new ItemStack((Block)TCBlockRegistry.bambooChute, this.rand.nextInt(20) + 1);
+            return new ItemStack((Block) TCBlockRegistry.bambooChute, this.rand.nextInt(20) + 1);
         }
         if (picker < 10) {
-            return new ItemStack((Item)TCItemRegistry.scale, this.rand.nextInt(3) + 1);
+            return new ItemStack((Item) TCItemRegistry.scale, this.rand.nextInt(3) + 1);
         }
         if (picker < 12) {
-            return new ItemStack((Block)TCBlockRegistry.thatchBundle, this.rand.nextInt(20) + 1);
+            return new ItemStack((Block) TCBlockRegistry.thatchBundle, this.rand.nextInt(20) + 1);
         }
         if (picker < 14) {
-            return new ItemStack((Item)TCItemRegistry.cookedFrogLeg, this.rand.nextInt(4) + 1);
+            return new ItemStack((Item) TCItemRegistry.cookedFrogLeg, this.rand.nextInt(4) + 1);
         }
-        return new ItemStack((Item)TCItemRegistry.blowGun, 1);
+        return new ItemStack((Item) TCItemRegistry.blowGun, 1);
     }
 }

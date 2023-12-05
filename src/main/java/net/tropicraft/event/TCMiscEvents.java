@@ -1,29 +1,34 @@
 package net.tropicraft.event;
 
-import net.minecraftforge.event.world.*;
-import CoroUtil.forge.*;
-import CoroUtil.world.*;
-import cpw.mods.fml.common.eventhandler.*;
-import cpw.mods.fml.common.gameevent.*;
-import net.minecraft.client.gui.*;
-import net.minecraft.client.*;
-import extendedrenderer.*;
 import java.util.*;
-import cpw.mods.fml.relauncher.*;
-import cpw.mods.fml.common.*;
+
+import net.minecraft.client.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.potion.*;
+import net.minecraft.world.*;
+import net.minecraftforge.event.world.*;
 import net.tropicraft.entity.placeable.*;
 import net.tropicraft.util.*;
-import net.minecraft.world.*;
 
-public class TCMiscEvents
-{
+import CoroUtil.forge.*;
+import CoroUtil.world.*;
+import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.eventhandler.*;
+import cpw.mods.fml.common.gameevent.*;
+import cpw.mods.fml.relauncher.*;
+import extendedrenderer.*;
+
+public class TCMiscEvents {
+
     @SubscribeEvent
     public void worldLoad(final WorldEvent.Load event) {
-        if (!event.world.isRemote && ((WorldServer)event.world).provider.dimensionId == -127 && WorldDirectorManager.instance().getWorldDirector(CoroAI.modID, event.world) == null) {
-            WorldDirectorManager.instance().registerWorldDirector(new WorldDirector(), CoroAI.modID, event.world);
+        if (!event.world.isRemote && ((WorldServer) event.world).provider.dimensionId == -127
+            && WorldDirectorManager.instance()
+                .getWorldDirector(CoroAI.modID, event.world) == null) {
+            WorldDirectorManager.instance()
+                .registerWorldDirector(new WorldDirector(), CoroAI.modID, event.world);
         }
     }
 
@@ -46,13 +51,17 @@ public class TCMiscEvents
         if (event.phase == TickEvent.Phase.END) {
             EffectHelper.tick();
         }
-        final World world = (World)FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+        final World world = (World) FMLCommonHandler.instance()
+            .getMinecraftServerInstance()
+            .worldServerForDimension(0);
         if (world != null && world instanceof WorldServer) {
             for (int ii = 0; ii < world.playerEntities.size(); ++ii) {
                 final Entity entity1 = (Entity) world.playerEntities.get(ii);
-                if (entity1 instanceof EntityPlayerMP && ((EntityPlayerMP)entity1).isPotionActive(Potion.confusion) && this.isSunset(world) && entity1.ridingEntity instanceof EntityChair) {
+                if (entity1 instanceof EntityPlayerMP && ((EntityPlayerMP) entity1).isPotionActive(Potion.confusion)
+                    && this.isSunset(world)
+                    && entity1.ridingEntity instanceof EntityChair) {
                     entity1.ridingEntity = null;
-                    TropicraftWorldUtils.teleportPlayer((EntityPlayerMP)entity1);
+                    TropicraftWorldUtils.teleportPlayer((EntityPlayerMP) entity1);
                 }
             }
         }

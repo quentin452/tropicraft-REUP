@@ -1,21 +1,22 @@
 package net.tropicraft.world.chunk;
 
-import net.minecraft.world.biome.*;
-import net.tropicraft.world.mapgen.*;
-import net.minecraft.world.gen.*;
+import java.util.*;
+
+import net.minecraft.block.*;
+import net.minecraft.entity.*;
 import net.minecraft.init.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.*;
+import net.minecraft.world.chunk.*;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.*;
 import net.tropicraft.registry.*;
-import net.minecraft.world.chunk.*;
 import net.tropicraft.world.biomes.*;
-import net.minecraft.block.*;
-import net.minecraft.util.*;
-import net.minecraft.entity.*;
-import java.util.*;
-import net.minecraft.world.*;
+import net.tropicraft.world.mapgen.*;
 
-public class ChunkProviderTropicraft implements IChunkProvider
-{
+public class ChunkProviderTropicraft implements IChunkProvider {
+
     private static final int CHUNK_SIZE_Y = 256;
     private static final int HOME_TREE_RARITY = 350;
     private World worldObj;
@@ -37,7 +38,7 @@ public class ChunkProviderTropicraft implements IChunkProvider
     private WorldGenerator coalGen;
     private WorldGenerator lapisGen;
     private float[] parabolicField;
-    
+
     public ChunkProviderTropicraft(final World worldObj, final long seed, final boolean par4) {
         this.worldObj = worldObj;
         this.rand = new Random(seed);
@@ -49,33 +50,39 @@ public class ChunkProviderTropicraft implements IChunkProvider
         this.caveGenerator = new MapGenTropicsCaves();
         this.volcanoGen = new MapGenVolcano(worldObj, true);
         this.groveGen = new MapGenUndergroundGrove(worldObj);
-        this.coalGen = (WorldGenerator)new WorldGenMinable(Blocks.coal_ore, 16);
-        this.lapisGen = (WorldGenerator)new WorldGenMinable(Blocks.lapis_ore, 6);
-        this.ironGen = (WorldGenerator)new WorldGenMinable(Blocks.iron_ore, 8);
-        this.eudialyteGen = (WorldGenerator)new WorldGenMinable(TCBlockRegistry.eudialyteOre, 6);
-        this.zirconGen = (WorldGenerator)new WorldGenMinable(TCBlockRegistry.zirconOre, 4);
-        this.azuriteGen = (WorldGenerator)new WorldGenMinable(TCBlockRegistry.azuriteOre, 2);
+        this.coalGen = (WorldGenerator) new WorldGenMinable(Blocks.coal_ore, 16);
+        this.lapisGen = (WorldGenerator) new WorldGenMinable(Blocks.lapis_ore, 6);
+        this.ironGen = (WorldGenerator) new WorldGenMinable(Blocks.iron_ore, 8);
+        this.eudialyteGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.eudialyteOre, 6);
+        this.zirconGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.zirconOre, 4);
+        this.azuriteGen = (WorldGenerator) new WorldGenMinable(TCBlockRegistry.azuriteOre, 2);
         this.seed = seed;
     }
-    
+
     public Chunk provideChunk(final int x, final int z) {
         this.rand.setSeed(x * 341873128712L + z * 132897987541L);
         final Block[] blocks = new Block[65536];
         final byte[] metas = new byte[65536];
         this.generateTerrain(x, z, blocks, metas);
-        this.replaceBlocksForBiome(x, z, blocks, metas, this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16));
+        this.replaceBlocksForBiome(
+            x,
+            z,
+            blocks,
+            metas,
+            this.biomesForGeneration = this.worldObj.getWorldChunkManager()
+                .loadBlockGeneratorData(this.biomesForGeneration, x * 16, z * 16, 16, 16));
         this.volcanoGen.generate(x, z, blocks, metas);
         this.groveGen.generate(x, z, blocks, metas);
-        this.caveGenerator.generate((IChunkProvider)this, this.worldObj, x, z, blocks);
+        this.caveGenerator.generate((IChunkProvider) this, this.worldObj, x, z, blocks);
         final Chunk chunk = new Chunk(this.worldObj, blocks, metas, x, z);
         final byte[] abyte1 = chunk.getBiomeArray();
         for (int k = 0; k < abyte1.length; ++k) {
-            abyte1[k] = (byte)this.biomesForGeneration[k].biomeID;
+            abyte1[k] = (byte) this.biomesForGeneration[k].biomeID;
         }
         chunk.generateSkylightMap();
         return chunk;
     }
-    
+
     private void generateTerrain(final int x, final int z, final Block[] blocks, final byte[] metas) {
         final byte chunkSizeGenXZ = 4;
         final byte chunkSizeGenY = 16;
@@ -83,7 +90,8 @@ public class ChunkProviderTropicraft implements IChunkProvider
         final int k = chunkSizeGenXZ + 1;
         final byte b3 = 17;
         final int l = chunkSizeGenXZ + 1;
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, k + 5, l + 5);
+        this.biomesForGeneration = this.worldObj.getWorldChunkManager()
+            .getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, k + 5, l + 5);
         double[] noiseArray = null;
         noiseArray = this.initializeNoiseField(noiseArray, x * chunkSizeGenXZ, 0, z * chunkSizeGenXZ, k, b3, l);
         for (int i1 = 0; i1 < chunkSizeGenXZ; ++i1) {
@@ -112,11 +120,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
                                 final int index = (i1 * 4 + i2) * 256 * 16 | (j1 * 4 + k3) * 256 | k2 * 8 + l2;
                                 if ((d17 += d16) > 0.0) {
                                     blocks[index] = Blocks.stone;
-                                }
-                                else if (k2 * 8 + l2 < midHeight) {
-                                    blocks[index] = (Block)TCBlockRegistry.tropicsWater;
-                                }
-                                else {
+                                } else if (k2 * 8 + l2 < midHeight) {
+                                    blocks[index] = (Block) TCBlockRegistry.tropicsWater;
+                                } else {
                                     blocks[index] = Blocks.air;
                                 }
                             }
@@ -132,8 +138,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
             }
         }
     }
-    
-    private double[] initializeNoiseField(double[] par1ArrayOfDouble, final int par2, final int par3, final int par4, final int par5, final int par6, final int par7) {
+
+    private double[] initializeNoiseField(double[] par1ArrayOfDouble, final int par2, final int par3, final int par4,
+        final int par5, final int par6, final int par7) {
         if (par1ArrayOfDouble == null) {
             par1ArrayOfDouble = new double[par5 * par6 * par7];
         }
@@ -155,7 +162,8 @@ public class ChunkProviderTropicraft implements IChunkProvider
         double[] noise5 = null;
         noise1 = this.noiseGen1.generateNoiseOctaves(noise1, par2, par3, par4, par5, par6, par7, d0, d2, d0);
         noise2 = this.noiseGen2.generateNoiseOctaves(noise2, par2, par3, par4, par5, par6, par7, d0, d2, d0);
-        noise3 = this.noiseGen3.generateNoiseOctaves(noise3, par2, par3, par4, par5, par6, par7, d0 / 80.0, d2 / 160.0, d0 / 80.0);
+        noise3 = this.noiseGen3
+            .generateNoiseOctaves(noise3, par2, par3, par4, par5, par6, par7, d0 / 80.0, d2 / 160.0, d0 / 80.0);
         noise4 = this.noiseGen4.generateNoiseOctaves(noise4, par2, par4, par5, par7, 1.121, 1.121, 0.5);
         noise5 = this.noiseGen5.generateNoiseOctaves(noise5, par2, par4, par5, par7, 200.0, 200.0, 0.5);
         final boolean flag = false;
@@ -171,7 +179,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
                 final BiomeGenBase biomegenbase = this.biomesForGeneration[k2 + 2 + (l2 + 2) * (par5 + 5)];
                 for (int i3 = -b0; i3 <= b0; ++i3) {
                     for (int j3 = -b0; j3 <= b0; ++j3) {
-                        final BiomeGenBase biomegenbase2 = this.biomesForGeneration[k2 + i3 + 2 + (l2 + j3 + 2) * (par5 + 5)];
+                        final BiomeGenBase biomegenbase2 = this.biomesForGeneration[k2 + i3
+                            + 2
+                            + (l2 + j3 + 2) * (par5 + 5)];
                         float f5 = this.parabolicField[i3 + 2 + (j3 + 2) * 5] / (biomegenbase2.rootHeight + 2.0f);
                         if (biomegenbase2.rootHeight > biomegenbase.rootHeight) {
                             f5 /= 2.0f;
@@ -197,8 +207,7 @@ public class ChunkProviderTropicraft implements IChunkProvider
                     }
                     d3 /= 1.4;
                     d3 /= 2.0;
-                }
-                else {
+                } else {
                     if (d3 > 1.0) {
                         d3 = 1.0;
                     }
@@ -221,11 +230,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
                     final double d11 = (noise3[i2] / 10.0 + 1.0) / 2.0;
                     if (d11 < 0.0) {
                         d7 = d9;
-                    }
-                    else if (d11 > 1.0) {
+                    } else if (d11 > 1.0) {
                         d7 = d10;
-                    }
-                    else {
+                    } else {
                         d7 = d9 + (d10 - d9) * d11;
                     }
                     d7 -= d8;
@@ -240,34 +247,35 @@ public class ChunkProviderTropicraft implements IChunkProvider
         }
         return par1ArrayOfDouble;
     }
-    
-    public void replaceBlocksForBiome(final int x, final int z, final Block[] blocks, final byte[] metas, final BiomeGenBase[] biomes) {
+
+    public void replaceBlocksForBiome(final int x, final int z, final Block[] blocks, final byte[] metas,
+        final BiomeGenBase[] biomes) {
         final int sandType = this.rand.nextInt(200);
         Block sandBlock = null;
         short sandMetadata = 0;
         switch (sandType) {
             case 0: {
-                sandBlock = (Block)TCBlockRegistry.mineralSands;
+                sandBlock = (Block) TCBlockRegistry.mineralSands;
                 sandMetadata = 0;
                 break;
             }
             case 1: {
-                sandBlock = (Block)TCBlockRegistry.mineralSands;
+                sandBlock = (Block) TCBlockRegistry.mineralSands;
                 sandMetadata = 1;
                 break;
             }
             case 2: {
-                sandBlock = (Block)TCBlockRegistry.mineralSands;
+                sandBlock = (Block) TCBlockRegistry.mineralSands;
                 sandMetadata = 2;
                 break;
             }
             case 3: {
-                sandBlock = (Block)TCBlockRegistry.mineralSands;
+                sandBlock = (Block) TCBlockRegistry.mineralSands;
                 sandMetadata = 3;
                 break;
             }
             default: {
-                sandBlock = (Block)Blocks.sand;
+                sandBlock = (Block) Blocks.sand;
                 sandMetadata = 0;
                 break;
             }
@@ -278,7 +286,7 @@ public class ChunkProviderTropicraft implements IChunkProvider
         final double d = 0.03125;
         for (int l = 0; l < 16; ++l) {
             for (int i1 = 0; i1 < 16; ++i1) {
-                final BiomeGenTropicraft biome = (BiomeGenTropicraft)biomes[i1 + l * 16];
+                final BiomeGenTropicraft biome = (BiomeGenTropicraft) biomes[i1 + l * 16];
                 final Block top = biome.topBlock;
                 final Block filler = biome.fillerBlock;
                 final Block bfiller;
@@ -292,11 +300,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
                     final Block block = blocks[i2];
                     if (l2 <= 0) {
                         blocks[i2] = Blocks.bedrock;
-                    }
-                    else if (block == Blocks.air || block == TCBlockRegistry.tropicsWater) {
+                    } else if (block == Blocks.air || block == TCBlockRegistry.tropicsWater) {
                         a = 0;
-                    }
-                    else if (a >= 0 && a < 5) {
+                    } else if (a >= 0 && a < 5) {
                         Block blockUsed = Blocks.stone;
                         if (a == 0 && l2 < 66) {
                             flag = true;
@@ -305,20 +311,17 @@ public class ChunkProviderTropicraft implements IChunkProvider
                             if (a < 5) {
                                 blockUsed = btop;
                             }
-                        }
-                        else if (top != Blocks.sand) {
+                        } else if (top != Blocks.sand) {
                             if (a == 0) {
                                 blockUsed = top;
-                            }
-                            else if (a < 5) {
+                            } else if (a < 5) {
                                 blockUsed = filler;
                             }
                         }
                         blocks[i2] = blockUsed;
-                        metas[i2] = (byte)sandMetadata;
+                        metas[i2] = (byte) sandMetadata;
                         ++a;
-                    }
-                    else {
+                    } else {
                         flag = false;
                         a = -1;
                     }
@@ -327,22 +330,23 @@ public class ChunkProviderTropicraft implements IChunkProvider
             }
         }
     }
-    
+
     public void populate(final IChunkProvider par1IChunkProvider, final int i, final int j) {
         BlockSand.fallInstantly = true;
         final int x = i * 16;
         final int z = j * 16;
-        final BiomeGenTropicraft biome = (BiomeGenTropicraft)this.worldObj.getWorldChunkManager().getBiomeGenAt(x, z);
+        final BiomeGenTropicraft biome = (BiomeGenTropicraft) this.worldObj.getWorldChunkManager()
+            .getBiomeGenAt(x, z);
         this.rand.setSeed(this.worldObj.getSeed());
         final long l1 = this.rand.nextLong() / 2L * 2L + 1L;
         final long l2 = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed(i * l1 + j * l2 ^ this.worldObj.getSeed());
         biome.decorate(this.worldObj, this.rand, x, z);
         this.generateOres(x, z);
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, (BiomeGenBase)biome, x + 8, z + 8, 16, 16, this.rand);
+        SpawnerAnimals.performWorldGenSpawning(this.worldObj, (BiomeGenBase) biome, x + 8, z + 8, 16, 16, this.rand);
         BlockSand.fallInstantly = false;
     }
-    
+
     public void generateOres(final int x, final int z) {
         this.genStandardOre1(19, this.coalGen, 0, 128, x, z);
         this.genStandardOre1(10, this.ironGen, 0, 64, x, z);
@@ -351,8 +355,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
         this.genStandardOre1(10, this.azuriteGen, 0, 128, x, z);
         this.genStandardOre2(1, this.lapisGen, 16, 16, x, z);
     }
-    
-    public void genStandardOre1(final int i, final WorldGenerator worldgenerator, final int j, final int k, final int x, final int z) {
+
+    public void genStandardOre1(final int i, final WorldGenerator worldgenerator, final int j, final int k, final int x,
+        final int z) {
         for (int l = 0; l < i; ++l) {
             final int i2 = x + this.rand.nextInt(16);
             final int j2 = this.rand.nextInt(k - j) + j;
@@ -360,8 +365,9 @@ public class ChunkProviderTropicraft implements IChunkProvider
             worldgenerator.generate(this.worldObj, this.rand, i2, j2, k2);
         }
     }
-    
-    public void genStandardOre2(final int i, final WorldGenerator worldgenerator, final int j, final int k, final int x, final int z) {
+
+    public void genStandardOre2(final int i, final WorldGenerator worldgenerator, final int j, final int k, final int x,
+        final int z) {
         for (int l = 0; l < i; ++l) {
             final int i2 = x + this.rand.nextInt(16);
             final int j2 = this.rand.nextInt(k) + this.rand.nextInt(k) + (j - k);
@@ -369,7 +375,7 @@ public class ChunkProviderTropicraft implements IChunkProvider
             worldgenerator.generate(this.worldObj, this.rand, i2, j2, k2);
         }
     }
-    
+
     int getTerrainHeightAt(final int x, final int z) {
         for (int y = 256; y > 0; --y) {
             final Block block = this.worldObj.getBlock(x, y, z);
@@ -379,47 +385,46 @@ public class ChunkProviderTropicraft implements IChunkProvider
         }
         return 0;
     }
-    
+
     public String makeString() {
         return "TropiLevelSource";
     }
-    
+
     public boolean chunkExists(final int x, final int z) {
         return true;
     }
-    
+
     public Chunk loadChunk(final int x, final int z) {
         return this.provideChunk(x, z);
     }
-    
+
     public boolean saveChunks(final boolean flag, final IProgressUpdate iprogressupdate) {
         return true;
     }
-    
+
     public boolean unloadQueuedChunks() {
         return false;
     }
-    
+
     public boolean canSave() {
         return true;
     }
-    
-    public List getPossibleCreatures(final EnumCreatureType par1EnumCreatureType, final int par2, final int par3, final int par4) {
+
+    public List getPossibleCreatures(final EnumCreatureType par1EnumCreatureType, final int par2, final int par3,
+        final int par4) {
         final BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(par2, par4);
         return (biomegenbase == null) ? null : biomegenbase.getSpawnableList(par1EnumCreatureType);
     }
-    
+
     public ChunkPosition func_147416_a(final World world, final String s, final int i, final int j, final int k) {
         return null;
     }
-    
+
     public int getLoadedChunkCount() {
         return 0;
     }
-    
-    public void recreateStructures(final int i, final int j) {
-    }
-    
-    public void saveExtraData() {
-    }
+
+    public void recreateStructures(final int i, final int j) {}
+
+    public void saveExtraData() {}
 }

@@ -1,22 +1,23 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.init.*;
+
+import net.minecraft.block.*;
 import net.minecraft.block.material.*;
+import net.minecraft.init.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
 
-public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
-{
+public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen {
+
     private static final int TOP_OFFSET = 3;
     private static final Block woodID;
     private static final Block leafID;
-    
+
     public WorldGenTropicraftCurvedPalm(final World world, final Random rand) {
         super(world, rand);
     }
-    
+
     public boolean generate(final int i, final int j, final int k) {
         final Block blockUnder = this.worldObj.getBlock(i, j - 1, k);
         if (blockUnder != Blocks.sand) {
@@ -54,8 +55,7 @@ public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
         for (int y3 = 1; y3 < 5; ++y3) {
             if (y3 == 4) {
                 this.placeBlockWithDir(1, y3 + j + height - 1, 0, WorldGenTropicraftCurvedPalm.leafID, 0);
-            }
-            else {
+            } else {
                 this.placeBlockWithDir(0, y3 + j + height - 1, 0, WorldGenTropicraftCurvedPalm.leafID, 0);
             }
         }
@@ -79,22 +79,26 @@ public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
         }
         return true;
     }
-    
+
     public int findWater(final int i, final int j, final int k) {
         int iPos = 0;
         int iNeg = 0;
         int kPos = 0;
         int kNeg = 0;
-        while (iPos < 10 && this.worldObj.getBlock(i + iPos, 62, k).getMaterial() != Material.water) {
+        while (iPos < 10 && this.worldObj.getBlock(i + iPos, 62, k)
+            .getMaterial() != Material.water) {
             ++iPos;
         }
-        while (iNeg > -10 && this.worldObj.getBlock(i + iNeg, 62, k).getMaterial() != Material.water) {
+        while (iNeg > -10 && this.worldObj.getBlock(i + iNeg, 62, k)
+            .getMaterial() != Material.water) {
             --iNeg;
         }
-        while (kPos < 10 && this.worldObj.getBlock(i, 62, k + kPos).getMaterial() != Material.water) {
+        while (kPos < 10 && this.worldObj.getBlock(i, 62, k + kPos)
+            .getMaterial() != Material.water) {
             ++kPos;
         }
-        while (kNeg > -10 && this.worldObj.getBlock(i, 62, k + kNeg).getMaterial() != Material.water) {
+        while (kNeg > -10 && this.worldObj.getBlock(i, 62, k + kNeg)
+            .getMaterial() != Material.water) {
             --kNeg;
         }
         if (iPos < Math.abs(iNeg) && iPos < kPos && iPos < Math.abs(kNeg)) {
@@ -117,26 +121,22 @@ public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
                 return 2;
             }
             return 0;
-        }
-        else if (iPos < 10 && iPos == Math.abs(kNeg)) {
+        } else if (iPos < 10 && iPos == Math.abs(kNeg)) {
             if (this.rand.nextInt(2) + 1 == 1) {
                 return 2;
             }
             return 1;
-        }
-        else if (kPos < 10 && Math.abs(iNeg) == kPos) {
+        } else if (kPos < 10 && Math.abs(iNeg) == kPos) {
             if (this.rand.nextInt(2) + 1 == 1) {
                 return 3;
             }
             return 0;
-        }
-        else if (Math.abs(iNeg) < 10 && Math.abs(iNeg) == Math.abs(kNeg)) {
+        } else if (Math.abs(iNeg) < 10 && Math.abs(iNeg) == Math.abs(kNeg)) {
             if (this.rand.nextInt(2) + 1 == 1) {
                 return 3;
             }
             return 1;
-        }
-        else {
+        } else {
             if (kPos >= 10 || kPos != Math.abs(kNeg)) {
                 return -1;
             }
@@ -146,7 +146,7 @@ public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
             return 1;
         }
     }
-    
+
     public int pickDirection(final int i, final int j, final int k) {
         final int direction = this.findWater(i, j, k);
         if (direction != -1) {
@@ -154,9 +154,9 @@ public class WorldGenTropicraftCurvedPalm extends TCDirectionalGen
         }
         return this.rand.nextInt(4) + 1;
     }
-    
+
     static {
-        woodID = (Block)TCBlockRegistry.logs;
-        leafID = (Block)TCBlockRegistry.palmLeaves;
+        woodID = (Block) TCBlockRegistry.logs;
+        leafID = (Block) TCBlockRegistry.palmLeaves;
     }
 }

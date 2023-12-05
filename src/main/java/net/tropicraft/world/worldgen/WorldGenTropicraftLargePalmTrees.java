@@ -1,33 +1,34 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.block.*;
 import java.util.*;
-import net.tropicraft.registry.*;
-import net.minecraft.world.*;
-import net.minecraft.init.*;
-import net.tropicraft.block.*;
 
-public class WorldGenTropicraftLargePalmTrees extends WorldGenerator
-{
+import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.*;
+import net.tropicraft.block.*;
+import net.tropicraft.registry.*;
+
+public class WorldGenTropicraftLargePalmTrees extends WorldGenerator {
+
     private Block wood;
     private Block tropicsLeaves;
     protected Random rand;
-    
+
     public WorldGenTropicraftLargePalmTrees() {
-        this.wood = (Block)TCBlockRegistry.logs;
-        this.tropicsLeaves = (Block)TCBlockRegistry.palmLeaves;
+        this.wood = (Block) TCBlockRegistry.logs;
+        this.tropicsLeaves = (Block) TCBlockRegistry.palmLeaves;
     }
-    
+
     public WorldGenTropicraftLargePalmTrees(final boolean flag) {
         super(flag);
-        this.wood = (Block)TCBlockRegistry.logs;
-        this.tropicsLeaves = (Block)TCBlockRegistry.palmLeaves;
+        this.wood = (Block) TCBlockRegistry.logs;
+        this.tropicsLeaves = (Block) TCBlockRegistry.palmLeaves;
     }
-    
+
     public boolean generate(final World world, final Random random, final int i, int j, final int k) {
         final int b = random.nextInt(2);
-        final byte height = (byte)(random.nextInt(4) + 7);
+        final byte height = (byte) (random.nextInt(4) + 7);
         boolean flag = true;
         if (j < 1 || j + height + 1 > 128) {
             return false;
@@ -47,8 +48,7 @@ public class WorldGenTropicraftLargePalmTrees extends WorldGenerator
                         if (l2 != Blocks.air && l2 != TCBlockRegistry.palmLeaves) {
                             flag = false;
                         }
-                    }
-                    else {
+                    } else {
                         flag = false;
                     }
                 }
@@ -200,8 +200,9 @@ public class WorldGenTropicraftLargePalmTrees extends WorldGenerator
         }
         return true;
     }
-    
-    public void setBlockAndMetadata(final World par1World, final int par2, final int par3, final int par4, final Block par5, final int par6) {
+
+    public void setBlockAndMetadata(final World par1World, final int par2, final int par3, final int par4,
+        final Block par5, final int par6) {
         par1World.setBlock(par2, par3, par4, par5, par6, 3);
     }
 }

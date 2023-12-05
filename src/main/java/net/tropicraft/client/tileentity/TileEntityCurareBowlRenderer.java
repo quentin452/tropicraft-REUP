@@ -1,52 +1,54 @@
 package net.tropicraft.client.tileentity;
 
+import java.util.*;
+
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.tileentity.*;
-import net.tropicraft.client.block.model.*;
 import net.minecraft.entity.item.*;
 import net.minecraft.init.*;
 import net.minecraft.item.*;
-import net.minecraft.world.*;
-import net.minecraft.client.renderer.entity.*;
-import net.tropicraft.block.tileentity.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.util.*;
-import net.tropicraft.util.*;
-import java.util.*;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.block.tileentity.*;
+import net.tropicraft.client.block.model.*;
+import net.tropicraft.util.*;
 
-public class TileEntityCurareBowlRenderer extends TileEntitySpecialRenderer
-{
+import org.lwjgl.opengl.*;
+
+public class TileEntityCurareBowlRenderer extends TileEntitySpecialRenderer {
+
     ModelCurareBowl modelBowl;
     private EntityItem dummyEntityItem;
     private RenderItem renderItem;
-    
+
     public TileEntityCurareBowlRenderer() {
         this.modelBowl = new ModelCurareBowl();
-        this.dummyEntityItem = new EntityItem((World)null, 0.0, 0.0, 0.0, new ItemStack(Items.sugar));
+        this.dummyEntityItem = new EntityItem((World) null, 0.0, 0.0, 0.0, new ItemStack(Items.sugar));
         (this.renderItem = new RenderItem()).setRenderManager(RenderManager.instance);
     }
-    
-    private void renderBowl(final TileEntityCurareBowl bowl, final double x, final double y, final double z, final float partialTicks) {
+
+    private void renderBowl(final TileEntityCurareBowl bowl, final double x, final double y, final double z,
+        final float partialTicks) {
         GL11.glPushMatrix();
         GL11.glScalef(1.0f, 1.0f, 1.0f);
-        GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
+        GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         GL11.glRotatef(180.0f, 1.0f, 0.0f, 1.0f);
-        final List<ItemStack> ingredients = (List<ItemStack>)bowl.getIngredientList();
+        final List<ItemStack> ingredients = (List<ItemStack>) bowl.getIngredientList();
         if (ingredients != null) {
             final int count = ingredients.size();
             final float turnRate = 1.0f;
             float startAngle;
             if (bowl.pestleTicks > 0) {
                 final int ticksPerPestleClick = 5;
-                final float progress = bowl.pestleTicks / (float)ticksPerPestleClick;
-                startAngle = (float)(turnRate * 2.0f * 3.141592653589793 * progress);
-            }
-            else {
+                final float progress = bowl.pestleTicks / (float) ticksPerPestleClick;
+                startAngle = (float) (turnRate * 2.0f * 3.141592653589793 * progress);
+            } else {
                 startAngle = 0.0f;
             }
             for (int i = 0; i < count; ++i) {
                 GL11.glPushMatrix();
-                final float angle = (float)(6.283185307179586 * (float)i / count);
+                final float angle = (float) (6.283185307179586 * (float) i / count);
                 final float radius = 0.666f;
                 final float offsetx = MathHelper.sin(startAngle + angle) * radius;
                 final float offsetz = MathHelper.cos(startAngle + angle) * radius;
@@ -56,7 +58,7 @@ public class TileEntityCurareBowlRenderer extends TileEntitySpecialRenderer
                 GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
                 GL11.glRotatef(180.0f, 1.0f, 0.0f, 1.0f);
                 GL11.glRotatef(RenderManager.instance.playerViewY, 0.0f, 1.0f, 0.0f);
-                this.dummyEntityItem.setEntityItemStack((ItemStack)ingredients.get(i));
+                this.dummyEntityItem.setEntityItemStack((ItemStack) ingredients.get(i));
                 this.renderItem.doRender(this.dummyEntityItem, 0.0, 0.0, 0.0, 0.0f, 0.0f);
                 GL11.glPopMatrix();
             }
@@ -65,8 +67,9 @@ public class TileEntityCurareBowlRenderer extends TileEntitySpecialRenderer
         this.modelBowl.renderBowl();
         GL11.glPopMatrix();
     }
-    
-    public void renderTileEntityAt(final TileEntity var1, final double var2, final double var4, final double var6, final float var8) {
-        this.renderBowl((TileEntityCurareBowl)var1, var2, var4, var6, var8);
+
+    public void renderTileEntityAt(final TileEntity var1, final double var2, final double var4, final double var6,
+        final float var8) {
+        this.renderBowl((TileEntityCurareBowl) var1, var2, var4, var6, var8);
     }
 }

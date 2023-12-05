@@ -1,19 +1,19 @@
 package net.tropicraft.world.genlayer;
 
-import net.tropicraft.world.biomes.*;
 import net.minecraft.world.gen.layer.*;
+import net.tropicraft.world.biomes.*;
 
-public class GenLayerTropicraftRiver extends GenLayerTropicraft
-{
+public class GenLayerTropicraftRiver extends GenLayerTropicraft {
+
     private int riverID;
-    
+
     public GenLayerTropicraftRiver(final long seed, final GenLayerTropicraft parent) {
         super(seed);
         this.riverID = BiomeGenTropicraft.tropicsRiver.biomeID;
         this.parent = parent;
         this.setZoom(1);
     }
-    
+
     public int[] getInts(final int x, final int y, final int width, final int length) {
         final int x2 = x - 1;
         final int y2 = y - 1;
@@ -30,15 +30,14 @@ public class GenLayerTropicraftRiver extends GenLayerTropicraft
                 final int cur = parentMap[i + 1 + (j + 1) * width2];
                 if (cur != backX || cur != forwardX || cur != backY || cur != forwardY) {
                     resultMap[i + j * width] = this.riverID;
-                }
-                else {
+                } else {
                     resultMap[i + j * width] = -1;
                 }
             }
         }
         return resultMap;
     }
-    
+
     public void setZoom(final int zoom) {
         this.zoom = zoom;
         this.parent.setZoom(zoom);

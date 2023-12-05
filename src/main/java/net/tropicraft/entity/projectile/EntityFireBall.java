@@ -1,20 +1,22 @@
 package net.tropicraft.entity.projectile;
 
+import java.util.*;
+
+import net.minecraft.client.*;
+import net.minecraft.entity.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+
+import CoroUtil.componentAI.*;
 import CoroUtil.entity.*;
 import cpw.mods.fml.relauncher.*;
-import extendedrenderer.particle.behavior.*;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.*;
-import net.minecraft.entity.*;
-import java.util.*;
-import CoroUtil.componentAI.*;
-import net.minecraft.util.*;
-import net.minecraft.client.*;
 import extendedrenderer.particle.*;
+import extendedrenderer.particle.behavior.*;
 import extendedrenderer.particle.entity.*;
 
-public class EntityFireBall extends EntityThrowableUsefull
-{
+public class EntityFireBall extends EntityThrowableUsefull {
+
     public int ticksInAir;
     @SideOnly(Side.CLIENT)
     public boolean hasDeathTicked;
@@ -34,8 +36,12 @@ public class EntityFireBall extends EntityThrowableUsefull
         super(world, entityliving);
         final float speed = 0.7f;
         final float f = 0.4f;
-        this.motionX = -MathHelper.sin(-this.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f) * f;
-        this.motionZ = MathHelper.cos(-this.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f) * f;
+        this.motionX = -MathHelper.sin(-this.rotationYaw / 180.0f * 3.1415927f)
+            * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f)
+            * f;
+        this.motionZ = MathHelper.cos(-this.rotationYaw / 180.0f * 3.1415927f)
+            * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f)
+            * f;
         this.motionY = -MathHelper.sin((-this.rotationPitch + this.func_70183_g()) / 180.0f * 3.1415927f) * f;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed, 1.0f);
     }
@@ -51,8 +57,7 @@ public class EntityFireBall extends EntityThrowableUsefull
             if (this.ticksInAir > 80) {
                 this.setDead();
             }
-        }
-        else {
+        } else {
             if (this.pm == null) {
                 this.pm = new ParticleBehaviors(Vec3.createVectorHelper(this.posX, this.posY, this.posZ));
                 this.pm.rateAlpha = 0.02f;
@@ -80,7 +85,10 @@ public class EntityFireBall extends EntityThrowableUsefull
     public MovingObjectPosition tickEntityCollision(final Vec3 vec3, final Vec3 vec31) {
         MovingObjectPosition movingobjectposition = null;
         Entity entity = null;
-        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(0.5, 1.0, 0.5));
+        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            (Entity) this,
+            this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
+                .expand(0.5, 1.0, 0.5));
         final double d0 = 0.0;
         final EntityLivingBase entityliving = this.getThrower();
         for (Object o : list) {
@@ -100,12 +108,16 @@ public class EntityFireBall extends EntityThrowableUsefull
         if (movingobjectposition.entityHit != null && !this.worldObj.isRemote) {
             final byte byte0 = 5;
             if (movingobjectposition.entityHit instanceof ICoroAI && this.getThrower() instanceof ICoroAI) {
-                if (((ICoroAI)this.getThrower()).getAIAgent().dipl_info != ((ICoroAI)movingobjectposition.entityHit).getAIAgent().dipl_info) {
-                    movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage((Entity)this, (Entity)this.getThrower()), (float)byte0);
+                if (((ICoroAI) this.getThrower()).getAIAgent().dipl_info
+                    != ((ICoroAI) movingobjectposition.entityHit).getAIAgent().dipl_info) {
+                    movingobjectposition.entityHit.attackEntityFrom(
+                        DamageSource.causeThrownDamage((Entity) this, (Entity) this.getThrower()),
+                        (float) byte0);
                 }
-            }
-            else {
-                movingobjectposition.entityHit.attackEntityFrom(DamageSource.causeThrownDamage((Entity)this, (Entity)this.getThrower()), (float)byte0);
+            } else {
+                movingobjectposition.entityHit.attackEntityFrom(
+                    DamageSource.causeThrownDamage((Entity) this, (Entity) this.getThrower()),
+                    (float) byte0);
             }
             movingobjectposition.entityHit.setFire(10);
             if (!this.worldObj.isRemote) {
@@ -114,8 +126,7 @@ public class EntityFireBall extends EntityThrowableUsefull
         }
         if (!this.worldObj.isRemote) {
             this.setDead();
-        }
-        else {
+        } else {
             this.tickDeath();
         }
     }
@@ -131,7 +142,15 @@ public class EntityFireBall extends EntityThrowableUsefull
     public void tickAnimate() {
         for (int amount = 3 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i < amount; ++i) {
             final double speed = 0.01;
-            final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(this.worldObj, ParticleRegistry.smoke, this.posX + this.rand.nextDouble(), this.posY + 0.2 + this.rand.nextDouble() * 0.2, this.posZ + this.rand.nextDouble(), (this.rand.nextDouble() - this.rand.nextDouble()) * speed, 0.03, (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
+            final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(
+                this.worldObj,
+                ParticleRegistry.smoke,
+                this.posX + this.rand.nextDouble(),
+                this.posY + 0.2 + this.rand.nextDouble() * 0.2,
+                this.posZ + this.rand.nextDouble(),
+                (this.rand.nextDouble() - this.rand.nextDouble()) * speed,
+                0.03,
+                (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
             final ParticleBehaviors pm = this.pm;
             ParticleBehaviors.setParticleRandoms(entityfx, true, true);
             final ParticleBehaviors pm2 = this.pm;
@@ -150,9 +169,18 @@ public class EntityFireBall extends EntityThrowableUsefull
             if (this.pm == null) {
                 return;
             }
-            for (int amount = 20 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i < amount; ++i) {
+            for (int amount = 20 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i
+                < amount; ++i) {
                 final double speed = 0.01;
-                final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(this.worldObj, ParticleRegistry.smoke, this.posX + this.rand.nextDouble(), this.posY + 0.2 + this.rand.nextDouble() * 0.2, this.posZ + this.rand.nextDouble(), (this.rand.nextDouble() - this.rand.nextDouble()) * speed, 0.03, (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
+                final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(
+                    this.worldObj,
+                    ParticleRegistry.smoke,
+                    this.posX + this.rand.nextDouble(),
+                    this.posY + 0.2 + this.rand.nextDouble() * 0.2,
+                    this.posZ + this.rand.nextDouble(),
+                    (this.rand.nextDouble() - this.rand.nextDouble()) * speed,
+                    0.03,
+                    (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
                 final ParticleBehaviors pm = this.pm;
                 ParticleBehaviors.setParticleRandoms(entityfx, true, true);
                 final ParticleBehaviors pm2 = this.pm;
@@ -165,7 +193,8 @@ public class EntityFireBall extends EntityThrowableUsefull
     }
 
     @Override
-    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_,
+        float p_70186_8_) {
 
     }
 }

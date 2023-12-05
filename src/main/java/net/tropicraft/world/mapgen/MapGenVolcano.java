@@ -1,18 +1,19 @@
 package net.tropicraft.world.mapgen;
 
-import net.minecraft.world.biome.*;
-import net.minecraft.world.*;
-import net.minecraft.block.*;
-import net.minecraft.init.*;
-import net.tropicraft.registry.*;
-import net.tropicraft.world.perlin.generator.*;
-import net.minecraft.util.*;
-import net.tropicraft.world.perlin.*;
-import net.tropicraft.world.biomes.*;
 import java.util.*;
 
-public class MapGenVolcano
-{
+import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.*;
+import net.tropicraft.registry.*;
+import net.tropicraft.world.biomes.*;
+import net.tropicraft.world.perlin.*;
+import net.tropicraft.world.perlin.generator.*;
+
+public class MapGenVolcano {
+
     protected HashMap coordMap;
     public static List<BiomeGenBase> volcanoSpawnBiomesLand;
     public static List<BiomeGenBase> volcanoSpawnBiomesOcean;
@@ -32,13 +33,13 @@ public class MapGenVolcano
     private static final int CRUST_HOLE_CHANCE = 15;
     private static final Block VOLCANO_BLOCK;
     private static final Block LAVA_BLOCK;
-    
+
     public MapGenVolcano(final World worldObj, final boolean useArrays) {
         this.coordMap = new HashMap();
         this.worldObj = worldObj;
         this.useArrays = useArrays;
     }
-    
+
     public Block[] generate(int i, int k, final Block[] blocks, final byte[] metas) {
         final ChunkCoordinates volcanoCoords = this.getVolcanoNear(this.worldObj, i, k);
         if (volcanoCoords == null) {
@@ -65,7 +66,10 @@ public class MapGenVolcano
         final int volcCenterX = volcanoCoords.posX;
         final int volcCenterZ = volcanoCoords.posZ;
         final int steepnessMod = (volcanoCoords.posY == 1) ? 4 : 8;
-        final long seed = volcCenterX * 341873128712L + volcCenterZ * 132897987541L + this.worldObj.getWorldInfo().getSeed() + 4291726L;
+        final long seed = volcCenterX * 341873128712L + volcCenterZ * 132897987541L
+            + this.worldObj.getWorldInfo()
+                .getSeed()
+            + 4291726L;
         final Random rand = new Random(seed);
         final int radiusX = rand.nextInt(20) + 45;
         final int radiusZ = rand.nextInt(20) + 45;
@@ -73,10 +77,12 @@ public class MapGenVolcano
         volcNoise.amplitude = 0.45;
         for (int x2 = 0; x2 < 16; ++x2) {
             for (int z2 = 0; z2 < 16; ++z2) {
-                final float relativeX = (float)(x2 + i - volcCenterX);
-                final float relativeZ = (float)(z2 + k - volcCenterZ);
-                final float distanceSquared = relativeX / radiusX * (relativeX / radiusX) + relativeZ / radiusZ * (relativeZ / radiusZ);
-                final float perlin = (float)volcNoise.getNoise(relativeX * 0.05 + 1.0E-4, relativeZ * 0.05 + 1.0E-4) + 1.0f;
+                final float relativeX = (float) (x2 + i - volcCenterX);
+                final float relativeZ = (float) (z2 + k - volcCenterZ);
+                final float distanceSquared = relativeX / radiusX * (relativeX / radiusX)
+                    + relativeZ / radiusZ * (relativeZ / radiusZ);
+                final float perlin = (float) volcNoise.getNoise(relativeX * 0.05 + 1.0E-4, relativeZ * 0.05 + 1.0E-4)
+                    + 1.0f;
                 final double volcanoHeight = steepnessMod / distanceSquared * perlin - steepnessMod - 2.0f;
                 final int groundHeight = heightmap[x2 * 16 + z2];
                 if (distanceSquared < 1.0f) {
@@ -86,12 +92,10 @@ public class MapGenVolcano
                                 if (y2 <= volcanoHeight + groundHeight && y2 >= groundHeight) {
                                     this.placeBlock(x2, y2, z2, MapGenVolcano.VOLCANO_BLOCK, blocks);
                                 }
-                            }
-                            else if (y2 <= 103) {
+                            } else if (y2 <= 103) {
                                 this.placeBlock(x2, y2, z2, MapGenVolcano.VOLCANO_BLOCK, blocks);
                             }
-                        }
-                        else {
+                        } else {
                             if (y2 == 100 && rand.nextInt(15) != 0) {
                                 this.placeBlock(x2, y2, z2, MapGenVolcano.VOLCANO_BLOCK, blocks);
                             }
@@ -105,15 +109,15 @@ public class MapGenVolcano
         }
         return blocks;
     }
-    
+
     public void placeBlock(final int x, final int y, final int z, final Block block, final Block[] blocks) {
         blocks[x * 256 * 16 | z * 256 | y] = block;
     }
-    
+
     public Block getBlock(final int x, final int y, final int z, final Block[] blocks) {
         return blocks[x * 256 * 16 | z * 256 | y];
     }
-    
+
     protected int canGenVolcanoAtCoords(final World worldObj, int i, int j) {
         final byte numChunks = 32;
         final byte offsetChunks = 8;
@@ -127,23 +131,28 @@ public class MapGenVolcano
         }
         int randX = i / numChunks;
         int randZ = j / numChunks;
-        final long seed = randX * 341873128712L + randZ * 132897987541L + worldObj.getWorldInfo().getSeed() + 4291726L;
+        final long seed = randX * 341873128712L + randZ * 132897987541L
+            + worldObj.getWorldInfo()
+                .getSeed()
+            + 4291726L;
         final Random rand = new Random(seed);
         randX *= numChunks;
         randZ *= numChunks;
         randX += rand.nextInt(numChunks - offsetChunks);
         randZ += rand.nextInt(numChunks - offsetChunks);
         if (oldi == randX && oldj == randZ) {
-            if (worldObj.getWorldChunkManager().areBiomesViable(oldi * 16 + 8, oldj * 16 + 8, 0, (List)MapGenVolcano.volcanoSpawnBiomesLand)) {
+            if (worldObj.getWorldChunkManager()
+                .areBiomesViable(oldi * 16 + 8, oldj * 16 + 8, 0, (List) MapGenVolcano.volcanoSpawnBiomesLand)) {
                 return 1;
             }
-            if (worldObj.getWorldChunkManager().areBiomesViable(oldi * 16 + 8, oldj * 16 + 8, 0, (List)MapGenVolcano.volcanoSpawnBiomesOcean)) {
+            if (worldObj.getWorldChunkManager()
+                .areBiomesViable(oldi * 16 + 8, oldj * 16 + 8, 0, (List) MapGenVolcano.volcanoSpawnBiomesOcean)) {
                 return 2;
             }
         }
         return 0;
     }
-    
+
     public ChunkCoordinates getVolcanoNear(final World worldObj, final int i, final int j) {
         for (int range = 4, x = i - range; x <= i + range; ++x) {
             for (int z = j - range; z <= j + range; ++z) {
@@ -155,11 +164,12 @@ public class MapGenVolcano
         }
         return null;
     }
-    
+
     static {
-        MapGenVolcano.volcanoSpawnBiomesLand = Arrays.asList(BiomeGenTropicraft.tropics, BiomeGenTropicraft.rainforestPlains);
+        MapGenVolcano.volcanoSpawnBiomesLand = Arrays
+            .asList(BiomeGenTropicraft.tropics, BiomeGenTropicraft.rainforestPlains);
         MapGenVolcano.volcanoSpawnBiomesOcean = Arrays.asList(BiomeGenTropicraft.tropicsOcean);
-        VOLCANO_BLOCK = (Block)TCBlockRegistry.chunkOHead;
+        VOLCANO_BLOCK = (Block) TCBlockRegistry.chunkOHead;
         LAVA_BLOCK = Blocks.lava;
     }
 }

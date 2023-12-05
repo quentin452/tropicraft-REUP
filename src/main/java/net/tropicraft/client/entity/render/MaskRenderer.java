@@ -1,14 +1,15 @@
 package net.tropicraft.client.entity.render;
 
 import net.minecraft.client.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.util.*;
 
-public class MaskRenderer
-{
+import org.lwjgl.opengl.*;
+
+public class MaskRenderer {
+
     private Minecraft mc;
-    
+
     public void renderMask(final int i) {
         GL11.glPushMatrix();
         final Tessellator tessellator = Tessellator.instance;
@@ -32,7 +33,7 @@ public class MaskRenderer
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
+
     public void renderFish(final int i) {
         GL11.glPushMatrix();
         final Tessellator tessellator = Tessellator.instance;
@@ -54,7 +55,7 @@ public class MaskRenderer
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
+
     public void renderItem(final IIcon icon) {
         GL11.glPushMatrix();
         final Tessellator tessellator = Tessellator.instance;
@@ -75,7 +76,7 @@ public class MaskRenderer
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
+
     public void renderItem(final int j) {
         GL11.glPushMatrix();
         final Tessellator tessellator = Tessellator.instance;
@@ -96,23 +97,24 @@ public class MaskRenderer
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
-    private void popper(final Tessellator tessellator, final float f, final float f1, final float f2, final float f3, final float f1shifted, final float f3shifted) {
+
+    private void popper(final Tessellator tessellator, final float f, final float f1, final float f2, final float f3,
+        final float f1shifted, final float f3shifted) {
         final float f4 = 1.0f;
         final float f5 = 0.03125f;
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0f, 0.0f, 1.0f);
-        tessellator.addVertexWithUV(0.0, 0.0, 0.0, (double)f, (double)f3shifted);
-        tessellator.addVertexWithUV((double)f4, 0.0, 0.0, (double)f2, (double)f3shifted);
-        tessellator.addVertexWithUV((double)f4, 1.0, 0.0, (double)f2, (double)f1shifted);
-        tessellator.addVertexWithUV(0.0, 1.0, 0.0, (double)f, (double)f1shifted);
+        tessellator.addVertexWithUV(0.0, 0.0, 0.0, (double) f, (double) f3shifted);
+        tessellator.addVertexWithUV((double) f4, 0.0, 0.0, (double) f2, (double) f3shifted);
+        tessellator.addVertexWithUV((double) f4, 1.0, 0.0, (double) f2, (double) f1shifted);
+        tessellator.addVertexWithUV(0.0, 1.0, 0.0, (double) f, (double) f1shifted);
         tessellator.draw();
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0f, 0.0f, -1.0f);
-        tessellator.addVertexWithUV(0.0, 1.0, (double)(0.0f - f5), (double)f, (double)f1);
-        tessellator.addVertexWithUV((double)f4, 1.0, (double)(0.0f - f5), (double)f2, (double)f1);
-        tessellator.addVertexWithUV((double)f4, 0.0, (double)(0.0f - f5), (double)f2, (double)f3);
-        tessellator.addVertexWithUV(0.0, 0.0, (double)(0.0f - f5), (double)f, (double)f3);
+        tessellator.addVertexWithUV(0.0, 1.0, (double) (0.0f - f5), (double) f, (double) f1);
+        tessellator.addVertexWithUV((double) f4, 1.0, (double) (0.0f - f5), (double) f2, (double) f1);
+        tessellator.addVertexWithUV((double) f4, 0.0, (double) (0.0f - f5), (double) f2, (double) f3);
+        tessellator.addVertexWithUV(0.0, 0.0, (double) (0.0f - f5), (double) f, (double) f3);
         tessellator.draw();
         tessellator.startDrawingQuads();
         tessellator.setNormal(-1.0f, 0.0f, 0.0f);
@@ -120,10 +122,10 @@ public class MaskRenderer
             final float f6 = i / 32.0f;
             final float f7 = f + (f2 - f) * f6 - 0.001953125f;
             final float f8 = f4 * f6;
-            tessellator.addVertexWithUV((double)f8, 0.0, (double)(0.0f - f5), (double)f7, (double)f3);
-            tessellator.addVertexWithUV((double)f8, 0.0, 0.0, (double)f7, (double)f3);
-            tessellator.addVertexWithUV((double)f8, 1.0, 0.0, (double)f7, (double)f1);
-            tessellator.addVertexWithUV((double)f8, 1.0, (double)(0.0f - f5), (double)f7, (double)f1);
+            tessellator.addVertexWithUV((double) f8, 0.0, (double) (0.0f - f5), (double) f7, (double) f3);
+            tessellator.addVertexWithUV((double) f8, 0.0, 0.0, (double) f7, (double) f3);
+            tessellator.addVertexWithUV((double) f8, 1.0, 0.0, (double) f7, (double) f1);
+            tessellator.addVertexWithUV((double) f8, 1.0, (double) (0.0f - f5), (double) f7, (double) f1);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -132,10 +134,10 @@ public class MaskRenderer
             final float f9 = j / 32.0f;
             final float f10 = f + (f2 - f) * f9 - 0.001953125f;
             final float f11 = f4 * f9 + 0.03125f;
-            tessellator.addVertexWithUV((double)f11, 1.0, (double)(0.0f - f5), (double)f10, (double)f1);
-            tessellator.addVertexWithUV((double)f11, 1.0, 0.0, (double)f10, (double)f1);
-            tessellator.addVertexWithUV((double)f11, 0.0, 0.0, (double)f10, (double)f3);
-            tessellator.addVertexWithUV((double)f11, 0.0, (double)(0.0f - f5), (double)f10, (double)f3);
+            tessellator.addVertexWithUV((double) f11, 1.0, (double) (0.0f - f5), (double) f10, (double) f1);
+            tessellator.addVertexWithUV((double) f11, 1.0, 0.0, (double) f10, (double) f1);
+            tessellator.addVertexWithUV((double) f11, 0.0, 0.0, (double) f10, (double) f3);
+            tessellator.addVertexWithUV((double) f11, 0.0, (double) (0.0f - f5), (double) f10, (double) f3);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -144,10 +146,10 @@ public class MaskRenderer
             final float f12 = k / 32.0f;
             final float f13 = f3 + (f1 - f3) * f12 - 0.001953125f;
             final float f14 = f4 * f12 + 0.03125f;
-            tessellator.addVertexWithUV(0.0, (double)f14, 0.0, (double)f, (double)f13);
-            tessellator.addVertexWithUV((double)f4, (double)f14, 0.0, (double)f2, (double)f13);
-            tessellator.addVertexWithUV((double)f4, (double)f14, (double)(0.0f - f5), (double)f2, (double)f13);
-            tessellator.addVertexWithUV(0.0, (double)f14, (double)(0.0f - f5), (double)f, (double)f13);
+            tessellator.addVertexWithUV(0.0, (double) f14, 0.0, (double) f, (double) f13);
+            tessellator.addVertexWithUV((double) f4, (double) f14, 0.0, (double) f2, (double) f13);
+            tessellator.addVertexWithUV((double) f4, (double) f14, (double) (0.0f - f5), (double) f2, (double) f13);
+            tessellator.addVertexWithUV(0.0, (double) f14, (double) (0.0f - f5), (double) f, (double) f13);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -156,30 +158,30 @@ public class MaskRenderer
             final float f15 = l / 32.0f;
             final float f16 = f3 + (f1 - f3) * f15 - 0.001953125f;
             final float f17 = f4 * f15;
-            tessellator.addVertexWithUV((double)f4, (double)f17, 0.0, (double)f2, (double)f16);
-            tessellator.addVertexWithUV(0.0, (double)f17, 0.0, (double)f, (double)f16);
-            tessellator.addVertexWithUV(0.0, (double)f17, (double)(0.0f - f5), (double)f, (double)f16);
-            tessellator.addVertexWithUV((double)f4, (double)f17, (double)(0.0f - f5), (double)f2, (double)f16);
+            tessellator.addVertexWithUV((double) f4, (double) f17, 0.0, (double) f2, (double) f16);
+            tessellator.addVertexWithUV(0.0, (double) f17, 0.0, (double) f, (double) f16);
+            tessellator.addVertexWithUV(0.0, (double) f17, (double) (0.0f - f5), (double) f, (double) f16);
+            tessellator.addVertexWithUV((double) f4, (double) f17, (double) (0.0f - f5), (double) f2, (double) f16);
         }
         tessellator.draw();
     }
-    
+
     private void popper2(final Tessellator tessellator, final float f, final float f1, final float f2, final float f3) {
         final float f4 = 1.0f;
         final float f5 = 0.0625f;
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0f, 0.0f, 1.0f);
-        tessellator.addVertexWithUV(0.0, 0.0, 0.0, (double)f, (double)f3);
-        tessellator.addVertexWithUV((double)f4, 0.0, 0.0, (double)f2, (double)f3);
-        tessellator.addVertexWithUV((double)f4, 1.0, 0.0, (double)f2, (double)f1);
-        tessellator.addVertexWithUV(0.0, 1.0, 0.0, (double)f, (double)f1);
+        tessellator.addVertexWithUV(0.0, 0.0, 0.0, (double) f, (double) f3);
+        tessellator.addVertexWithUV((double) f4, 0.0, 0.0, (double) f2, (double) f3);
+        tessellator.addVertexWithUV((double) f4, 1.0, 0.0, (double) f2, (double) f1);
+        tessellator.addVertexWithUV(0.0, 1.0, 0.0, (double) f, (double) f1);
         tessellator.draw();
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0f, 0.0f, -1.0f);
-        tessellator.addVertexWithUV(0.0, 1.0, (double)(0.0f - f5), (double)f, (double)f1);
-        tessellator.addVertexWithUV((double)f4, 1.0, (double)(0.0f - f5), (double)f2, (double)f1);
-        tessellator.addVertexWithUV((double)f4, 0.0, (double)(0.0f - f5), (double)f2, (double)f3);
-        tessellator.addVertexWithUV(0.0, 0.0, (double)(0.0f - f5), (double)f, (double)f3);
+        tessellator.addVertexWithUV(0.0, 1.0, (double) (0.0f - f5), (double) f, (double) f1);
+        tessellator.addVertexWithUV((double) f4, 1.0, (double) (0.0f - f5), (double) f2, (double) f1);
+        tessellator.addVertexWithUV((double) f4, 0.0, (double) (0.0f - f5), (double) f2, (double) f3);
+        tessellator.addVertexWithUV(0.0, 0.0, (double) (0.0f - f5), (double) f, (double) f3);
         tessellator.draw();
         tessellator.startDrawingQuads();
         tessellator.setNormal(-1.0f, 0.0f, 0.0f);
@@ -187,10 +189,10 @@ public class MaskRenderer
             final float f6 = i / 16.0f;
             final float f7 = f + (f2 - f) * f6 - 0.001953125f;
             final float f8 = f4 * f6;
-            tessellator.addVertexWithUV((double)f8, 0.0, (double)(0.0f - f5), (double)f7, (double)f3);
-            tessellator.addVertexWithUV((double)f8, 0.0, 0.0, (double)f7, (double)f3);
-            tessellator.addVertexWithUV((double)f8, 1.0, 0.0, (double)f7, (double)f1);
-            tessellator.addVertexWithUV((double)f8, 1.0, (double)(0.0f - f5), (double)f7, (double)f1);
+            tessellator.addVertexWithUV((double) f8, 0.0, (double) (0.0f - f5), (double) f7, (double) f3);
+            tessellator.addVertexWithUV((double) f8, 0.0, 0.0, (double) f7, (double) f3);
+            tessellator.addVertexWithUV((double) f8, 1.0, 0.0, (double) f7, (double) f1);
+            tessellator.addVertexWithUV((double) f8, 1.0, (double) (0.0f - f5), (double) f7, (double) f1);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -199,10 +201,10 @@ public class MaskRenderer
             final float f9 = j / 16.0f;
             final float f10 = f + (f2 - f) * f9 - 0.001953125f;
             final float f11 = f4 * f9 + 0.0625f;
-            tessellator.addVertexWithUV((double)f11, 1.0, (double)(0.0f - f5), (double)f10, (double)f1);
-            tessellator.addVertexWithUV((double)f11, 1.0, 0.0, (double)f10, (double)f1);
-            tessellator.addVertexWithUV((double)f11, 0.0, 0.0, (double)f10, (double)f3);
-            tessellator.addVertexWithUV((double)f11, 0.0, (double)(0.0f - f5), (double)f10, (double)f3);
+            tessellator.addVertexWithUV((double) f11, 1.0, (double) (0.0f - f5), (double) f10, (double) f1);
+            tessellator.addVertexWithUV((double) f11, 1.0, 0.0, (double) f10, (double) f1);
+            tessellator.addVertexWithUV((double) f11, 0.0, 0.0, (double) f10, (double) f3);
+            tessellator.addVertexWithUV((double) f11, 0.0, (double) (0.0f - f5), (double) f10, (double) f3);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -211,10 +213,10 @@ public class MaskRenderer
             final float f12 = k / 16.0f;
             final float f13 = f3 + (f1 - f3) * f12 - 0.001953125f;
             final float f14 = f4 * f12 + 0.0625f;
-            tessellator.addVertexWithUV(0.0, (double)f14, 0.0, (double)f, (double)f13);
-            tessellator.addVertexWithUV((double)f4, (double)f14, 0.0, (double)f2, (double)f13);
-            tessellator.addVertexWithUV((double)f4, (double)f14, (double)(0.0f - f5), (double)f2, (double)f13);
-            tessellator.addVertexWithUV(0.0, (double)f14, (double)(0.0f - f5), (double)f, (double)f13);
+            tessellator.addVertexWithUV(0.0, (double) f14, 0.0, (double) f, (double) f13);
+            tessellator.addVertexWithUV((double) f4, (double) f14, 0.0, (double) f2, (double) f13);
+            tessellator.addVertexWithUV((double) f4, (double) f14, (double) (0.0f - f5), (double) f2, (double) f13);
+            tessellator.addVertexWithUV(0.0, (double) f14, (double) (0.0f - f5), (double) f, (double) f13);
         }
         tessellator.draw();
         tessellator.startDrawingQuads();
@@ -223,10 +225,10 @@ public class MaskRenderer
             final float f15 = l / 16.0f;
             final float f16 = f3 + (f1 - f3) * f15 - 0.001953125f;
             final float f17 = f4 * f15;
-            tessellator.addVertexWithUV((double)f4, (double)f17, 0.0, (double)f2, (double)f16);
-            tessellator.addVertexWithUV(0.0, (double)f17, 0.0, (double)f, (double)f16);
-            tessellator.addVertexWithUV(0.0, (double)f17, (double)(0.0f - f5), (double)f, (double)f16);
-            tessellator.addVertexWithUV((double)f4, (double)f17, (double)(0.0f - f5), (double)f2, (double)f16);
+            tessellator.addVertexWithUV((double) f4, (double) f17, 0.0, (double) f2, (double) f16);
+            tessellator.addVertexWithUV(0.0, (double) f17, 0.0, (double) f, (double) f16);
+            tessellator.addVertexWithUV(0.0, (double) f17, (double) (0.0f - f5), (double) f, (double) f16);
+            tessellator.addVertexWithUV((double) f4, (double) f17, (double) (0.0f - f5), (double) f2, (double) f16);
         }
         tessellator.draw();
     }

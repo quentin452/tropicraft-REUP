@@ -1,18 +1,19 @@
 package net.tropicraft.world;
 
-import net.minecraft.block.*;
-import net.minecraft.entity.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.entity.player.*;
-import net.tropicraft.registry.*;
-import net.tropicraft.block.tileentity.*;
-import net.minecraft.item.*;
-import net.minecraft.init.*;
 import java.util.*;
 
-public class TeleporterTropics extends Teleporter
-{
+import net.minecraft.block.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.block.tileentity.*;
+import net.tropicraft.registry.*;
+
+public class TeleporterTropics extends Teleporter {
+
     private static Block PORTAL_WALL_BLOCK;
     private static Block PORTAL_BLOCK;
     private final WorldServer world;
@@ -24,8 +25,8 @@ public class TeleporterTropics extends Teleporter
         super(world);
         this.destinationCoordinateCache = new LongHashMap();
         this.destinationCoordinateKeys = new ArrayList();
-        TeleporterTropics.PORTAL_BLOCK = (Block)TCBlockRegistry.tropicsPortal;
-        TeleporterTropics.PORTAL_WALL_BLOCK = (Block)TCBlockRegistry.tropicsPortalWall;
+        TeleporterTropics.PORTAL_BLOCK = (Block) TCBlockRegistry.tropicsPortal;
+        TeleporterTropics.PORTAL_WALL_BLOCK = (Block) TCBlockRegistry.tropicsPortalWall;
         this.world = world;
         this.random = new Random(world.getSeed());
     }
@@ -37,10 +38,13 @@ public class TeleporterTropics extends Teleporter
             this.placeInExistingPortal(entity, d, d2, d3, f);
         }
         final long finishTime = System.currentTimeMillis();
-        System.out.printf("It took %f seconds for TeleporterTropics.placeInPortal to complete\n", (finishTime - startTime) / 1000.0f);
+        System.out.printf(
+            "It took %f seconds for TeleporterTropics.placeInPortal to complete\n",
+            (finishTime - startTime) / 1000.0f);
     }
 
-    public boolean placeInExistingPortal(final Entity entity, final double d, final double d2, final double d3, final float f) {
+    public boolean placeInExistingPortal(final Entity entity, final double d, final double d2, final double d3,
+        final float f) {
         final int searchArea = 148;
         double closestPortal = -1.0;
         int foundX = 0;
@@ -51,15 +55,15 @@ public class TeleporterTropics extends Teleporter
         boolean notInCache = true;
         final long j1 = ChunkCoordIntPair.chunkXZ2Int(entityX, entityZ);
         if (this.destinationCoordinateCache.containsItem(j1)) {
-            final Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.getValueByKey(j1);
+            final Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
+                .getValueByKey(j1);
             closestPortal = 0.0;
             foundX = portalposition.posX;
             foundY = portalposition.posY;
             foundZ = portalposition.posZ;
             portalposition.lastUpdateTime = this.world.getTotalWorldTime();
             notInCache = false;
-        }
-        else {
+        } else {
             for (int x = entityX - searchArea; x <= entityX + searchArea; ++x) {
                 final double distX = x + 0.5 - entity.posX;
                 for (int z = entityZ - searchArea; z <= entityZ + searchArea; ++z) {
@@ -84,7 +88,8 @@ public class TeleporterTropics extends Teleporter
         }
         if (closestPortal >= 0.0) {
             if (notInCache) {
-                this.destinationCoordinateCache.add(j1, new PortalPosition(foundX, foundY, foundZ, this.world.getTotalWorldTime()));
+                this.destinationCoordinateCache
+                    .add(j1, new PortalPosition(foundX, foundY, foundZ, this.world.getTotalWorldTime()));
                 this.destinationCoordinateKeys.add(j1);
             }
             final int x = foundX;
@@ -114,17 +119,19 @@ public class TeleporterTropics extends Teleporter
             entity.motionY = motionX;
             entity.motionX = motionX;
             if (entity instanceof EntityPlayer) {
-                final EntityPlayer player = (EntityPlayer)entity;
-                if (this.world.provider instanceof WorldProviderTropicraft && !player.inventory.hasItem(TCItemRegistry.encTropica)) {
+                final EntityPlayer player = (EntityPlayer) entity;
+                if (this.world.provider instanceof WorldProviderTropicraft
+                    && !player.inventory.hasItem(TCItemRegistry.encTropica)) {
                     TileEntityBambooChest chest = null;
                     final int chestX = MathHelper.floor_double(newLocX);
                     final int chestZ = MathHelper.floor_double(newLocZ);
-                Label_0774:
-                    for (int searchX = -3; searchX < 4; ++searchX) {
+                    Label_0774: for (int searchX = -3; searchX < 4; ++searchX) {
                         for (int searchZ = -3; searchZ < 4; ++searchZ) {
                             for (int searchY = -4; searchY < 5; ++searchY) {
-                                if (this.world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ) == TCBlockRegistry.bambooChest) {
-                                    chest = (TileEntityBambooChest)this.world.getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
+                                if (this.world.getBlock(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ)
+                                    == TCBlockRegistry.bambooChest) {
+                                    chest = (TileEntityBambooChest) this.world
+                                        .getTileEntity(chestX + searchX, worldSpawnY + searchY, chestZ + searchZ);
                                     if (chest != null && chest.isUnbreakable()) {
                                         break Label_0774;
                                     }
@@ -168,22 +175,28 @@ public class TeleporterTropics extends Teleporter
         int foundZ = entityZ;
         for (int x = entityX - searchArea; x <= entityX + searchArea; ++x) {
             final double distX = x + 0.5 - entity.posX;
-        Label_0418:
-            for (int z = entityZ - searchArea; z <= entityZ + searchArea; ++z) {
+            Label_0418: for (int z = entityZ - searchArea; z <= entityZ + searchArea; ++z) {
                 final double distZ = z + 0.5 - entity.posZ;
                 int y;
-                for (y = this.world.getHeight() - 1; y >= 62 && (this.world.getBlock(x, y, z) == Blocks.air || !this.world.getBlock(x, y, z).isOpaqueCube()); --y) {}
+                for (y = this.world.getHeight() - 1; y >= 62
+                    && (this.world.getBlock(x, y, z) == Blocks.air || !this.world.getBlock(x, y, z)
+                        .isOpaqueCube()); --y) {}
                 if (y <= 83) {
                     if (y >= 63) {
-                        if (this.getValidBuildBlocks().contains(this.world.getBlock(x, y, z))) {
+                        if (this.getValidBuildBlocks()
+                            .contains(this.world.getBlock(x, y, z))) {
                             for (int xOffset = -2; xOffset <= 2; ++xOffset) {
                                 for (int zOffset = -2; zOffset <= 2; ++zOffset) {
                                     int otherY;
-                                    for (otherY = this.world.getHeight() - 1; otherY >= 63 && (this.world.getBlock(x + xOffset, otherY, z + zOffset) == Blocks.air || !this.world.getBlock(x, y, z).isOpaqueCube()); --otherY) {}
+                                    for (otherY = this.world.getHeight() - 1; otherY >= 63
+                                        && (this.world.getBlock(x + xOffset, otherY, z + zOffset) == Blocks.air
+                                            || !this.world.getBlock(x, y, z)
+                                                .isOpaqueCube()); --otherY) {}
                                     if (Math.abs(y - otherY) >= 3) {
                                         continue Label_0418;
                                     }
-                                    if (!this.getValidBuildBlocks().contains(this.world.getBlock(x + xOffset, otherY, z + zOffset))) {
+                                    if (!this.getValidBuildBlocks()
+                                        .contains(this.world.getBlock(x + xOffset, otherY, z + zOffset))) {
                                         continue Label_0418;
                                     }
                                 }
@@ -201,13 +214,13 @@ public class TeleporterTropics extends Teleporter
                 }
             }
         }
-        final int worldSpawnX = MathHelper.floor_double((double)foundX);
-        final int worldSpawnZ = MathHelper.floor_double((double)foundZ);
+        final int worldSpawnX = MathHelper.floor_double((double) foundX);
+        final int worldSpawnZ = MathHelper.floor_double((double) foundZ);
         final int worldSpawnY = this.getTerrainHeightAt(worldSpawnX, worldSpawnZ);
         if (closestSpot < 0.0) {
             foundY = worldSpawnY - 2;
         }
-        entity.setLocationAndAngles((double)foundX, (double)(foundY + 2), (double)foundZ, entity.rotationYaw, 0.0f);
+        entity.setLocationAndAngles((double) foundX, (double) (foundY + 2), (double) foundZ, entity.rotationYaw, 0.0f);
         this.buildTeleporterAt(worldSpawnX, worldSpawnY + 1, worldSpawnZ, entity);
         return true;
     }
@@ -215,7 +228,11 @@ public class TeleporterTropics extends Teleporter
     public int getTerrainHeightAt(final int x, final int z) {
         for (int y = 100; y > 0; --y) {
             final Block block = this.world.getBlock(x, y, z);
-            if (block == Blocks.dirt || block == Blocks.grass || block == Blocks.sand || block == Blocks.stone || block == TCBlockRegistry.tropicsWater || block == TCBlockRegistry.purifiedSand) {
+            if (block == Blocks.dirt || block == Blocks.grass
+                || block == Blocks.sand
+                || block == Blocks.stone
+                || block == TCBlockRegistry.tropicsWater
+                || block == TCBlockRegistry.purifiedSand) {
                 return y;
             }
         }
@@ -232,32 +249,29 @@ public class TeleporterTropics extends Teleporter
                     final int blockZ = z + zOffset;
                     if (yOffset == -7) {
                         this.world.setBlock(blockX, blockY, blockZ, TeleporterTropics.PORTAL_WALL_BLOCK);
-                    }
-                    else if (yOffset > 0) {
+                    } else if (yOffset > 0) {
                         this.world.setBlock(blockX, blockY, blockZ, Blocks.air);
-                    }
-                    else {
+                    } else {
                         final boolean isWall = xOffset == -2 || xOffset == 2 || zOffset == -2 || zOffset == 2;
                         if (isWall) {
                             this.world.setBlock(blockX, blockY, blockZ, TeleporterTropics.PORTAL_WALL_BLOCK);
-                        }
-                        else {
+                        } else {
                             final int metadata = (yOffset <= -5) ? 8 : 0;
                             this.world.setBlock(blockX, blockY, blockZ, TeleporterTropics.PORTAL_BLOCK, metadata, 3);
                         }
                     }
                     final boolean isCorner = (xOffset == -2 || xOffset == 2) && (zOffset == -2 || zOffset == 2);
                     if (yOffset == 0 && isCorner) {
-                        this.world.setBlock(blockX, blockY + 1, blockZ, (Block)TCBlockRegistry.tikiTorch, 1, 3);
-                        this.world.setBlock(blockX, blockY + 2, blockZ, (Block)TCBlockRegistry.tikiTorch, 1, 3);
-                        this.world.setBlock(blockX, blockY + 3, blockZ, (Block)TCBlockRegistry.tikiTorch, 0, 3);
+                        this.world.setBlock(blockX, blockY + 1, blockZ, (Block) TCBlockRegistry.tikiTorch, 1, 3);
+                        this.world.setBlock(blockX, blockY + 2, blockZ, (Block) TCBlockRegistry.tikiTorch, 1, 3);
+                        this.world.setBlock(blockX, blockY + 3, blockZ, (Block) TCBlockRegistry.tikiTorch, 0, 3);
                     }
                 }
             }
         }
         if (this.world.provider instanceof WorldProviderTropicraft) {
-            this.world.setBlock(x + 2, y + 1, z, (Block)TCBlockRegistry.bambooChest, 1, 3);
-            final TileEntityBambooChest tile = (TileEntityBambooChest)this.world.getTileEntity(x + 2, y + 1, z);
+            this.world.setBlock(x + 2, y + 1, z, (Block) TCBlockRegistry.bambooChest, 1, 3);
+            final TileEntityBambooChest tile = (TileEntityBambooChest) this.world.getTileEntity(x + 2, y + 1, z);
             if (tile != null) {
                 tile.setIsUnbreakable(true);
             }
@@ -268,7 +282,11 @@ public class TeleporterTropics extends Teleporter
                     final int blockX = x + xOffset;
                     final int blockY = y + yOffset;
                     final int blockZ = z + zOffset;
-                    this.world.notifyBlocksOfNeighborChange(blockX, blockY, blockZ, this.world.getBlock(blockX, blockY, blockZ));
+                    this.world.notifyBlocksOfNeighborChange(
+                        blockX,
+                        blockY,
+                        blockZ,
+                        this.world.getBlock(blockX, blockY, blockZ));
                 }
             }
         }
@@ -280,16 +298,18 @@ public class TeleporterTropics extends Teleporter
             final long j = par1 - 600L;
             while (iterator.hasNext()) {
                 final Long olong = (Long) iterator.next();
-                final Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition)this.destinationCoordinateCache.getValueByKey((long)olong);
+                final Teleporter.PortalPosition portalposition = (Teleporter.PortalPosition) this.destinationCoordinateCache
+                    .getValueByKey((long) olong);
                 if (portalposition == null || portalposition.lastUpdateTime < j) {
                     iterator.remove();
-                    this.destinationCoordinateCache.remove((long)olong);
+                    this.destinationCoordinateCache.remove((long) olong);
                 }
             }
         }
     }
 
     private List<Block> getValidBuildBlocks() {
-        return Arrays.asList((Block)Blocks.sand, (Block)Blocks.grass, Blocks.dirt, (Block)TCBlockRegistry.purifiedSand);
+        return Arrays
+            .asList((Block) Blocks.sand, (Block) Blocks.grass, Blocks.dirt, (Block) TCBlockRegistry.purifiedSand);
     }
 }

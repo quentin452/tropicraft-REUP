@@ -1,39 +1,47 @@
 package net.tropicraft.client.tileentity;
 
-import net.minecraft.client.renderer.tileentity.*;
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.client.model.*;
-import net.tropicraft.block.tileentity.*;
-import net.tropicraft.block.*;
-import cpw.mods.fml.common.*;
-import net.tropicraft.util.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.block.*;
+import net.minecraft.client.model.*;
+import net.minecraft.client.renderer.tileentity.*;
 import net.minecraft.tileentity.*;
+import net.tropicraft.block.*;
+import net.tropicraft.block.tileentity.*;
+import net.tropicraft.util.*;
+
+import org.lwjgl.opengl.*;
+
+import cpw.mods.fml.common.*;
+import cpw.mods.fml.relauncher.*;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer
-{
+public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer {
+
     private ModelChest chestModel;
     private ModelChest chestModelLarge;
-    
+
     public TileEntityBambooChestRenderer() {
         this.chestModel = new ModelChest();
-        this.chestModelLarge = (ModelChest)new ModelLargeChest();
+        this.chestModelLarge = (ModelChest) new ModelLargeChest();
     }
-    
-    public void renderChest(final TileEntityBambooChest tileentitybamboochest, final double d, final double d1, final double d2, final float f) {
+
+    public void renderChest(final TileEntityBambooChest tileentitybamboochest, final double d, final double d1,
+        final double d2, final float f) {
         int i;
         if (tileentitybamboochest.getWorldObj() == null) {
             i = 0;
-        }
-        else {
+        } else {
             final Block block = tileentitybamboochest.getBlockType();
             try {
-                ((BlockBambooChest)block).func_149954_e(tileentitybamboochest.getWorldObj(), tileentitybamboochest.xCoord, tileentitybamboochest.yCoord, tileentitybamboochest.zCoord);
-            }
-            catch (ClassCastException e) {
-                FMLLog.severe("Attempted to render a chest at %d,  %d, %d that was not a chest", new Object[] { tileentitybamboochest.xCoord, tileentitybamboochest.yCoord, tileentitybamboochest.zCoord });
+                ((BlockBambooChest) block).func_149954_e(
+                    tileentitybamboochest.getWorldObj(),
+                    tileentitybamboochest.xCoord,
+                    tileentitybamboochest.yCoord,
+                    tileentitybamboochest.zCoord);
+            } catch (ClassCastException e) {
+                FMLLog.severe(
+                    "Attempted to render a chest at %d,  %d, %d that was not a chest",
+                    new Object[] { tileentitybamboochest.xCoord, tileentitybamboochest.yCoord,
+                        tileentitybamboochest.zCoord });
             }
             i = tileentitybamboochest.getBlockMetadata();
             tileentitybamboochest.checkForAdjacentChests();
@@ -45,15 +53,14 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer
         if (tileentitybamboochest.adjacentChestXPos != null || tileentitybamboochest.adjacentChestZPos != null) {
             modelchest = this.chestModelLarge;
             TropicraftUtils.bindTextureBlock("largeChest");
-        }
-        else {
+        } else {
             modelchest = this.chestModel;
             TropicraftUtils.bindTextureBlock("chest");
         }
         GL11.glPushMatrix();
         GL11.glEnable(32826);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        GL11.glTranslatef((float)d, (float)d1 + 1.0f, (float)d2 + 1.0f);
+        GL11.glTranslatef((float) d, (float) d1 + 1.0f, (float) d2 + 1.0f);
         GL11.glScalef(1.0f, -1.0f, -1.0f);
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         int j = 0;
@@ -75,17 +82,22 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer
         if (i == 5 && tileentitybamboochest.adjacentChestZPos != null) {
             GL11.glTranslatef(0.0f, 0.0f, -1.0f);
         }
-        GL11.glRotatef((float)j, 0.0f, 1.0f, 0.0f);
+        GL11.glRotatef((float) j, 0.0f, 1.0f, 0.0f);
         GL11.glTranslatef(-0.5f, -0.5f, -0.5f);
-        float f2 = tileentitybamboochest.prevLidAngle + (tileentitybamboochest.lidAngle - tileentitybamboochest.prevLidAngle) * f;
+        float f2 = tileentitybamboochest.prevLidAngle
+            + (tileentitybamboochest.lidAngle - tileentitybamboochest.prevLidAngle) * f;
         if (tileentitybamboochest.adjacentChestZNeg != null) {
-            final float f3 = tileentitybamboochest.adjacentChestZNeg.prevLidAngle + (tileentitybamboochest.adjacentChestZNeg.lidAngle - tileentitybamboochest.adjacentChestZNeg.prevLidAngle) * f;
+            final float f3 = tileentitybamboochest.adjacentChestZNeg.prevLidAngle
+                + (tileentitybamboochest.adjacentChestZNeg.lidAngle
+                    - tileentitybamboochest.adjacentChestZNeg.prevLidAngle) * f;
             if (f3 > f2) {
                 f2 = f3;
             }
         }
         if (tileentitybamboochest.adjacentChestXNeg != null) {
-            final float f4 = tileentitybamboochest.adjacentChestXNeg.prevLidAngle + (tileentitybamboochest.adjacentChestXNeg.lidAngle - tileentitybamboochest.adjacentChestXNeg.prevLidAngle) * f;
+            final float f4 = tileentitybamboochest.adjacentChestXNeg.prevLidAngle
+                + (tileentitybamboochest.adjacentChestXNeg.lidAngle
+                    - tileentitybamboochest.adjacentChestXNeg.prevLidAngle) * f;
             if (f4 > f2) {
                 f2 = f4;
             }
@@ -98,8 +110,9 @@ public class TileEntityBambooChestRenderer extends TileEntitySpecialRenderer
         GL11.glPopMatrix();
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
-    
-    public void renderTileEntityAt(final TileEntity tileentity, final double d, final double d1, final double d2, final float f) {
-        this.renderChest((TileEntityBambooChest)tileentity, d, d1, d2, f);
+
+    public void renderTileEntityAt(final TileEntity tileentity, final double d, final double d1, final double d2,
+        final float f) {
+        this.renderChest((TileEntityBambooChest) tileentity, d, d1, d2, f);
     }
 }

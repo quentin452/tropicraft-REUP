@@ -1,30 +1,33 @@
 package net.tropicraft.item;
 
-import net.tropicraft.registry.*;
+import java.util.*;
+
 import net.minecraft.creativetab.*;
-import net.minecraft.item.*;
-import cpw.mods.fml.relauncher.*;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.tropicraft.entity.underdasea.*;
-import java.util.*;
-import net.minecraft.util.*;
-import net.minecraft.entity.*;
+import net.tropicraft.registry.*;
 
-public class ItemMobEgg extends ItemTropicraftMulti
-{
+import cpw.mods.fml.relauncher.*;
+
+public class ItemMobEgg extends ItemTropicraftMulti {
+
     public static String[] names;
-    
+
     public ItemMobEgg(final String[] imageNames) {
         super(imageNames);
         this.setMaxStackSize(64);
         this.setHasSubtypes(true);
         this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
         if (ItemMobEgg.names.length != imageNames.length) {
-            throw new IllegalArgumentException("A Tropicraft developer failed to make the number of mob egg names in ItemMobEgg match up with the number of mob egg names in TCItemRegistry!");
+            throw new IllegalArgumentException(
+                "A Tropicraft developer failed to make the number of mob egg names in ItemMobEgg match up with the number of mob egg names in TCItemRegistry!");
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
@@ -32,8 +35,9 @@ public class ItemMobEgg extends ItemTropicraftMulti
             par3List.add(new ItemStack(par1, 1, var4));
         }
     }
-    
-    public boolean onItemUse(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, int i, int j, int k, final int l, final float par8, final float par9, final float par10) {
+
+    public boolean onItemUse(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, int i,
+        int j, int k, final int l, final float par8, final float par9, final float par10) {
         if (!world.isRemote) {
             String s = "";
             switch (itemstack.getItemDamage()) {
@@ -73,8 +77,8 @@ public class ItemMobEgg extends ItemTropicraftMulti
                     s = "Tropical Fish";
                     if (!world.isRemote) {
                         final EntityTropicalFish fish = new EntityTropicalFish(world);
-                        fish.setLocationAndAngles(i + 0.5, (double)j, k + 5.5, 0.0f, 0.0f);
-                        world.spawnEntityInWorld((Entity)fish);
+                        fish.setLocationAndAngles(i + 0.5, (double) j, k + 5.5, 0.0f, 0.0f);
+                        world.spawnEntityInWorld((Entity) fish);
                         return true;
                     }
                     break;
@@ -144,25 +148,27 @@ public class ItemMobEgg extends ItemTropicraftMulti
                 if (!entityplayer.capabilities.isCreativeMode) {
                     --itemstack.stackSize;
                 }
-                entity.setLocationAndAngles(i + 0.5, (double)j, k + 0.5, 0.0f, 0.0f);
+                entity.setLocationAndAngles(i + 0.5, (double) j, k + 0.5, 0.0f, 0.0f);
                 if (entity instanceof EntityTropicalFish) {
-                    ((EntityTropicalFish)entity).disableDespawning();
+                    ((EntityTropicalFish) entity).disableDespawning();
                 }
                 if (!world.isRemote) {
                     if (entity instanceof EntityLivingBase) {
-                        ((EntityLiving)entity).onSpawnWithEgg((IEntityLivingData)null);
+                        ((EntityLiving) entity).onSpawnWithEgg((IEntityLivingData) null);
                     }
                     world.spawnEntityInWorld(entity);
                 }
-            }
-            else {
+            } else {
                 System.out.println("Error spawning: " + s);
             }
         }
         return true;
     }
-    
+
     static {
-        ItemMobEgg.names = new String[] { "Iguana Egg", "Starfish Egg", "Green Frog Spawn", "Red Frog Spawn", "Yellow Frog Spawn", "Blue Frog Spawn", "Eye of Head", "Marlin Spawn", "Tropical Fish Spawn", "Ashen Ash", "Turtle Egg", "Man o' War", "Monkey's Paw", "Koa Headband", "TropiCreeper Egg", "TropiSkelly Skirt", "Spotted Eagle Ray", "Failgull", "Sea Urchin" };
+        ItemMobEgg.names = new String[] { "Iguana Egg", "Starfish Egg", "Green Frog Spawn", "Red Frog Spawn",
+            "Yellow Frog Spawn", "Blue Frog Spawn", "Eye of Head", "Marlin Spawn", "Tropical Fish Spawn", "Ashen Ash",
+            "Turtle Egg", "Man o' War", "Monkey's Paw", "Koa Headband", "TropiCreeper Egg", "TropiSkelly Skirt",
+            "Spotted Eagle Ray", "Failgull", "Sea Urchin" };
     }
 }

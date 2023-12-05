@@ -1,11 +1,13 @@
 package net.tropicraft.util;
 
 import java.util.*;
+
 import net.minecraft.item.*;
+
 import com.google.common.collect.*;
 
-public class ColorHelper
-{
+public class ColorHelper {
+
     private static BiMap<Integer, Integer> woolValues;
     private static ArrayList<Integer> colorValues;
     public static int DEFAULT_VALUE;
@@ -26,7 +28,8 @@ public class ColorHelper
     }
 
     public static int getNumColors() {
-        return ColorHelper.woolValues.keySet().size();
+        return ColorHelper.woolValues.keySet()
+            .size();
     }
 
     public static int getColorFromDamage(final int damage) {
@@ -34,7 +37,7 @@ public class ColorHelper
     }
 
     public static int getDamageFromColor(final int color) {
-        return (int)ColorHelper.woolValues.get((Object)color);
+        return (int) ColorHelper.woolValues.get((Object) color);
     }
 
     public static float getRed(final int color) {
@@ -50,7 +53,7 @@ public class ColorHelper
     }
 
     public static int getColor(final float red, final float green, final float blue) {
-        return (int)(red * 255.0f) << 16 | (int)(green * 255.0f) << 8 | (int)(blue * 255.0f);
+        return (int) (red * 255.0f) << 16 | (int) (green * 255.0f) << 8 | (int) (blue * 255.0f);
     }
 
     public static int getColor(final float[] rgb) {

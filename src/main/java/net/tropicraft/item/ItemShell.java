@@ -1,19 +1,21 @@
 package net.tropicraft.item;
 
-import net.minecraft.item.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.world.*;
-import net.minecraft.util.*;
-import net.tropicraft.entity.placeable.*;
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.entity.placeable.*;
 
-public class ItemShell extends ItemTropicraftMulti
-{
+public class ItemShell extends ItemTropicraftMulti {
+
     public ItemShell(final String[] names) {
         super(names);
     }
-    
-    public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World, final int par4, final int par5, final int par6, final int par7, final float par8, final float par9, final float par10) {
+
+    public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World,
+        final int par4, final int par5, final int par6, final int par7, final float par8, final float par9,
+        final float par10) {
         if (par1ItemStack.getItemDamage() != 4) {
             return false;
         }
@@ -30,7 +32,7 @@ public class ItemShell extends ItemTropicraftMulti
         }
         if (entityhanging != null && entityhanging.onValidSurface()) {
             if (!par3World.isRemote) {
-                par3World.spawnEntityInWorld((Entity)entityhanging);
+                par3World.spawnEntityInWorld((Entity) entityhanging);
             }
             --par1ItemStack.stackSize;
         }

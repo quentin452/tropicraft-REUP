@@ -1,18 +1,20 @@
 package net.tropicraft.block;
 
-import net.minecraft.util.*;
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.block.material.*;
-import net.tropicraft.registry.*;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.world.*;
-import net.minecraft.creativetab.*;
 import java.util.*;
-import net.minecraft.item.*;
 
-public class BlockBongoDrum extends BlockTropicraftMulti
-{
+import net.minecraft.block.material.*;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.creativetab.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.registry.*;
+
+import cpw.mods.fml.relauncher.*;
+
+public class BlockBongoDrum extends BlockTropicraftMulti {
+
     public static final float SMALL_DRUM_SIZE = 0.5f;
     public static final float MEDIUM_DRUM_SIZE = 0.6f;
     public static final float BIG_DRUM_SIZE = 0.7f;
@@ -24,14 +26,14 @@ public class BlockBongoDrum extends BlockTropicraftMulti
     private IIcon topIcon;
     @SideOnly(Side.CLIENT)
     private IIcon sideIcon;
-    
+
     public BlockBongoDrum(final String[] names) {
         super(names, Material.circuits);
         this.setBlockBounds(0.25f, 0.0f, 0.25f, 0.75f, 1.0f, 0.75f);
         this.setLightOpacity(255);
         this.setCreativeTab(TCCreativeTabRegistry.tabMisc);
     }
-    
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(final IIconRegister iconRegistry) {
@@ -40,8 +42,9 @@ public class BlockBongoDrum extends BlockTropicraftMulti
         this.sideIcon = registerIcon;
         this.blockIcon = registerIcon;
     }
-    
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float offsetX, final float offsetY, final float offsetZ) {
+
+    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+        final int side, final float offsetX, final float offsetY, final float offsetZ) {
         if (side != 1) {
             return true;
         }
@@ -62,19 +65,19 @@ public class BlockBongoDrum extends BlockTropicraftMulti
         }
         return true;
     }
-    
+
     private void playHighBongo(final World world, final int x, final int y, final int z) {
-        world.playSoundEffect((double)x, (double)y, (double)z, "tropicraft:bongohigh", 1.0f, 1.0f);
+        world.playSoundEffect((double) x, (double) y, (double) z, "tropicraft:bongohigh", 1.0f, 1.0f);
     }
-    
+
     private void playMediumBongo(final World world, final int x, final int y, final int z) {
-        world.playSoundEffect((double)x, (double)y, (double)z, "tropicraft:bongomedium", 1.0f, 1.0f);
+        world.playSoundEffect((double) x, (double) y, (double) z, "tropicraft:bongomedium", 1.0f, 1.0f);
     }
-    
+
     private void playLowBongo(final World world, final int x, final int y, final int z) {
-        world.playSoundEffect((double)x, (double)y, (double)z, "tropicraft:bongolow", 1.0f, 1.0f);
+        world.playSoundEffect((double) x, (double) y, (double) z, "tropicraft:bongolow", 1.0f, 1.0f);
     }
-    
+
     public void setBlockBoundsBasedOnState(final IBlockAccess world, final int x, final int y, final int z) {
         final int meta = world.getBlockMetadata(x, y, z) & 0x3;
         switch (meta) {
@@ -92,26 +95,26 @@ public class BlockBongoDrum extends BlockTropicraftMulti
             }
         }
     }
-    
+
     public boolean isOpaqueCube() {
         return false;
     }
-    
+
     public boolean renderAsNormalBlock() {
         return false;
     }
-    
+
     public void setBlockBoundsForItemRender() {
         this.setBlockBounds(0.15f, 0.0f, 0.15f, 0.85f, 1.0f, 0.85f);
     }
-    
+
     @Override
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
         list.add(new ItemStack(item, 1, 2));
     }
-    
+
     @Override
     public IIcon getIcon(final int side, final int meta) {
         if (side == 1) {
@@ -119,20 +122,21 @@ public class BlockBongoDrum extends BlockTropicraftMulti
         }
         return this.sideIcon;
     }
-    
-    public boolean shouldSideBeRendered(final IBlockAccess world, final int x, final int y, final int z, final int side) {
+
+    public boolean shouldSideBeRendered(final IBlockAccess world, final int x, final int y, final int z,
+        final int side) {
         return side != 0 && super.shouldSideBeRendered(world, x, y, z, side);
     }
-    
+
     @Override
     public int damageDropped(final int meta) {
         return meta;
     }
-    
+
     public int getLightOpacity(final IBlockAccess world, final int x, final int y, final int z) {
         return 255;
     }
-    
+
     public int getDamageValue(final World world, final int x, final int y, final int z) {
         int dmg = super.getDamageValue(world, x, y, z);
         if (dmg > 2) {

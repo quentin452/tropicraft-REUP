@@ -1,18 +1,19 @@
 package net.tropicraft.entity.passive;
 
-import net.tropicraft.entity.*;
-import net.minecraft.entity.monster.*;
-import net.minecraft.world.*;
-import net.minecraft.entity.player.*;
 import java.util.*;
-import net.minecraft.util.*;
-import net.tropicraft.registry.*;
+
+import net.minecraft.entity.*;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
-import net.minecraft.entity.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.entity.*;
+import net.tropicraft.registry.*;
 
-public class EntityIguana extends EntityTropicraftAnimal implements IMob
-{
+public class EntityIguana extends EntityTropicraftAnimal implements IMob {
+
     private int angerLevel;
 
     public EntityIguana(final World world) {
@@ -27,11 +28,12 @@ public class EntityIguana extends EntityTropicraftAnimal implements IMob
         }
         final Entity entity = damagesource.getEntity();
         if (entity instanceof EntityPlayer) {
-            final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.expand(32.0, 32.0, 32.0));
+            final List list = this.worldObj
+                .getEntitiesWithinAABBExcludingEntity((Entity) this, this.boundingBox.expand(32.0, 32.0, 32.0));
             for (int i = 0; i < list.size(); ++i) {
                 final Entity entity2 = (Entity) list.get(i);
                 if (entity2 instanceof EntityIguana) {
-                    final EntityIguana iggy = (EntityIguana)entity2;
+                    final EntityIguana iggy = (EntityIguana) entity2;
                     iggy.becomeAngryAt(entity);
                 }
             }
@@ -55,39 +57,40 @@ public class EntityIguana extends EntityTropicraftAnimal implements IMob
                 this.motionZ = d2 / f1 * 0.5 * 0.800000011920929 + this.motionZ * 0.20000000298023224;
                 this.motionY = 0.4000000059604645;
             }
-        }
-        else if (range < 1.5f && entity.boundingBox.maxY > this.boundingBox.minY && entity.boundingBox.minY < this.boundingBox.maxY) {
-            this.attackTime = 20;
-            final byte byte0 = 2;
-            entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase)this), (float)byte0);
-        }
+        } else if (range < 1.5f && entity.boundingBox.maxY > this.boundingBox.minY
+            && entity.boundingBox.minY < this.boundingBox.maxY) {
+                this.attackTime = 20;
+                final byte byte0 = 2;
+                entity.attackEntityFrom(DamageSource.causeMobDamage((EntityLivingBase) this), (float) byte0);
+            }
     }
 
     public boolean isAIEnabled() {
         return false;
     }
 
-    protected void fall(final float f) {
-    }
+    protected void fall(final float f) {}
 
     protected void dropFewItems(final boolean recentlyHit, final int looting) {
         for (int numDrops = 3 + this.rand.nextInt(1 + looting), i = 0; i < numDrops; ++i) {
-            this.dropItem((Item)TCItemRegistry.scale, 1);
+            this.dropItem((Item) TCItemRegistry.scale, 1);
         }
     }
 
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(10.0);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
+            .setBaseValue(1.0);
     }
 
     public Entity findPlayerToAttack() {
         if (this.angerLevel == 0) {
             return null;
         }
-        final EntityPlayer entityplayer = this.worldObj.getClosestVulnerablePlayerToEntity((Entity)this, 16.0);
-        return (Entity)((entityplayer != null && this.canEntityBeSeen((Entity)entityplayer)) ? entityplayer : null);
+        final EntityPlayer entityplayer = this.worldObj.getClosestVulnerablePlayerToEntity((Entity) this, 16.0);
+        return (Entity) ((entityplayer != null && this.canEntityBeSeen((Entity) entityplayer)) ? entityplayer : null);
     }
 
     public float getSoundVolume() {
@@ -108,7 +111,7 @@ public class EntityIguana extends EntityTropicraftAnimal implements IMob
 
     public void writeEntityToNBT(final NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
-        nbt.setShort("Anger", (short)this.angerLevel);
+        nbt.setShort("Anger", (short) this.angerLevel);
     }
 
     public void readEntityFromNBT(final NBTTagCompound nbt) {
@@ -117,7 +120,7 @@ public class EntityIguana extends EntityTropicraftAnimal implements IMob
     }
 
     public EntityAgeable createChild(final EntityAgeable var1) {
-        return (EntityAgeable)new EntityIguana(this.worldObj);
+        return (EntityAgeable) new EntityIguana(this.worldObj);
     }
 
     public int getMaxSpawnedInChunk() {

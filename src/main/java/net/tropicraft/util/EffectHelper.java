@@ -1,18 +1,19 @@
 package net.tropicraft.util;
 
-import net.minecraft.entity.*;
 import java.util.*;
 
-public class EffectHelper
-{
+import net.minecraft.entity.*;
+
+public class EffectHelper {
+
     public static List<EffectEntry> listEntities;
-    
+
     public static void addEntry(final EntityLivingBase entity, final int effectTime) {
         final EffectEntry entry = new EffectEntry(entity);
         entry.setEffectTime(effectTime);
         EffectHelper.listEntities.add(entry);
     }
-    
+
     public static void removeEntry(final EntityLivingBase entity) {
         final Iterator<EffectEntry> it = EffectHelper.listEntities.iterator();
         while (it.hasNext()) {
@@ -23,7 +24,7 @@ public class EffectHelper
             }
         }
     }
-    
+
     public static void tick() {
         final Iterator<EffectEntry> it = EffectHelper.listEntities.iterator();
         while (it.hasNext()) {
@@ -31,13 +32,12 @@ public class EffectHelper
             if (entry.getEntity() == null || entry.getEntity().isDead || entry.isFinished()) {
                 entry.cleanup();
                 it.remove();
-            }
-            else {
+            } else {
                 entry.tick();
             }
         }
     }
-    
+
     static {
         EffectHelper.listEntities = new ArrayList<EffectEntry>();
     }

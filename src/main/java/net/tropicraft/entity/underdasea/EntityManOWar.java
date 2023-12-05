@@ -1,15 +1,16 @@
 package net.tropicraft.entity.underdasea;
 
-import net.minecraft.entity.passive.*;
-import net.minecraft.world.*;
-import net.minecraft.entity.*;
-import net.minecraft.util.*;
 import java.util.*;
-import net.minecraft.init.*;
-import net.minecraft.entity.player.*;
 
-public class EntityManOWar extends EntityWaterMob
-{
+import net.minecraft.entity.*;
+import net.minecraft.entity.passive.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.init.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+
+public class EntityManOWar extends EntityWaterMob {
+
     public float important1;
     protected float randomMotionSpeed;
     protected float important2;
@@ -32,7 +33,8 @@ public class EntityManOWar extends EntityWaterMob
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(5.0);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(5.0);
     }
 
     public boolean canBreatheUnderwater() {
@@ -67,12 +69,16 @@ public class EntityManOWar extends EntityWaterMob
         }
         if (this.inWater) {
             if (this.attackTime == 0) {
-                final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.expand(2.0, 8.0, 2.0).getOffsetBoundingBox(0.0, -8.0, 0.0));
+                final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+                    (Entity) this,
+                    this.boundingBox.expand(2.0, 8.0, 2.0)
+                        .getOffsetBoundingBox(0.0, -8.0, 0.0));
                 for (int i = 0; i < list.size(); ++i) {
                     final Entity ent = (Entity) list.get(i);
-                    if (!(ent instanceof EntityManOWar) && ent instanceof EntityLiving && ((EntityLiving)ent).isInWater()) {
+                    if (!(ent instanceof EntityManOWar) && ent instanceof EntityLiving
+                        && ((EntityLiving) ent).isInWater()) {
                         final byte byte0 = this.getAttackStrength();
-                        ((EntityLiving)ent).attackEntityFrom(DamageSource.drown, (float)byte0);
+                        ((EntityLiving) ent).attackEntityFrom(DamageSource.drown, (float) byte0);
                         this.attackTime = 60;
                     }
                 }
@@ -89,8 +95,7 @@ public class EntityManOWar extends EntityWaterMob
                 if (f > 0.75) {
                     this.randomMotionSpeed = 1.0f;
                 }
-            }
-            else {
+            } else {
                 this.randomMotionSpeed *= 0.95f;
             }
             if (!this.worldObj.isRemote) {
@@ -99,10 +104,10 @@ public class EntityManOWar extends EntityWaterMob
                 this.motionZ = this.randomMotionVecZ * this.randomMotionSpeed;
             }
             final float f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.renderYawOffset += (-(float)Math.atan2(this.motionX, this.motionZ) * 180.0f / 3.141593f - this.renderYawOffset) * 0.1f;
+            this.renderYawOffset += (-(float) Math.atan2(this.motionX, this.motionZ) * 180.0f / 3.141593f
+                - this.renderYawOffset) * 0.1f;
             this.rotationYaw = this.renderYawOffset;
-        }
-        else {
+        } else {
             if (!this.worldObj.isRemote) {
                 this.motionX = 0.0;
                 this.motionY *= 0.9800000190734863;
@@ -128,7 +133,8 @@ public class EntityManOWar extends EntityWaterMob
     }
 
     protected void updateEntityActionState() {
-        if (this.rand.nextInt(150) == 0 || !this.inWater || (this.randomMotionVecX == 0.0f && this.randomMotionVecY == 0.0f && this.randomMotionVecZ == 0.0f)) {
+        if (this.rand.nextInt(150) == 0 || !this.inWater
+            || (this.randomMotionVecX == 0.0f && this.randomMotionVecY == 0.0f && this.randomMotionVecZ == 0.0f)) {
             final float f = this.rand.nextFloat() * 3.141593f * 2.0f;
             this.randomMotionVecX = MathHelper.cos(f) * 0.025f;
             this.randomMotionVecZ = MathHelper.sin(f) * 0.025f;

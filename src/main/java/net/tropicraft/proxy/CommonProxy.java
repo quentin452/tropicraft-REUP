@@ -2,26 +2,22 @@ package net.tropicraft.proxy;
 
 import net.minecraft.client.model.*;
 
-public abstract class CommonProxy implements ISuperProxy
-{
+public abstract class CommonProxy implements ISuperProxy {
+
     @Override
-    public void registerBooks() {
-    }
-    
+    public void registerBooks() {}
+
     @Override
-    public void initRenderHandlersAndIDs() {
-    }
-    
+    public void initRenderHandlersAndIDs() {}
+
     @Override
-    public void initRenderRegistry() {
-    }
-    
+    public void initRenderRegistry() {}
+
     @Override
     public ModelBiped getArmorModel(final int id) {
         return null;
     }
-    
+
     @Override
-    public void preInit() {
-    }
+    public void preInit() {}
 }

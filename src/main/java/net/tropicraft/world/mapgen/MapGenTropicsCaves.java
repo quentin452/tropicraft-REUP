@@ -1,19 +1,21 @@
 package net.tropicraft.world.mapgen;
 
-import net.minecraft.world.gen.*;
-import net.minecraft.world.chunk.*;
-import net.minecraft.world.*;
-import net.minecraft.block.*;
 import java.util.*;
-import net.minecraft.util.*;
-import net.minecraft.init.*;
-import net.minecraft.world.biome.*;
 
-public class MapGenTropicsCaves extends MapGenBase
-{
+import net.minecraft.block.*;
+import net.minecraft.init.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.*;
+import net.minecraft.world.chunk.*;
+import net.minecraft.world.gen.*;
+
+public class MapGenTropicsCaves extends MapGenBase {
+
     private static final int CHUNK_SIZE_Y = 256;
-    
-    public void generate(final IChunkProvider chunkProvider, final World world, final int x, final int z, final Block[] blocks) {
+
+    public void generate(final IChunkProvider chunkProvider, final World world, final int x, final int z,
+        final Block[] blocks) {
         final int range = this.range;
         this.worldObj = world;
         this.rand.setSeed(world.getSeed());
@@ -28,12 +30,28 @@ public class MapGenTropicsCaves extends MapGenBase
             }
         }
     }
-    
-    protected void generateLargeCaveNode(final long seed, final int chunkX, final int chunkZ, final Block[] blocks, final double i, final double j, final double k) {
-        this.generateCaveNode(seed, chunkX, chunkZ, blocks, i, j, k, 1.0f + this.rand.nextFloat() * 6.0f, 0.0f, 0.0f, -1, -1, 0.5);
+
+    protected void generateLargeCaveNode(final long seed, final int chunkX, final int chunkZ, final Block[] blocks,
+        final double i, final double j, final double k) {
+        this.generateCaveNode(
+            seed,
+            chunkX,
+            chunkZ,
+            blocks,
+            i,
+            j,
+            k,
+            1.0f + this.rand.nextFloat() * 6.0f,
+            0.0f,
+            0.0f,
+            -1,
+            -1,
+            0.5);
     }
-    
-    protected void generateCaveNode(final long seed, final int chunkX, final int chunkZ, final Block[] blocks, double i, double j, double k, final float sizeMod, float headingXZ, float headingY, int currentSection, int length, final double sizeModY) {
+
+    protected void generateCaveNode(final long seed, final int chunkX, final int chunkZ, final Block[] blocks, double i,
+        double j, double k, final float sizeMod, float headingXZ, float headingY, int currentSection, int length,
+        final double sizeModY) {
         final double d4 = chunkX * 16 + 8;
         final double d5 = chunkZ * 16 + 8;
         float f3 = 0.0f;
@@ -60,8 +78,7 @@ public class MapGenTropicsCaves extends MapGenBase
             k += MathHelper.sin(headingXZ) * f5;
             if (flag2) {
                 headingY *= 0.92f;
-            }
-            else {
+            } else {
                 headingY *= 0.7f;
             }
             headingY += f4 * 0.1f;
@@ -71,8 +88,34 @@ public class MapGenTropicsCaves extends MapGenBase
             f4 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0f;
             f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0f;
             if (!flag && currentSection == k2 && sizeMod > 1.0f && length > 0) {
-                this.generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, i, j, k, random.nextFloat() * 0.5f + 0.5f, headingXZ - 1.5707964f, headingY / 3.0f, currentSection, length, 1.0);
-                this.generateCaveNode(random.nextLong(), chunkX, chunkZ, blocks, i, j, k, random.nextFloat() * 0.5f + 0.5f, headingXZ + 1.5707964f, headingY / 3.0f, currentSection, length, 1.0);
+                this.generateCaveNode(
+                    random.nextLong(),
+                    chunkX,
+                    chunkZ,
+                    blocks,
+                    i,
+                    j,
+                    k,
+                    random.nextFloat() * 0.5f + 0.5f,
+                    headingXZ - 1.5707964f,
+                    headingY / 3.0f,
+                    currentSection,
+                    length,
+                    1.0);
+                this.generateCaveNode(
+                    random.nextLong(),
+                    chunkX,
+                    chunkZ,
+                    blocks,
+                    i,
+                    j,
+                    k,
+                    random.nextFloat() * 0.5f + 0.5f,
+                    headingXZ + 1.5707964f,
+                    headingY / 3.0f,
+                    currentSection,
+                    length,
+                    1.0);
                 return;
             }
             if (flag || random.nextInt(4) != 0) {
@@ -83,7 +126,9 @@ public class MapGenTropicsCaves extends MapGenBase
                 if (d8 * d8 + d9 * d9 - d10 * d10 > d11 * d11) {
                     return;
                 }
-                if (i >= d4 - 16.0 - d6 * 2.0 && k >= d5 - 16.0 - d6 * 2.0 && i <= d4 + 16.0 + d6 * 2.0 && k <= d5 + 16.0 + d6 * 2.0) {
+                if (i >= d4 - 16.0 - d6 * 2.0 && k >= d5 - 16.0 - d6 * 2.0
+                    && i <= d4 + 16.0 + d6 * 2.0
+                    && k <= d5 + 16.0 + d6 * 2.0) {
                     int l1 = MathHelper.floor_double(i - d6) - chunkX * 16 - 1;
                     int i2 = MathHelper.floor_double(i + d6) - chunkX * 16 + 1;
                     int j3 = MathHelper.floor_double(j - d7) - 1;
@@ -153,8 +198,9 @@ public class MapGenTropicsCaves extends MapGenBase
             ++currentSection;
         }
     }
-    
-    protected void recursiveGenerate(final World world, final int i, final int k, final int chunkX, final int chunkZ, final Block[] blocks) {
+
+    protected void recursiveGenerate(final World world, final int i, final int k, final int chunkX, final int chunkZ,
+        final Block[] blocks) {
         int i2 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(40) + 1) + 1);
         if (this.rand.nextInt(15) != 0) {
             i2 = 0;
@@ -179,30 +225,32 @@ public class MapGenTropicsCaves extends MapGenBase
             }
         }
     }
-    
-    protected boolean isOceanBlock(final Block[] data, final int index, final int x, final int y, final int z, final int chunkX, final int chunkZ) {
+
+    protected boolean isOceanBlock(final Block[] data, final int index, final int x, final int y, final int z,
+        final int chunkX, final int chunkZ) {
         return data[index] == Blocks.water;
     }
-    
+
     private boolean isExceptionBiome(final BiomeGenBase biome) {
         return biome == BiomeGenBase.mushroomIsland || biome == BiomeGenBase.beach || biome == BiomeGenBase.desert;
     }
-    
-    private boolean isTopBlock(final Block[] data, final int index, final int x, final int y, final int z, final int chunkX, final int chunkZ) {
+
+    private boolean isTopBlock(final Block[] data, final int index, final int x, final int y, final int z,
+        final int chunkX, final int chunkZ) {
         final BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(x + chunkX * 16, z + chunkZ * 16);
         return this.isExceptionBiome(biome) ? (data[index] == Blocks.grass) : (data[index] == biome.topBlock);
     }
-    
-    protected void digBlock(final Block[] data, final int index, final int x, final int y, final int z, final int chunkX, final int chunkZ, final boolean foundTop) {
+
+    protected void digBlock(final Block[] data, final int index, final int x, final int y, final int z,
+        final int chunkX, final int chunkZ, final boolean foundTop) {
         final BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(x + chunkX * 16, z + chunkZ * 16);
-        final Block top = (Block)(this.isExceptionBiome(biome) ? Blocks.grass : biome.topBlock);
+        final Block top = (Block) (this.isExceptionBiome(biome) ? Blocks.grass : biome.topBlock);
         final Block filler = this.isExceptionBiome(biome) ? Blocks.dirt : biome.fillerBlock;
         final Block block = data[index];
         if (block == Blocks.stone || block == filler || block == top) {
             if (y < 10) {
                 data[index] = Blocks.lava;
-            }
-            else {
+            } else {
                 data[index] = Blocks.air;
                 if (foundTop && data[index - 1] == filler) {
                     data[index - 1] = top;

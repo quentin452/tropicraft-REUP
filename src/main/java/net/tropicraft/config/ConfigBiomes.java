@@ -2,8 +2,8 @@ package net.tropicraft.config;
 
 import modconfig.*;
 
-public class ConfigBiomes implements IConfigCategory
-{
+public class ConfigBiomes implements IConfigCategory {
+
     public static int tropicsOceanID;
     public static int tropicsID;
     public static int rainforestPlainsID;
@@ -13,18 +13,17 @@ public class ConfigBiomes implements IConfigCategory
     public static int tropicsBeachID;
     public static int tropicsLakeID;
     public static int islandMountainsID;
-    
+
     public String getConfigFileName() {
         return "Tropicraft_Biomes";
     }
-    
+
     public String getCategory() {
         return "Tropicraft Biomes Config";
     }
-    
-    public void hookUpdatedValues() {
-    }
-    
+
+    public void hookUpdatedValues() {}
+
     static {
         ConfigBiomes.tropicsOceanID = 60;
         ConfigBiomes.tropicsID = 61;

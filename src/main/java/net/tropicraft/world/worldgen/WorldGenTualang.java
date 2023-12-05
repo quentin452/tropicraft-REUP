@@ -1,26 +1,27 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
+
+import net.minecraft.block.*;
 import net.minecraft.init.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
 
-public class WorldGenTualang extends TCGenBase
-{
+public class WorldGenTualang extends TCGenBase {
+
     private static final Block WOOD_BLOCK;
     private static final int WOOD_META = 1;
     private static final Block LEAF_BLOCK;
     private static final int LEAF_META = 1;
     private int baseHeight;
     private int maxHeight;
-    
+
     public WorldGenTualang(final World world, final Random random, final int maxHeight, final int baseHeight) {
         super(world, random);
         this.baseHeight = baseHeight;
         this.maxHeight = maxHeight;
     }
-    
+
     public boolean generate(final int i, final int j, final int k) {
         final int height = this.rand.nextInt(this.maxHeight - this.baseHeight) + this.baseHeight + j;
         final int branches = this.rand.nextInt(3) + 3;
@@ -67,19 +68,23 @@ public class WorldGenTualang extends TCGenBase
             final int branchHeight = this.rand.nextInt(4) + 2 + height;
             final int bx = this.rand.nextInt(15) - 8 + i;
             final int bz = this.rand.nextInt(15) - 8 + k;
-            this.placeBlockLine(new int[] { i + this.sign((bx - i) / 2), height, k + this.sign((bz - k) / 2) }, new int[] { bx, branchHeight, bz }, WorldGenTualang.WOOD_BLOCK, 1);
+            this.placeBlockLine(
+                new int[] { i + this.sign((bx - i) / 2), height, k + this.sign((bz - k) / 2) },
+                new int[] { bx, branchHeight, bz },
+                WorldGenTualang.WOOD_BLOCK,
+                1);
             this.genCircle(bx, branchHeight, bz, 2.0, 1.0, WorldGenTualang.LEAF_BLOCK, 1, false);
             this.genCircle(bx, branchHeight + 1, bz, 3.0, 2.0, WorldGenTualang.LEAF_BLOCK, 1, false);
         }
         return true;
     }
-    
+
     private int sign(final int i) {
         return (i == 0) ? 0 : ((i <= 0) ? -1 : 1);
     }
-    
+
     static {
-        WOOD_BLOCK = (Block)TCBlockRegistry.logs;
-        LEAF_BLOCK = (Block)TCBlockRegistry.rainforestLeaves;
+        WOOD_BLOCK = (Block) TCBlockRegistry.logs;
+        LEAF_BLOCK = (Block) TCBlockRegistry.rainforestLeaves;
     }
 }

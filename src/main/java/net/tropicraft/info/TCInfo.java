@@ -1,7 +1,7 @@
 package net.tropicraft.info;
 
-public class TCInfo
-{
+public class TCInfo {
+
     public static final String MODID = "tropicraft";
     public static final String VERSION = "v6.0.5";
     public static final String NAME = "Tropicraft";

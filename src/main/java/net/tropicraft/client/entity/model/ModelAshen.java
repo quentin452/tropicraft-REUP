@@ -4,8 +4,8 @@ import net.minecraft.client.model.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
 
-public class ModelAshen extends ModelBase
-{
+public class ModelAshen extends ModelBase {
+
     public ModelRenderer rightLeg;
     public ModelRenderer leftLeg;
     public ModelRenderer body;
@@ -18,7 +18,7 @@ public class ModelAshen extends ModelBase
     public float headAngle;
     public boolean swinging;
     public int actionState;
-    
+
     public ModelAshen() {
         this.swinging = false;
         this.actionState = 0;
@@ -29,47 +29,48 @@ public class ModelAshen extends ModelBase
         this.setTextureOffset("leftArmSub.leftArmTop", 31, 0);
         this.setTextureOffset("rightArm.rightArmBase", 0, 24);
         this.setTextureOffset("rightArmSub.rightArmTop", 31, 0);
-        (this.rightLeg = new ModelRenderer((ModelBase)this, 25, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 7, 1);
+        (this.rightLeg = new ModelRenderer((ModelBase) this, 25, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 7, 1);
         this.rightLeg.setRotationPoint(1.0f, 17.0f, 0.0f);
         this.rightLeg.setTextureSize(64, 32);
         this.rightLeg.mirror = true;
         this.setRotation(this.rightLeg, 0.0f, 0.0f, 0.0f);
-        (this.leftLeg = new ModelRenderer((ModelBase)this, 25, 0)).addBox(-1.0f, 0.0f, 0.0f, 1, 7, 1);
+        (this.leftLeg = new ModelRenderer((ModelBase) this, 25, 0)).addBox(-1.0f, 0.0f, 0.0f, 1, 7, 1);
         this.leftLeg.setRotationPoint(-1.0f, 17.0f, 0.0f);
         this.leftLeg.setTextureSize(64, 32);
         this.leftLeg.mirror = true;
         this.setRotation(this.leftLeg, 0.0f, 0.0f, 0.0f);
-        (this.body = new ModelRenderer((ModelBase)this, 24, 8)).addBox(-2.0f, -3.0f, 0.0f, 4, 7, 3);
+        (this.body = new ModelRenderer((ModelBase) this, 24, 8)).addBox(-2.0f, -3.0f, 0.0f, 4, 7, 3);
         this.body.setRotationPoint(0.0f, 13.0f, 2.0f);
         this.body.setTextureSize(64, 32);
         this.body.mirror = true;
         this.setRotation(this.body, 0.0f, 3.141593f, 0.0f);
-        (this.head = new ModelRenderer((ModelBase)this, 24, 18)).addBox(-2.0f, -3.0f, -1.0f, 4, 3, 4);
+        (this.head = new ModelRenderer((ModelBase) this, 24, 18)).addBox(-2.0f, -3.0f, -1.0f, 4, 3, 4);
         this.head.setRotationPoint(0.0f, 10.0f, 1.0f);
         this.head.setTextureSize(64, 32);
         this.head.mirror = true;
         this.setRotation(this.head, 0.0f, 3.141593f, 0.0f);
-        (this.leftArm = new ModelRenderer((ModelBase)this, "leftArm")).setRotationPoint(-2.0f, 10.5f, 0.5f);
+        (this.leftArm = new ModelRenderer((ModelBase) this, "leftArm")).setRotationPoint(-2.0f, 10.5f, 0.5f);
         this.setRotation(this.leftArm, 0.0f, 0.0f, 0.0f);
         this.leftArm.mirror = true;
         this.leftArm.addBox("leftArmBase", -6.0f, -0.5f, -0.5f, 6, 1, 1);
-        (this.leftArmSub = new ModelRenderer((ModelBase)this, "leftArmSub")).setRotationPoint(-5.5f, 0.0f, 0.0f);
+        (this.leftArmSub = new ModelRenderer((ModelBase) this, "leftArmSub")).setRotationPoint(-5.5f, 0.0f, 0.0f);
         this.setRotation(this.leftArmSub, 0.0f, 0.0f, 0.0f);
         this.leftArmSub.mirror = true;
         this.leftArmSub.addBox("leftArmTop", -0.5f, -6.0f, -0.5f, 1, 6, 1);
         this.leftArm.addChild(this.leftArmSub);
-        (this.rightArm = new ModelRenderer((ModelBase)this, "rightArm")).setRotationPoint(2.0f, 10.46667f, 0.5f);
+        (this.rightArm = new ModelRenderer((ModelBase) this, "rightArm")).setRotationPoint(2.0f, 10.46667f, 0.5f);
         this.setRotation(this.rightArm, 0.0f, 0.0f, 0.0f);
         this.rightArm.mirror = true;
         this.rightArm.addBox("rightArmBase", 0.0f, -0.5f, -0.5f, 6, 1, 1);
-        (this.rightArmSub = new ModelRenderer((ModelBase)this, "rightArmSub")).setRotationPoint(5.5f, 0.0f, 0.0f);
+        (this.rightArmSub = new ModelRenderer((ModelBase) this, "rightArmSub")).setRotationPoint(5.5f, 0.0f, 0.0f);
         this.setRotation(this.rightArmSub, 0.0f, 0.0f, 0.0f);
         this.rightArmSub.mirror = true;
         this.rightArmSub.addBox("rightArmTop", -0.5f, -6.0f, -0.5f, 1, 6, 1);
         this.rightArm.addChild(this.rightArmSub);
     }
-    
-    public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
+
+    public void render(final Entity entity, final float f, final float f1, final float f2, final float f3,
+        final float f4, final float f5) {
         this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         this.rightLeg.render(f5);
         this.leftLeg.render(f5);
@@ -78,19 +79,21 @@ public class ModelAshen extends ModelBase
         this.leftArm.render(f5);
         this.rightArm.render(f5);
     }
-    
+
     private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;
     }
-    
-    public void setLivingAnimations(final EntityLivingBase entityliving, final float f, final float f1, final float f2) {
+
+    public void setLivingAnimations(final EntityLivingBase entityliving, final float f, final float f1,
+        final float f2) {
         this.rightLeg.rotateAngleX = MathHelper.cos(f * 0.6662f) * 1.25f * f1;
         this.leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662f + 3.141593f) * 1.25f * f1;
     }
-    
-    public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity ent) {
+
+    public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4,
+        final float f5, final Entity ent) {
         this.head.rotateAngleX = f4 / 125.0f + this.headAngle;
         this.head.rotateAngleY = f3 / 125.0f + 3.14159f;
         final float ArmRotater = 1.247196f;

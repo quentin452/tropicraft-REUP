@@ -1,8 +1,8 @@
 package net.tropicraft.drinks;
 
-public interface IMixerRecipe
-{
+public interface IMixerRecipe {
+
     Ingredient[] getIngredients();
-    
+
     Drink getCraftingResult();
 }

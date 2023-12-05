@@ -1,17 +1,17 @@
 package net.tropicraft.entity.underdasea;
 
-import net.minecraft.world.*;
-import net.minecraft.nbt.*;
-import net.tropicraft.registry.*;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
-import net.minecraft.entity.player.*;
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.registry.*;
 
-public class EntityMarlin extends EntityTropicraftWaterMob
-{
+public class EntityMarlin extends EntityTropicraftWaterMob {
+
     public String texture;
-    
+
     public EntityMarlin(final World world) {
         super(world);
         this.texture = "";
@@ -26,74 +26,76 @@ public class EntityMarlin extends EntityTropicraftWaterMob
         this.fishingInterestOdds = 6;
         this.experienceValue = 5;
     }
-    
+
     public void writeEntityToNBT(final NBTTagCompound n) {
         n.setString("texture", this.texture);
         super.writeEntityToNBT(n);
     }
-    
+
     public void readEntityFromNBT(final NBTTagCompound n) {
         this.texture = n.getString("texture");
         super.readEntityFromNBT(n);
     }
-    
+
     @Override
     protected String getLivingSound() {
         return null;
     }
-    
+
     @Override
     protected String getHurtSound() {
         return null;
     }
-    
+
     @Override
     protected String getDeathSound() {
         return null;
     }
-    
+
     @Override
     protected float getSoundVolume() {
         return 0.4f;
     }
-    
+
     protected void dropFewItems(final boolean flag) {
         for (int i = this.rand.nextInt(3) + 1, j = 0; j < i; ++j) {
             if (!this.worldObj.isRemote) {
-                this.entityDropItem(new ItemStack((Item)TCItemRegistry.freshMarlin), 0.0f);
+                this.entityDropItem(new ItemStack((Item) TCItemRegistry.freshMarlin), 0.0f);
             }
         }
     }
-    
+
     public void onDeath(final DamageSource damagesource) {
         super.onDeath(damagesource);
         this.dropFewItems(true);
     }
-    
+
     public boolean interact(final EntityPlayer entityplayer) {
         return false;
     }
-    
+
     @Override
     public boolean isInWater() {
         return super.isInWater();
     }
-    
+
     @Override
     public void applyEntityCollision(final Entity entity) {
         super.applyEntityCollision(entity);
         if (this.isSurfacing) {}
     }
-    
+
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
     }
-    
+
     @Override
     protected void updateEntityActionState() {
         super.updateEntityActionState();
-        if (this.isInWater() && this.worldObj.rand.nextInt(500) == 0 && !this.isSurfacing && Math.floor(this.posY) >= 60.0) {
+        if (this.isInWater() && this.worldObj.rand.nextInt(500) == 0
+            && !this.isSurfacing
+            && Math.floor(this.posY) >= 60.0) {
             this.isSurfacing = true;
             this.motionX *= 1.5;
             this.motionZ *= 1.5;
@@ -102,7 +104,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob
             this.reachedTarget = false;
         }
     }
-    
+
     @Override
     protected int attackStrength() {
         switch (this.worldObj.difficultySetting) {
@@ -120,7 +122,7 @@ public class EntityMarlin extends EntityTropicraftWaterMob
             }
         }
     }
-    
+
     @Override
     protected boolean canDespawn() {
         return true;

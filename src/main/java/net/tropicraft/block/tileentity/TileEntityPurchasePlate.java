@@ -1,17 +1,19 @@
 package net.tropicraft.block.tileentity;
 
-import net.minecraft.tileentity.*;
-import CoroUtil.componentAI.*;
-import net.minecraft.entity.player.*;
 import java.util.*;
+
+import net.minecraft.entity.player.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
+import net.minecraft.network.play.server.*;
+import net.minecraft.tileentity.*;
 import net.tropicraft.economy.*;
 import net.tropicraft.entity.ai.jobs.*;
-import net.minecraft.nbt.*;
-import net.minecraft.network.play.server.*;
-import net.minecraft.network.*;
 
-public class TileEntityPurchasePlate extends TileEntity
-{
+import CoroUtil.componentAI.*;
+
+public class TileEntityPurchasePlate extends TileEntity {
+
     public int itemIndex;
     public float startOffset;
     public float angle;
@@ -25,7 +27,7 @@ public class TileEntityPurchasePlate extends TileEntity
     public long toolTipWaitStartTime;
     public boolean showToolTip;
     public boolean watch_showToolTip;
-    
+
     public TileEntityPurchasePlate() {
         this.itemIndex = 0;
         this.angle = 0.0f;
@@ -37,10 +39,10 @@ public class TileEntityPurchasePlate extends TileEntity
         this.showToolTip = false;
         this.watch_showToolTip = false;
         final Random rand = new Random();
-        this.startOffset = (float)(Math.random() * 3.141592653589793 * 2.0);
-        this.angle = (float)rand.nextInt(360);
+        this.startOffset = (float) (Math.random() * 3.141592653589793 * 2.0);
+        this.angle = (float) rand.nextInt(360);
     }
-    
+
     public void onClicked(final boolean rightClick) {
         if (rightClick) {
             ++this.itemIndex;
@@ -48,12 +50,11 @@ public class TileEntityPurchasePlate extends TileEntity
             if (this.itemIndex >= ItemValues.itemsBuyable.size()) {
                 this.itemIndex = 0;
             }
-        }
-        else if (this.tradeState == 1) {
+        } else if (this.tradeState == 1) {
             ++this.tradeState;
-        }
-        else if (this.tradeState == 2 && this.tradeKoa != null && !this.tradeKoa.getAIAgent().ent.isDead) {
-            final JobTrade job = (JobTrade)this.tradeKoa.getAIAgent().jobMan.getFirstJobByClass((Class)JobTrade.class);
+        } else if (this.tradeState == 2 && this.tradeKoa != null && !this.tradeKoa.getAIAgent().ent.isDead) {
+            final JobTrade job = (JobTrade) this.tradeKoa.getAIAgent().jobMan
+                .getFirstJobByClass((Class) JobTrade.class);
             if (job != null) {
                 job.tradeConfirmCallback();
             }
@@ -61,27 +62,26 @@ public class TileEntityPurchasePlate extends TileEntity
         }
         this.sync();
     }
-    
+
     public void updateEntity() {
         if (!this.worldObj.isRemote) {
             final int waitTime = 100;
             final int endTime = waitTime + 400;
-            if (this.activeTrader != null && !this.activeTrader.getEntityData().hasKey("hasShownTradeToolTip")) {
+            if (this.activeTrader != null && !this.activeTrader.getEntityData()
+                .hasKey("hasShownTradeToolTip")) {
                 if (this.toolTipWaitStartTime == 0L) {
                     this.toolTipWaitStartTime = this.worldObj.getWorldTime();
-                }
-                else if (this.worldObj.getWorldTime() > this.toolTipWaitStartTime + waitTime) {
+                } else if (this.worldObj.getWorldTime() > this.toolTipWaitStartTime + waitTime) {
                     if (this.worldObj.getWorldTime() < this.toolTipWaitStartTime + endTime) {
                         this.showToolTip = true;
-                    }
-                    else {
+                    } else {
                         this.showToolTip = false;
                         this.toolTipWaitStartTime = 0L;
-                        this.activeTrader.getEntityData().setBoolean("hasShownTradeToolTip", true);
+                        this.activeTrader.getEntityData()
+                            .setBoolean("hasShownTradeToolTip", true);
                     }
                 }
-            }
-            else {
+            } else {
                 this.showToolTip = false;
                 this.toolTipWaitStartTime = 0L;
             }
@@ -89,14 +89,15 @@ public class TileEntityPurchasePlate extends TileEntity
         }
         super.updateEntity();
     }
-    
+
     public void watchVariables() {
         boolean update = false;
         if (this.showToolTip != this.watch_showToolTip) {
             this.watch_showToolTip = this.showToolTip;
             update = true;
         }
-        if (this.itemIndex != this.watch_itemIndex || this.watch_delay_itemIndex == 0 || this.watch_tradeState != this.tradeState) {
+        if (this.itemIndex != this.watch_itemIndex || this.watch_delay_itemIndex == 0
+            || this.watch_tradeState != this.tradeState) {
             this.watch_delay_itemIndex = 40;
             this.watch_tradeState = this.tradeState;
             update = true;
@@ -109,7 +110,7 @@ public class TileEntityPurchasePlate extends TileEntity
         }
         this.watch_itemIndex = this.itemIndex;
     }
-    
+
     public void readFromNBT(final NBTTagCompound par1NBTTagCompound) {
         try {
             super.readFromNBT(par1NBTTagCompound);
@@ -117,12 +118,11 @@ public class TileEntityPurchasePlate extends TileEntity
             this.tradeState = par1NBTTagCompound.getInteger("tradeState");
             this.credit = par1NBTTagCompound.getInteger("credit");
             this.showToolTip = par1NBTTagCompound.getBoolean("showToolTip");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public void writeToNBT(final NBTTagCompound par1NBTTagCompound) {
         try {
             super.writeToNBT(par1NBTTagCompound);
@@ -130,23 +130,22 @@ public class TileEntityPurchasePlate extends TileEntity
             par1NBTTagCompound.setInteger("tradeState", this.tradeState);
             par1NBTTagCompound.setInteger("credit", this.credit);
             par1NBTTagCompound.setBoolean("showToolTip", this.showToolTip);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
     }
-    
+
     public void sync() {
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
-    
+
     public Packet getDescriptionPacket() {
         final NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeToNBT(nbttagcompound);
-        return (Packet)new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, nbttagcompound);
+        return (Packet) new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 5, nbttagcompound);
     }
 }

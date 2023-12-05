@@ -1,16 +1,18 @@
 package net.tropicraft.item;
 
-import cpw.mods.fml.relauncher.*;
-import net.tropicraft.registry.*;
-import net.minecraft.creativetab.*;
 import java.util.*;
-import net.minecraft.item.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.util.*;
-import net.minecraft.client.renderer.texture.*;
 
-public class ItemDart extends ItemTropicraft
-{
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.creativetab.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.tropicraft.registry.*;
+
+import cpw.mods.fml.relauncher.*;
+
+public class ItemDart extends ItemTropicraft {
+
     public static final String[] dartNames;
     private static final int[] colors;
     private static final String[] tooltipText;
@@ -18,41 +20,46 @@ public class ItemDart extends ItemTropicraft
     private IIcon overlay;
     @SideOnly(Side.CLIENT)
     private IIcon backImage;
-    
+
     public ItemDart() {
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
         this.setCreativeTab(TCCreativeTabRegistry.tabCombat);
         this.setMaxStackSize(64);
     }
-    
+
     public void getSubItems(final Item item, final CreativeTabs par2CreativeTabs, final List par3List) {
         for (int i = 0; i < ItemDart.dartNames.length; ++i) {
             par3List.add(new ItemStack(item, 1, i));
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int par1, final int par2) {
         return (par2 > 0) ? this.overlay : this.getIconFromDamage(par1);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public boolean requiresMultipleRenderPasses() {
         return true;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(final ItemStack par1ItemStack, final int par2) {
         return ItemDart.colors[par1ItemStack.getItemDamage()];
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void addInformation(final ItemStack itemstack, final EntityPlayer ent, final List list, final boolean wat) {
         list.clear();
-        list.add(ItemDart.tooltipText[itemstack.getItemDamage()] + StatCollector.translateToLocal("dart.tropicraft:prefix.name") + " " + StatCollector.translateToLocal("dart.tropicraft:" + ItemDart.dartNames[itemstack.getItemDamage()] + ".name"));
+        list.add(
+            ItemDart.tooltipText[itemstack.getItemDamage()]
+                + StatCollector.translateToLocal("dart.tropicraft:prefix.name")
+                + " "
+                + StatCollector
+                    .translateToLocal("dart.tropicraft:" + ItemDart.dartNames[itemstack.getItemDamage()] + ".name"));
     }
-    
+
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(final IIconRegister par1IconRegister) {
@@ -60,7 +67,7 @@ public class ItemDart extends ItemTropicraft
         this.overlay = par1IconRegister.registerIcon("tropicraft:dartOverlay");
         this.backImage = par1IconRegister.registerIcon("tropicraft:dart");
     }
-    
+
     static {
         dartNames = new String[] { "paralyze", "poison", "moveSlowdown", "harm", "confusion", "hunger", "weakness" };
         colors = new int[] { 16758271, 2461347, 13621209, 14672442, 5322747, 14754852, 7129087 };

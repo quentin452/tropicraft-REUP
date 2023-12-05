@@ -1,24 +1,25 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.model.*;
-import net.tropicraft.client.entity.model.*;
-import net.tropicraft.entity.underdasea.*;
-import org.lwjgl.opengl.*;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
+import net.tropicraft.client.entity.model.*;
+import net.tropicraft.entity.underdasea.*;
 import net.tropicraft.util.*;
 
-public class RenderManOWar extends RenderLiving
-{
+import org.lwjgl.opengl.*;
+
+public class RenderManOWar extends RenderLiving {
+
     private ModelBase scaleAmount;
-    
+
     public RenderManOWar(final ModelBase modelbase, final ModelBase modelbase1, final float f) {
         super(modelbase, f);
         this.mainModel = modelbase;
         this.scaleAmount = modelbase1;
     }
-    
+
     protected int func_40287_a(final EntityManOWar manowar, final int i, final float f) {
         if (i == 0) {
             this.setRenderPassModel(this.scaleAmount);
@@ -33,16 +34,17 @@ public class RenderManOWar extends RenderLiving
         }
         return -1;
     }
-    
-    public void renderManOWar(final EntityLiving entityliving, final double d, final double d1, final double d2, final float f, final float f1) {
+
+    public void renderManOWar(final EntityLiving entityliving, final double d, final double d1, final double d2,
+        final float f, final float f1) {
         super.doRender(entityliving, d, d1, d2, f, f1);
-        ((ModelManOWar)this.mainModel).isOnGround = entityliving.onGround;
+        ((ModelManOWar) this.mainModel).isOnGround = entityliving.onGround;
     }
-    
+
     protected int shouldRenderPass(final EntityLivingBase entityliving, final int i, final float f) {
-        return this.func_40287_a((EntityManOWar)entityliving, i, f);
+        return this.func_40287_a((EntityManOWar) entityliving, i, f);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity entity) {
         return TropicraftUtils.bindTextureEntity("manowar");
     }

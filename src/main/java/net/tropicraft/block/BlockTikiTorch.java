@@ -1,32 +1,34 @@
 package net.tropicraft.block;
 
-import net.minecraft.util.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import cpw.mods.fml.relauncher.*;
-import net.tropicraft.registry.*;
-import net.tropicraft.info.*;
-import net.minecraft.init.*;
-import net.minecraft.block.*;
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.item.*;
-import net.minecraft.client.renderer.texture.*;
 
-public class BlockTikiTorch extends BlockTropicraft
-{
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.creativetab.*;
+import net.minecraft.init.*;
+import net.minecraft.item.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.info.*;
+import net.tropicraft.registry.*;
+
+import cpw.mods.fml.relauncher.*;
+
+public class BlockTikiTorch extends BlockTropicraft {
+
     private IIcon lowerTorch;
     private IIcon upperTorch;
-    
+
     public BlockTikiTorch() {
         super(Material.circuits);
         this.setTickRandomly(true);
-        this.setCreativeTab((CreativeTabs)null);
+        this.setCreativeTab((CreativeTabs) null);
         this.lightValue = 15;
         final float w = 0.0625f;
         this.setBlockBounds(0.5f - w, 0.0f, 0.5f - w, 0.5f + w, 0.9f, 0.5f + w);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(final int id, final int metadata) {
         if (metadata != 0) {
@@ -34,41 +36,41 @@ public class BlockTikiTorch extends BlockTropicraft
         }
         return this.upperTorch;
     }
-    
+
     public void setBlockBoundsBasedOnState(final IBlockAccess world, final int x, final int y, final int z) {
         final float w = 0.0625f;
         final float top = (world.getBlockMetadata(x, y, z) == 0) ? 0.625f : 1.0f;
         this.setBlockBounds(0.5f - w, 0.0f, 0.5f - w, 0.5f + w, top, 0.5f + w);
     }
-    
+
     public boolean canPlaceBlockAt(final World world, final int x, final int y, final int z) {
         return !world.isRemote && this.canPlaceTikiTorchOn(world, x, y - 1, z);
     }
-    
+
     public Item getItemDropped(final int meta, final Random rand, final int unused) {
         if (meta == 0) {
             return TCItemRegistry.tikiTorch;
         }
         return null;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Item getItem(final World world, final int x, final int y, final int z) {
         return TCItemRegistry.tikiTorch;
     }
-    
+
     public boolean isOpaqueCube() {
         return false;
     }
-    
+
     public boolean renderAsNormalBlock() {
         return false;
     }
-    
+
     public int getRenderType() {
         return TCRenderIDs.tikiTorch;
     }
-    
+
     private boolean canPlaceTikiTorchOn(final World world, final int x, final int y, final int z) {
         if (world.isBlockNormalCubeDefault(x, y, z, false)) {
             return true;
@@ -91,7 +93,7 @@ public class BlockTikiTorch extends BlockTropicraft
         }
         return true;
     }
-    
+
     public void onNeighborBlockChange(final World world, final int x, final int y, final int z, final Block oldBlock) {
         if (!world.isRemote && !this.canPlaceTikiTorchOn(world, x, y - 1, z)) {
             this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
@@ -99,7 +101,7 @@ public class BlockTikiTorch extends BlockTropicraft
         }
         super.onNeighborBlockChange(world, x, y, z, oldBlock);
     }
-    
+
     public void onBlockDestroyedByPlayer(final World world, final int x, int y, final int z, final int meta) {
         if (!world.isRemote) {
             while (world.getBlock(x, --y, z) == this) {
@@ -108,11 +110,12 @@ public class BlockTikiTorch extends BlockTropicraft
             }
         }
     }
-    
-    public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z, final Explosion explosion) {
+
+    public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z,
+        final Explosion explosion) {
         this.onBlockDestroyedByPlayer(world, x, y, z, world.getBlockMetadata(x, y, z));
     }
-    
+
     public void randomDisplayTick(final World world, final int x, final int y, final int z, final Random random) {
         final int l = world.getBlockMetadata(x, y, z);
         if (l == 0) {
@@ -123,7 +126,7 @@ public class BlockTikiTorch extends BlockTropicraft
             world.spawnParticle("flame", d, d2, d3, 0.0, 0.0, 0.0);
         }
     }
-    
+
     public int getLightValue(final IBlockAccess world, final int x, final int y, final int z) {
         final int l = world.getBlockMetadata(x, y, z);
         if (l == 0) {
@@ -131,13 +134,13 @@ public class BlockTikiTorch extends BlockTropicraft
         }
         return 0;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(final Item item, final CreativeTabs tab, final List list) {
         list.add(new ItemStack(item, 1, 0));
         list.add(new ItemStack(item, 1, 1));
     }
-    
+
     @Override
     public void registerBlockIcons(final IIconRegister iconRegistry) {
         this.lowerTorch = iconRegistry.registerIcon("tropicraft:tikiTorch_Lower");

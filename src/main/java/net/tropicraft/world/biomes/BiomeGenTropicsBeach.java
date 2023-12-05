@@ -1,20 +1,21 @@
 package net.tropicraft.world.biomes;
 
-import net.minecraft.world.*;
 import java.util.*;
-import net.tropicraft.world.worldgen.*;
-import net.minecraft.util.*;
-import net.tropicraft.world.location.*;
 
-public class BiomeGenTropicsBeach extends BiomeGenTropicraft
-{
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+import net.tropicraft.world.location.*;
+import net.tropicraft.world.worldgen.*;
+
+public class BiomeGenTropicsBeach extends BiomeGenTropicraft {
+
     private static final int TREASURE_CHANCE = 25;
     private static final int VILLAGE_CHANCE = 10;
-    
+
     public BiomeGenTropicsBeach(final int biomeID) {
         super(biomeID);
     }
-    
+
     public void decorate(final World world, final Random rand, final int x, final int z) {
         if (rand.nextInt(25) == 0) {
             final int i = this.randCoord(rand, x, 16);
@@ -25,7 +26,8 @@ public class BiomeGenTropicsBeach extends BiomeGenTropicraft
             boolean success = false;
             int j;
             int l;
-            for (int ii = 0; ii < 3 && !success; success = TownKoaVillageGenHelper.hookTryGenVillage(new ChunkCoordinates(j, this.getTerrainHeightAt(world, j, l), l), world), ++ii) {
+            for (int ii = 0; ii < 3 && !success; success = TownKoaVillageGenHelper
+                .hookTryGenVillage(new ChunkCoordinates(j, this.getTerrainHeightAt(world, j, l), l), world), ++ii) {
                 j = this.randCoord(rand, x, 16);
                 l = this.randCoord(rand, z, 16);
                 int y = world.getTopSolidOrLiquidBlock(j, l);

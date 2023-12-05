@@ -1,29 +1,31 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.renderer.entity.*;
-import net.tropicraft.client.entity.model.*;
 import net.minecraft.client.model.*;
-import net.tropicraft.entity.underdasea.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
+import net.tropicraft.client.entity.model.*;
+import net.tropicraft.entity.underdasea.*;
 import net.tropicraft.util.*;
 
-public class RenderSeaTurtle extends RenderLiving
-{
+import org.lwjgl.opengl.*;
+
+public class RenderSeaTurtle extends RenderLiving {
+
     public ModelSeaTurtle turtle;
-    
+
     public RenderSeaTurtle(final ModelBase modelbase, final float f) {
         super(modelbase, f);
-        this.turtle = (ModelSeaTurtle)modelbase;
+        this.turtle = (ModelSeaTurtle) modelbase;
     }
-    
-    public void renderTurtle(final EntityAmphibian entityTurtle, final double d, final double d1, final double d2, final float f, final float f1) {
+
+    public void renderTurtle(final EntityAmphibian entityTurtle, final double d, final double d1, final double d2,
+        final float f, final float f1) {
         this.turtle.inWater = entityTurtle.isInWater();
         GL11.glPushMatrix();
         GL11.glDisable(2884);
-        this.mainModel.onGround = this.renderSwingProgress((EntityLivingBase)entityTurtle, f1);
+        this.mainModel.onGround = this.renderSwingProgress((EntityLivingBase) entityTurtle, f1);
         if (this.renderPassModel != null) {
             this.renderPassModel.onGround = this.mainModel.onGround;
         }
@@ -36,21 +38,25 @@ public class RenderSeaTurtle extends RenderLiving
             this.renderPassModel.isChild = this.mainModel.isChild;
         }
         try {
-            final float f2 = entityTurtle.prevRenderYawOffset + (entityTurtle.renderYawOffset - entityTurtle.prevRenderYawOffset) * f1;
-            final float f3 = entityTurtle.prevRotationYaw + (entityTurtle.rotationYaw - entityTurtle.prevRotationYaw) * f1;
-            final float f4 = entityTurtle.prevRotationPitch + (entityTurtle.rotationPitch - entityTurtle.prevRotationPitch) * f1;
-            this.renderLivingAt((EntityLivingBase)entityTurtle, d, d1, d2);
-            final float f5 = this.handleRotationFloat((EntityLivingBase)entityTurtle, f1);
-            this.rotateCorpse((EntityLivingBase)entityTurtle, f5, f2, f1);
+            final float f2 = entityTurtle.prevRenderYawOffset
+                + (entityTurtle.renderYawOffset - entityTurtle.prevRenderYawOffset) * f1;
+            final float f3 = entityTurtle.prevRotationYaw
+                + (entityTurtle.rotationYaw - entityTurtle.prevRotationYaw) * f1;
+            final float f4 = entityTurtle.prevRotationPitch
+                + (entityTurtle.rotationPitch - entityTurtle.prevRotationPitch) * f1;
+            this.renderLivingAt((EntityLivingBase) entityTurtle, d, d1, d2);
+            final float f5 = this.handleRotationFloat((EntityLivingBase) entityTurtle, f1);
+            this.rotateCorpse((EntityLivingBase) entityTurtle, f5, f2, f1);
             if (entityTurtle.isInWater()) {
                 GL11.glRotatef(f4, 1.0f, 0.0f, 0.0f);
             }
             final float f6 = 0.0625f;
             GL11.glEnable(32826);
             GL11.glScalef(-1.0f, -1.0f, 1.0f);
-            this.preRenderCallback((EntityLivingBase)entityTurtle, f1);
+            this.preRenderCallback((EntityLivingBase) entityTurtle, f1);
             GL11.glTranslatef(0.0f, -24.0f * f6 - 0.0078125f, 0.0f);
-            float f7 = entityTurtle.prevLimbSwingAmount + (entityTurtle.limbSwingAmount - entityTurtle.prevLimbSwingAmount) * f1;
+            float f7 = entityTurtle.prevLimbSwingAmount
+                + (entityTurtle.limbSwingAmount - entityTurtle.prevLimbSwingAmount) * f1;
             float f8 = entityTurtle.limbSwing - entityTurtle.limbSwingAmount * (1.0f - f1);
             if (entityTurtle.isChild()) {
                 f8 *= 3.0f;
@@ -59,12 +65,12 @@ public class RenderSeaTurtle extends RenderLiving
                 f7 = 1.0f;
             }
             GL11.glEnable(3008);
-            this.mainModel.setLivingAnimations((EntityLivingBase)entityTurtle, f8, f7, f1);
-            this.renderModel((EntityLivingBase)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+            this.mainModel.setLivingAnimations((EntityLivingBase) entityTurtle, f8, f7, f1);
+            this.renderModel((EntityLivingBase) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
             for (int i = 0; i < 4; ++i) {
-                final int j = this.shouldRenderPass((EntityLivingBase)entityTurtle, i, f1);
+                final int j = this.shouldRenderPass((EntityLivingBase) entityTurtle, i, f1);
                 if (j > 0) {
-                    this.renderPassModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                    this.renderPassModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                     if (j == 15) {
                         final float f9 = entityTurtle.ticksExisted + f1;
                         GL11.glEnable(3042);
@@ -85,7 +91,7 @@ public class RenderSeaTurtle extends RenderLiving
                             GL11.glRotatef(30.0f - i2 * 60.0f, 0.0f, 0.0f, 1.0f);
                             GL11.glTranslatef(0.0f, f12, 0.0f);
                             GL11.glMatrixMode(5888);
-                            this.renderPassModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                         }
                         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
                         GL11.glMatrixMode(5890);
@@ -100,9 +106,9 @@ public class RenderSeaTurtle extends RenderLiving
                     GL11.glEnable(3008);
                 }
             }
-            this.renderEquippedItems((EntityLivingBase)entityTurtle, f1);
+            this.renderEquippedItems((EntityLivingBase) entityTurtle, f1);
             final float f14 = entityTurtle.getBrightness(f1);
-            final int k = this.getColorMultiplier((EntityLivingBase)entityTurtle, f14, f1);
+            final int k = this.getColorMultiplier((EntityLivingBase) entityTurtle, f14, f1);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(3553);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -114,11 +120,11 @@ public class RenderSeaTurtle extends RenderLiving
                 GL11.glDepthFunc(514);
                 if (entityTurtle.hurtTime > 0 || entityTurtle.deathTime > 0) {
                     GL11.glColor4f(f14, 0.0f, 0.0f, 0.4f);
-                    this.mainModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                     for (int l = 0; l < 4; ++l) {
-                        if (this.inheritRenderPass((EntityLivingBase)entityTurtle, l, f1) >= 0) {
+                        if (this.inheritRenderPass((EntityLivingBase) entityTurtle, l, f1) >= 0) {
                             GL11.glColor4f(f14, 0.0f, 0.0f, 0.4f);
-                            this.renderPassModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -128,11 +134,11 @@ public class RenderSeaTurtle extends RenderLiving
                     final float f17 = (k & 0xFF) / 255.0f;
                     final float f18 = (k >> 24 & 0xFF) / 255.0f;
                     GL11.glColor4f(f15, f16, f17, f18);
-                    this.mainModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                     for (int j2 = 0; j2 < 4; ++j2) {
-                        if (this.inheritRenderPass((EntityLivingBase)entityTurtle, j2, f1) >= 0) {
+                        if (this.inheritRenderPass((EntityLivingBase) entityTurtle, j2, f1) >= 0) {
                             GL11.glColor4f(f15, f16, f17, f18);
-                            this.renderPassModel.render((Entity)entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityTurtle, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -142,8 +148,7 @@ public class RenderSeaTurtle extends RenderLiving
                 GL11.glEnable(3553);
             }
             GL11.glDisable(32826);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -151,26 +156,28 @@ public class RenderSeaTurtle extends RenderLiving
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         GL11.glEnable(2884);
         GL11.glPopMatrix();
-        this.passSpecialRender((EntityLivingBase)entityTurtle, d, d1, d2);
+        this.passSpecialRender((EntityLivingBase) entityTurtle, d, d1, d2);
     }
-    
+
     protected void preRenderCallback(final EntityLivingBase entityliving, final float f) {
-        this.preRenderScale((EntityAmphibian)entityliving, f);
+        this.preRenderScale((EntityAmphibian) entityliving, f);
     }
-    
+
     protected void preRenderScale(final EntityAmphibian entitymarlin, final float f) {
-        final float f2 = (float)Math.log(entitymarlin.getAge() + 1.75) - 0.25f;
+        final float f2 = (float) Math.log(entitymarlin.getAge() + 1.75) - 0.25f;
         GL11.glScalef(f2, f2, f2);
     }
-    
-    public void doRender(final EntityLiving entityTurtle, final double d, final double d1, final double d2, final float f, final float f1) {
-        this.renderTurtle((EntityAmphibian)entityTurtle, d, d1, d2, f, f1);
+
+    public void doRender(final EntityLiving entityTurtle, final double d, final double d1, final double d2,
+        final float f, final float f1) {
+        this.renderTurtle((EntityAmphibian) entityTurtle, d, d1, d2, f, f1);
     }
-    
-    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f, final float f1) {
-        this.renderTurtle((EntityAmphibian)entity, d, d1, d2, f, f1);
+
+    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f,
+        final float f1) {
+        this.renderTurtle((EntityAmphibian) entity, d, d1, d2, f, f1);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity entity) {
         return TropicraftUtils.bindTextureEntity("turtle/seaTurtle");
     }

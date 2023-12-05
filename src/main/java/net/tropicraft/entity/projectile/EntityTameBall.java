@@ -1,23 +1,25 @@
 package net.tropicraft.entity.projectile;
 
-import CoroUtil.entity.*;
-import cpw.mods.fml.relauncher.*;
-import extendedrenderer.particle.behavior.*;
+import java.util.*;
+
+import net.minecraft.client.*;
+import net.minecraft.entity.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.*;
-import net.minecraft.util.*;
-import net.minecraft.entity.*;
-import java.util.*;
-import net.minecraft.entity.player.*;
-import CoroUtil.util.*;
+
 import CoroUtil.componentAI.*;
-import net.minecraft.client.*;
+import CoroUtil.entity.*;
+import CoroUtil.util.*;
+import cpw.mods.fml.relauncher.*;
 import extendedrenderer.particle.*;
+import extendedrenderer.particle.behavior.*;
 import extendedrenderer.particle.entity.*;
 
-public class EntityTameBall extends EntityThrowableUsefull
-{
+public class EntityTameBall extends EntityThrowableUsefull {
+
     public int ticksInAir;
     @SideOnly(Side.CLIENT)
     public boolean hasDeathTicked;
@@ -37,8 +39,12 @@ public class EntityTameBall extends EntityThrowableUsefull
         super(world, entityliving);
         final float speed = 0.7f;
         final float f = 0.4f;
-        this.motionX = -MathHelper.sin(-this.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f) * f;
-        this.motionZ = MathHelper.cos(-this.rotationYaw / 180.0f * 3.1415927f) * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f) * f;
+        this.motionX = -MathHelper.sin(-this.rotationYaw / 180.0f * 3.1415927f)
+            * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f)
+            * f;
+        this.motionZ = MathHelper.cos(-this.rotationYaw / 180.0f * 3.1415927f)
+            * MathHelper.cos(-this.rotationPitch / 180.0f * 3.1415927f)
+            * f;
         this.motionY = -MathHelper.sin((-this.rotationPitch + this.func_70183_g()) / 180.0f * 3.1415927f) * f;
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed, 1.0f);
     }
@@ -54,8 +60,7 @@ public class EntityTameBall extends EntityThrowableUsefull
             if (this.ticksInAir > 80) {
                 this.setDead();
             }
-        }
-        else {
+        } else {
             if (this.pm == null) {
                 this.pm = new ParticleBehaviors(Vec3.createVectorHelper(this.posX, this.posY, this.posZ));
                 this.pm.rateAlpha = 0.02f;
@@ -83,7 +88,10 @@ public class EntityTameBall extends EntityThrowableUsefull
     public MovingObjectPosition tickEntityCollision(final Vec3 vec3, final Vec3 vec31) {
         MovingObjectPosition movingobjectposition = null;
         Entity entity = null;
-        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(0.5, 1.0, 0.5));
+        final List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            (Entity) this,
+            this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
+                .expand(0.5, 1.0, 0.5));
         final double d0 = 0.0;
         final EntityLivingBase entityliving = this.getThrower();
         for (int j = 0; j < list.size(); ++j) {
@@ -100,17 +108,19 @@ public class EntityTameBall extends EntityThrowableUsefull
     }
 
     protected void onImpact(final MovingObjectPosition movingobjectposition) {
-        if (movingobjectposition.entityHit != null && !this.worldObj.isRemote && movingobjectposition.entityHit instanceof ICoroAI && this.getThrower() instanceof EntityPlayer) {
-            final AITamable tamable = ((ICoroAI)movingobjectposition.entityHit).getAIAgent().jobMan.getPrimaryJob().tamable;
+        if (movingobjectposition.entityHit != null && !this.worldObj.isRemote
+            && movingobjectposition.entityHit instanceof ICoroAI
+            && this.getThrower() instanceof EntityPlayer) {
+            final AITamable tamable = ((ICoroAI) movingobjectposition.entityHit).getAIAgent().jobMan
+                .getPrimaryJob().tamable;
             if (!tamable.isTame()) {
-                tamable.tameBy(CoroUtilEntity.getName((Entity)this.getThrower()));
+                tamable.tameBy(CoroUtilEntity.getName((Entity) this.getThrower()));
                 this.setDead();
             }
         }
         if (!this.worldObj.isRemote) {
             this.setDead();
-        }
-        else {
+        } else {
             this.tickDeath();
         }
     }
@@ -126,7 +136,15 @@ public class EntityTameBall extends EntityThrowableUsefull
     public void tickAnimate() {
         for (int amount = 3 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i < amount; ++i) {
             final double speed = 0.01;
-            final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(this.worldObj, ParticleRegistry.smoke, this.posX + this.rand.nextDouble(), this.posY + 0.2 + this.rand.nextDouble() * 0.2, this.posZ + this.rand.nextDouble(), (this.rand.nextDouble() - this.rand.nextDouble()) * speed, 0.03, (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
+            final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(
+                this.worldObj,
+                ParticleRegistry.smoke,
+                this.posX + this.rand.nextDouble(),
+                this.posY + 0.2 + this.rand.nextDouble() * 0.2,
+                this.posZ + this.rand.nextDouble(),
+                (this.rand.nextDouble() - this.rand.nextDouble()) * speed,
+                0.03,
+                (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
             final ParticleBehaviors pm = this.pm;
             ParticleBehaviors.setParticleRandoms(entityfx, true, true);
             final ParticleBehaviors pm2 = this.pm;
@@ -145,9 +163,18 @@ public class EntityTameBall extends EntityThrowableUsefull
             if (this.pm == null) {
                 return;
             }
-            for (int amount = 20 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i < amount; ++i) {
+            for (int amount = 20 / (Minecraft.getMinecraft().gameSettings.particleSetting + 1), i = 0; i
+                < amount; ++i) {
                 final double speed = 0.01;
-                final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(this.worldObj, ParticleRegistry.smoke, this.posX + this.rand.nextDouble(), this.posY + 0.2 + this.rand.nextDouble() * 0.2, this.posZ + this.rand.nextDouble(), (this.rand.nextDouble() - this.rand.nextDouble()) * speed, 0.03, (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
+                final EntityRotFX entityfx = this.pm.spawnNewParticleIconFX(
+                    this.worldObj,
+                    ParticleRegistry.smoke,
+                    this.posX + this.rand.nextDouble(),
+                    this.posY + 0.2 + this.rand.nextDouble() * 0.2,
+                    this.posZ + this.rand.nextDouble(),
+                    (this.rand.nextDouble() - this.rand.nextDouble()) * speed,
+                    0.03,
+                    (this.rand.nextDouble() - this.rand.nextDouble()) * speed);
                 final ParticleBehaviors pm = this.pm;
                 ParticleBehaviors.setParticleRandoms(entityfx, true, true);
                 final ParticleBehaviors pm2 = this.pm;
@@ -160,7 +187,8 @@ public class EntityTameBall extends EntityThrowableUsefull
     }
 
     @Override
-    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_, float p_70186_8_) {
+    public void setThrowableHeading(double p_70186_1_, double p_70186_3_, double p_70186_5_, float p_70186_7_,
+        float p_70186_8_) {
 
     }
 }

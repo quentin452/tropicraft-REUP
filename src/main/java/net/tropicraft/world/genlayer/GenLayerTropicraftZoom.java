@@ -2,14 +2,14 @@ package net.tropicraft.world.genlayer;
 
 import net.minecraft.world.gen.layer.*;
 
-public class GenLayerTropicraftZoom extends GenLayerTropicraft
-{
+public class GenLayerTropicraftZoom extends GenLayerTropicraft {
+
     public GenLayerTropicraftZoom(final long par1, final GenLayerTropicraft parent) {
         super(par1);
         super.parent = parent;
         this.setZoom(1);
     }
-    
+
     public int[] getInts(final int x, final int y, final int width, final int length) {
         final int x2 = x >> 1;
         final int y2 = y >> 1;
@@ -25,7 +25,7 @@ public class GenLayerTropicraftZoom extends GenLayerTropicraft
             int backXY = parentMap[i + 0 + (j + 0) * width2];
             int backX = parentMap[i + 0 + (j + 1) * width2];
             while (i < width2 - 1) {
-                this.initChunkSeed((long)(i + x2 << 1), (long)(j + y2 << 1));
+                this.initChunkSeed((long) (i + x2 << 1), (long) (j + y2 << 1));
                 final int backY = parentMap[i + 1 + (j + 0) * width2];
                 final int cur = parentMap[i + 1 + (j + 1) * width2];
                 resultMap[index] = backXY;
@@ -43,7 +43,7 @@ public class GenLayerTropicraftZoom extends GenLayerTropicraft
         }
         return aint2;
     }
-    
+
     public static GenLayerTropicraft magnify(final long seed, final GenLayerTropicraft parent, final int zoomAmount) {
         GenLayerTropicraft zoomLayers = parent;
         for (int zoom = 0; zoom < zoomAmount; ++zoom) {
@@ -51,7 +51,7 @@ public class GenLayerTropicraftZoom extends GenLayerTropicraft
         }
         return zoomLayers;
     }
-    
+
     public void setZoom(final int zoom) {
         this.zoom = zoom;
         this.parent.setZoom(zoom * 2);

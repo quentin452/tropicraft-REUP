@@ -1,13 +1,14 @@
 package net.tropicraft.entity.passive;
 
-import net.minecraft.world.*;
 import java.util.*;
-import net.minecraft.entity.projectile.*;
-import net.minecraft.entity.*;
-import net.minecraft.util.*;
 
-public class Failgull extends EntityFlying
-{
+import net.minecraft.entity.*;
+import net.minecraft.entity.projectile.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
+
+public class Failgull extends EntityFlying {
+
     public int courseChangeCooldown;
     public double waypointX;
     public double waypointY;
@@ -16,7 +17,7 @@ public class Failgull extends EntityFlying
     public Failgull leader;
     public int flockCount;
     public int flockPosition;
-    
+
     public Failgull(final World par1World) {
         super(par1World);
         this.courseChangeCooldown = 0;
@@ -25,16 +26,17 @@ public class Failgull extends EntityFlying
         this.setSize(0.4f, 0.6f);
         this.experienceValue = 1;
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(3.0);
     }
-    
+
     public void entityInit() {
         super.entityInit();
     }
-    
+
     protected void updateEntityActionState() {
         ++this.entityAge;
         this.despawnEntity();
@@ -54,8 +56,7 @@ public class Failgull extends EntityFlying
                 this.motionX += d0 / d4 * 0.1;
                 this.motionY += d2 / d4 * 0.1;
                 this.motionZ += d3 / d4 * 0.1;
-            }
-            else {
+            } else {
                 this.waypointX = this.posX;
                 this.waypointY = this.posY;
                 this.waypointZ = this.posZ;
@@ -66,19 +67,19 @@ public class Failgull extends EntityFlying
                 this.waypointX = this.leader.waypointX;
                 this.waypointY = this.leader.waypointY;
                 this.waypointZ = this.leader.waypointZ;
-            }
-            else {
+            } else {
                 this.waypointX = this.leader.waypointX;
                 this.waypointY = this.leader.waypointY;
                 this.waypointZ = this.leader.waypointZ;
             }
         }
         if (!this.inFlock) {
-            final List list = this.worldObj.getEntitiesWithinAABB((Class)Failgull.class, this.boundingBox.expand(10.0, 10.0, 10.0));
+            final List list = this.worldObj
+                .getEntitiesWithinAABB((Class) Failgull.class, this.boundingBox.expand(10.0, 10.0, 10.0));
             final int lowest = this.getEntityId();
             Failgull f = null;
             for (final Object o : list) {
-                f = (Failgull)o;
+                f = (Failgull) o;
                 if (f.leader != null) {
                     this.flockPosition = ++f.leader.flockCount;
                     f.inFlock = true;
@@ -92,15 +93,15 @@ public class Failgull extends EntityFlying
             this.inFlock = true;
         }
     }
-    
+
     private void poop() {
         if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(20) == 0) {
             final EntitySnowball s = new EntitySnowball(this.worldObj, this.posX, this.posY, this.posZ);
             s.setThrowableHeading(0.0, 0.0, 0.0, 0.0f, 0.0f);
-            this.worldObj.spawnEntityInWorld((Entity)s);
+            this.worldObj.spawnEntityInWorld((Entity) s);
         }
     }
-    
+
     private boolean isCourseTraversable(final double par1, final double par3, final double par5, final double par7) {
         final double d4 = (this.waypointX - this.posX) / par7;
         final double d5 = (this.waypointY - this.posY) / par7;
@@ -108,17 +109,18 @@ public class Failgull extends EntityFlying
         final AxisAlignedBB axisalignedbb = this.boundingBox.copy();
         for (int i = 1; i < par7; ++i) {
             axisalignedbb.offset(d4, d5, d6);
-            if (!this.worldObj.getCollidingBoundingBoxes((Entity)this, axisalignedbb).isEmpty()) {
+            if (!this.worldObj.getCollidingBoundingBoxes((Entity) this, axisalignedbb)
+                .isEmpty()) {
                 return false;
             }
         }
         return true;
     }
-    
+
     public boolean getCanSpawnHere() {
         return super.getCanSpawnHere();
     }
-    
+
     protected String getLivingSound() {
         return "";
     }

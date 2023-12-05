@@ -1,45 +1,55 @@
 package net.tropicraft.client.renderer.item;
 
-import net.minecraftforge.client.*;
-import net.minecraft.item.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.world.storage.*;
-import net.tropicraft.item.scuba.*;
-import net.minecraft.util.*;
 import net.minecraft.client.*;
-import org.lwjgl.opengl.*;
-import net.tropicraft.util.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.texture.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
 import net.minecraft.nbt.*;
+import net.minecraft.util.*;
+import net.minecraft.world.storage.*;
+import net.minecraftforge.client.*;
+import net.tropicraft.item.scuba.*;
+import net.tropicraft.util.*;
 
-public class ItemDiveComputerRenderer implements IItemRenderer
-{
+import org.lwjgl.opengl.*;
+
+public class ItemDiveComputerRenderer implements IItemRenderer {
+
     public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
         return type == IItemRenderer.ItemRenderType.FIRST_PERSON_MAP;
     }
-    
-    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item, final IItemRenderer.ItemRendererHelper helper) {
+
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item,
+        final IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
-    
+
     public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
-        final EntityPlayer player = (EntityPlayer)data[0];
-        final TextureManager textureManager = (TextureManager)data[1];
-        final MapData mapData = (MapData)data[2];
+        final EntityPlayer player = (EntityPlayer) data[0];
+        final TextureManager textureManager = (TextureManager) data[1];
+        final MapData mapData = (MapData) data[2];
         final ItemStack chestplate = player.getEquipmentInSlot(3);
         if (chestplate != null && chestplate.getItem() instanceof ItemScubaChestplateGear) {
-            float airRemaining = (float)this.getTagCompound(chestplate).getInteger("AirRemaining");
+            float airRemaining = (float) this.getTagCompound(chestplate)
+                .getInteger("AirRemaining");
             final int currentDepth = MathHelper.floor_double(player.posY);
-            final int maxDepth = this.getTagCompound(chestplate).getInteger("MaxDepth");
-            airRemaining = chestplate.getTagCompound().getFloat("AirContained");
-            final int blocksAbove = chestplate.getTagCompound().getInteger("WaterBlocksAbove");
-            final int blocksBelow = chestplate.getTagCompound().getInteger("WaterBlocksBelow");
-            final ItemScubaChestplateGear gear = (ItemScubaChestplateGear)chestplate.getItem();
-            float timeRemaining = airRemaining / gear.getAirType(chestplate).getUsageRate();
+            final int maxDepth = this.getTagCompound(chestplate)
+                .getInteger("MaxDepth");
+            airRemaining = chestplate.getTagCompound()
+                .getFloat("AirContained");
+            final int blocksAbove = chestplate.getTagCompound()
+                .getInteger("WaterBlocksAbove");
+            final int blocksBelow = chestplate.getTagCompound()
+                .getInteger("WaterBlocksBelow");
+            final ItemScubaChestplateGear gear = (ItemScubaChestplateGear) chestplate.getItem();
+            float timeRemaining = airRemaining / gear.getAirType(chestplate)
+                .getUsageRate();
             final String timeUnits = (timeRemaining <= 60.0f) ? "secs" : "mins";
             timeRemaining = ((timeRemaining <= 60.0f) ? timeRemaining : (timeRemaining / 60.0f));
-            final float airTemp = player.worldObj.getBiomeGenForCoords(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ)).temperature;
+            final float airTemp = player.worldObj.getBiomeGenForCoords(
+                MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posZ)).temperature;
             final int width = Minecraft.getMinecraft().displayWidth;
             final int height = Minecraft.getMinecraft().displayHeight;
             final float yaw = player.rotationYaw;
@@ -58,10 +68,10 @@ public class ItemDiveComputerRenderer implements IItemRenderer
             tessellator.startDrawingQuads();
             final byte b0 = 16;
             int other = 140;
-            tessellator.addVertexWithUV((double)(0 - b0), (double)(other + b0), 0.0, 0.0, 1.0);
-            tessellator.addVertexWithUV((double)(other + b0), (double)(other + b0), 0.0, 1.0, 1.0);
-            tessellator.addVertexWithUV((double)(other + b0), (double)(0 - b0), 0.0, 1.0, 0.0);
-            tessellator.addVertexWithUV((double)(0 - b0), (double)(0 - b0), 0.0, 0.0, 0.0);
+            tessellator.addVertexWithUV((double) (0 - b0), (double) (other + b0), 0.0, 0.0, 1.0);
+            tessellator.addVertexWithUV((double) (other + b0), (double) (other + b0), 0.0, 1.0, 1.0);
+            tessellator.addVertexWithUV((double) (other + b0), (double) (0 - b0), 0.0, 1.0, 0.0);
+            tessellator.addVertexWithUV((double) (0 - b0), (double) (0 - b0), 0.0, 0.0, 0.0);
             tessellator.draw();
             GL11.glPushMatrix();
             GL11.glNormal3f(0.0f, 0.0f, 1.0f);
@@ -72,10 +82,10 @@ public class ItemDiveComputerRenderer implements IItemRenderer
             tessellator.startDrawingQuads();
             final int offset = -75;
             other = 150;
-            tessellator.addVertexWithUV((double)(0 + offset), (double)(other + offset), 0.0, 0.0, 1.0);
-            tessellator.addVertexWithUV((double)(other + offset), (double)(other + offset), 0.0, 1.0, 1.0);
-            tessellator.addVertexWithUV((double)(other + offset), (double)(0 + offset), 0.0, 1.0, 0.0);
-            tessellator.addVertexWithUV((double)(0 + offset), (double)(0 + offset), 0.0, 0.0, 0.0);
+            tessellator.addVertexWithUV((double) (0 + offset), (double) (other + offset), 0.0, 0.0, 1.0);
+            tessellator.addVertexWithUV((double) (other + offset), (double) (other + offset), 0.0, 1.0, 1.0);
+            tessellator.addVertexWithUV((double) (other + offset), (double) (0 + offset), 0.0, 1.0, 0.0);
+            tessellator.addVertexWithUV((double) (0 + offset), (double) (0 + offset), 0.0, 0.0, 0.0);
             tessellator.draw();
             GL11.glPopMatrix();
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -103,21 +113,23 @@ public class ItemDiveComputerRenderer implements IItemRenderer
             GL11.glPopMatrix();
         }
     }
-    
+
     private boolean isFullyUnderwater(final EntityPlayer player) {
         final int x = MathHelper.ceiling_double_int(player.posX);
         final int y = MathHelper.ceiling_double_int(player.posY + player.height - 2.299999952316284);
         final int z = MathHelper.ceiling_double_int(player.posZ);
-        return player.worldObj.getBlock(x, y, z).getMaterial().isLiquid();
+        return player.worldObj.getBlock(x, y, z)
+            .getMaterial()
+            .isLiquid();
     }
-    
+
     public NBTTagCompound getTagCompound(final ItemStack stack) {
         if (!stack.hasTagCompound()) {
             stack.setTagCompound(new NBTTagCompound());
         }
         return stack.getTagCompound();
     }
-    
+
     private void drawString(final Object text, final int x, final int y, final int color) {
         Minecraft.getMinecraft().fontRenderer.drawString(String.valueOf(text), x, y, color);
     }

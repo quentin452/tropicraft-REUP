@@ -1,57 +1,64 @@
 package net.tropicraft.world.worldgen;
 
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.*;
+import java.util.*;
+
 import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.util.*;
-import java.util.*;
+import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.*;
 
-public abstract class TCGenBase extends WorldGenerator
-{
+public abstract class TCGenBase extends WorldGenerator {
+
     World worldObj;
     Random rand;
     static final byte[] otherCoordPairs;
     List<Block> standardAllowedBlocks;
     public static final int BLOCK_GEN_NOTIFY_FLAG_DEFAULT = 2;
     public static int blockGenNotifyFlag;
-    
+
     public TCGenBase(final World world, final Random random) {
-        this.standardAllowedBlocks = Arrays.asList(Blocks.air, (Block)Blocks.leaves, (Block)Blocks.tallgrass, Blocks.snow_layer);
+        this.standardAllowedBlocks = Arrays
+            .asList(Blocks.air, (Block) Blocks.leaves, (Block) Blocks.tallgrass, Blocks.snow_layer);
         this.worldObj = world;
         this.rand = random;
     }
-    
+
     public boolean isLeafBlock(final Block block) {
         return block == Blocks.leaves;
     }
-    
+
     public abstract boolean generate(final int p0, final int p1, final int p2);
-    
+
     public boolean generate(final World world, final Random rand, final int i, final int j, final int k) {
         this.worldObj = world;
         this.rand = rand;
         return this.generate(i, j, k);
     }
-    
-    public boolean genCircle(final int x, final int y, final int z, final double outerRadius, final double innerRadius, final Block block, final int meta, final boolean solid) {
+
+    public boolean genCircle(final int x, final int y, final int z, final double outerRadius, final double innerRadius,
+        final Block block, final int meta, final boolean solid) {
         boolean hasGenned = false;
-        for (int i = (int)(-outerRadius - 1.0) + x; i <= (int)(outerRadius + 1.0) + x; ++i) {
-            for (int k = (int)(-outerRadius - 1.0) + z; k <= (int)(outerRadius + 1.0) + z; ++k) {
+        for (int i = (int) (-outerRadius - 1.0) + x; i <= (int) (outerRadius + 1.0) + x; ++i) {
+            for (int k = (int) (-outerRadius - 1.0) + z; k <= (int) (outerRadius + 1.0) + z; ++k) {
                 final double d = (i - x) * (i - x) + (k - z) * (k - z);
-                if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius && (this.worldObj.isAirBlock(i, y, k) || solid) && this.worldObj.setBlock(i, y, k, block, meta, TCGenBase.blockGenNotifyFlag)) {
+                if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius
+                    && (this.worldObj.isAirBlock(i, y, k) || solid)
+                    && this.worldObj.setBlock(i, y, k, block, meta, TCGenBase.blockGenNotifyFlag)) {
                     hasGenned = true;
                 }
             }
         }
         return hasGenned;
     }
-    
-    public boolean checkCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius, final List allowedBlockList) {
-        for (int x = (int)(-outerRadius - 2.0) + i; x < (int)(outerRadius + 2.0) + i; ++x) {
-            for (int z = (int)(-outerRadius - 2.0) + k; z < (int)(outerRadius + 2.0) + k; ++z) {
+
+    public boolean checkCircle(final int i, final int j, final int k, final double outerRadius,
+        final double innerRadius, final List allowedBlockList) {
+        for (int x = (int) (-outerRadius - 2.0) + i; x < (int) (outerRadius + 2.0) + i; ++x) {
+            for (int z = (int) (-outerRadius - 2.0) + k; z < (int) (outerRadius + 2.0) + k; ++z) {
                 final double d = (i - x) * (i - x) + (k - z) * (k - z);
-                if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius && !allowedBlockList.contains(this.worldObj.getBlock(x, j, z))) {
+                if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius
+                    && !allowedBlockList.contains(this.worldObj.getBlock(x, j, z))) {
                     System.out.println("t2");
                     return false;
                 }
@@ -59,7 +66,7 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return true;
     }
-    
+
     public boolean checkBlockLine(final int[] ai, final int[] ai1, final List allowedBlockList) {
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -79,12 +86,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -96,7 +102,7 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return true;
     }
-    
+
     public ArrayList<int[]> placeBlockLine(final int[] ai, final int[] ai1, final Block block, final int meta) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
@@ -117,12 +123,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -133,8 +138,9 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return places;
     }
-    
-    public boolean checkBlockCircleLine(final int[] ai, final int[] ai1, final double outerRadius, final double innerRadius, final List allowedBlockList) {
+
+    public boolean checkBlockCircleLine(final int[] ai, final int[] ai1, final double outerRadius,
+        final double innerRadius, final List allowedBlockList) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -154,12 +160,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -171,8 +176,9 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return true;
     }
-    
-    public ArrayList<int[]> checkAndPlaceBlockCircleLine(final int[] ai, final int[] ai1, final double outerRadius, final double innerRadius, final Block block, final int meta, final List allowedBlockList) {
+
+    public ArrayList<int[]> checkAndPlaceBlockCircleLine(final int[] ai, final int[] ai1, final double outerRadius,
+        final double innerRadius, final Block block, final int meta, final List allowedBlockList) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -192,12 +198,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -217,8 +222,9 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return places;
     }
-    
-    public ArrayList<int[]> checkAndPlaceBlockLine(final int[] ai, final int[] ai1, final Block block, final int meta, final List allowedBlockList) {
+
+    public ArrayList<int[]> checkAndPlaceBlockLine(final int[] ai, final int[] ai1, final Block block, final int meta,
+        final List allowedBlockList) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -238,12 +244,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         int k = 0;
         for (int l = ai2[j] + byte4; k != l; k += byte4) {
@@ -263,8 +268,9 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return places;
     }
-    
-    public ArrayList<int[]> placeBlockCircleLine(final int[] ai, final int[] ai1, final double distance, final double distance2, final Block block, final int meta) {
+
+    public ArrayList<int[]> placeBlockCircleLine(final int[] ai, final int[] ai1, final double distance,
+        final double distance2, final Block block, final int meta) {
         final ArrayList<int[]> places = new ArrayList<int[]>();
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
@@ -284,12 +290,11 @@ public abstract class TCGenBase extends WorldGenerator
         byte byte4;
         if (ai2[j] > 0) {
             byte4 = 1;
-        }
-        else {
+        } else {
             byte4 = -1;
         }
-        final double d = ai2[byte2] / (double)ai2[j];
-        final double d2 = ai2[byte3] / (double)ai2[j];
+        final double d = ai2[byte2] / (double) ai2[j];
+        final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
@@ -300,8 +305,9 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return places;
     }
-    
-    public void genSphere(final int x, final int y, final int z, final int outerRadius, final Block block, final int meta) {
+
+    public void genSphere(final int x, final int y, final int z, final int outerRadius, final Block block,
+        final int meta) {
         for (int i = x - outerRadius; i < x + outerRadius; ++i) {
             for (int j = y - outerRadius; j < y + outerRadius; ++j) {
                 for (int k = z - outerRadius; k < z + outerRadius; ++k) {
@@ -315,7 +321,7 @@ public abstract class TCGenBase extends WorldGenerator
             }
         }
     }
-    
+
     public int getTerrainHeightAt(final int x, final int z) {
         for (int y = this.worldObj.getHeightValue(x, z) + 1; y > 0; --y) {
             final Block block = this.worldObj.getBlock(x, y, z);
@@ -325,11 +331,11 @@ public abstract class TCGenBase extends WorldGenerator
         }
         return 0;
     }
-    
+
     public double randAngle() {
         return this.rand.nextDouble() * 3.141592653589793 * 2.0;
     }
-    
+
     static {
         otherCoordPairs = new byte[] { 2, 0, 0, 1, 2, 1 };
         TCGenBase.blockGenNotifyFlag = 2;

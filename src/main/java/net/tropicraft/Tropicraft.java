@@ -1,23 +1,24 @@
 package net.tropicraft;
 
-import net.tropicraft.proxy.*;
-import net.tropicraft.encyclopedia.*;
-import modconfig.*;
+import net.minecraftforge.common.*;
 import net.tropicraft.config.*;
 import net.tropicraft.drinks.*;
-import net.tropicraft.registry.*;
-import net.minecraftforge.common.*;
+import net.tropicraft.encyclopedia.*;
 import net.tropicraft.event.*;
-import net.tropicraft.world.*;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.common.*;
+import net.tropicraft.proxy.*;
+import net.tropicraft.registry.*;
 import net.tropicraft.util.*;
+import net.tropicraft.world.*;
+
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.*;
+import cpw.mods.fml.common.registry.*;
+import modconfig.*;
 
 @Mod(modid = "tropicraft", name = "Tropicraft", version = "v6.0.5")
-public class Tropicraft
-{
+public class Tropicraft {
+
     @SidedProxy(clientSide = "net.tropicraft.proxy.ClientProxy", serverSide = "net.tropicraft.proxy.ServerProxy")
     public static ISuperProxy proxy;
     @Mod.Instance("tropicraft")
@@ -33,9 +34,9 @@ public class Tropicraft
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
-        ConfigMod.addConfigFile(event, "tc_biomes", (IConfigCategory)new ConfigBiomes());
-        ConfigMod.addConfigFile(event, "tc_genrates", (IConfigCategory)new ConfigGenRates());
-        ConfigMod.addConfigFile(event, "tc_misc", (IConfigCategory)new ConfigMisc());
+        ConfigMod.addConfigFile(event, "tc_biomes", (IConfigCategory) new ConfigBiomes());
+        ConfigMod.addConfigFile(event, "tc_genrates", (IConfigCategory) new ConfigGenRates());
+        ConfigMod.addConfigFile(event, "tc_misc", (IConfigCategory) new ConfigMisc());
         ColorHelper.init();
         TCFluidRegistry.init();
         TCBlockRegistry.init();
@@ -46,7 +47,7 @@ public class Tropicraft
         MixerRecipes.addMixerRecipes();
         Tropicraft.proxy.registerBooks();
         TCCraftingRegistry.init();
-        Tropicraft.eventChannel.register((Object)new TCPacketEvents());
+        Tropicraft.eventChannel.register((Object) new TCPacketEvents());
     }
 
     @Mod.EventHandler
@@ -58,18 +59,18 @@ public class Tropicraft
         MinecraftForge.EVENT_BUS.register(new TCItemEvents());
         final TCMiscEvents misc = new TCMiscEvents();
         MinecraftForge.EVENT_BUS.register(misc);
-        FMLCommonHandler.instance().bus().register(misc);
+        FMLCommonHandler.instance()
+            .bus()
+            .register(misc);
         GameRegistry.registerWorldGenerator(new TCWorldGenerator(), 10);
         TropicraftWorldUtils.initializeDimension();
     }
 
     @Mod.EventHandler
-    public void postInit(final FMLPostInitializationEvent event) {
-    }
+    public void postInit(final FMLPostInitializationEvent event) {}
 
     @Mod.EventHandler
-    public void handleIMCMessages(final FMLInterModComms.IMCEvent event) {
-    }
+    public void handleIMCMessages(final FMLInterModComms.IMCEvent event) {}
 
     public static void dbg(final Object obj) {
         final boolean consoleDebug = true;

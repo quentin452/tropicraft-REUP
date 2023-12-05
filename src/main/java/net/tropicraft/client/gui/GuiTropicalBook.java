@@ -1,24 +1,27 @@
 package net.tropicraft.client.gui;
 
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.gui.*;
-import net.tropicraft.encyclopedia.*;
 import java.util.*;
-import net.minecraft.item.crafting.*;
-import org.lwjgl.opengl.*;
-import net.tropicraft.util.*;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
+
 import net.minecraft.client.audio.*;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.*;
-import net.minecraft.entity.player.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.*;
+import net.minecraft.util.*;
+import net.tropicraft.encyclopedia.*;
+import net.tropicraft.util.*;
+
 import org.lwjgl.input.*;
+import org.lwjgl.opengl.*;
+
+import cpw.mods.fml.relauncher.*;
 
 @SideOnly(Side.CLIENT)
-public class GuiTropicalBook extends GuiScreen
-{
+public class GuiTropicalBook extends GuiScreen {
+
     private TropicalBook book;
     private int indexPage;
     private int selectedIndex;
@@ -109,11 +112,12 @@ public class GuiTropicalBook extends GuiScreen
     private void addButtons() {
         this.buttonList.clear();
         if (this.indexPage == -1) {
-            this.buttonList.add(new GuiClearButton(2003, 0, 0, this.width, this.height, "", 0, this.coverBackground, 4456448));
-        }
-        else {
+            this.buttonList
+                .add(new GuiClearButton(2003, 0, 0, this.width, this.height, "", 0, this.coverBackground, 4456448));
+        } else {
             int indexPosition = 0;
-            for (int entry = this.indexPage * this.book.entriesPerIndexPage(); entry < (this.indexPage + 1) * this.book.entriesPerIndexPage() && entry < this.book.getPageCount(); ++entry) {
+            for (int entry = this.indexPage * this.book.entriesPerIndexPage(); entry
+                < (this.indexPage + 1) * this.book.entriesPerIndexPage() && entry < this.book.getPageCount(); ++entry) {
                 String pageTitle = this.book.getPageTitleNotVisible(entry);
                 int color = 4456448;
                 if (this.book.isPageVisible(entry)) {
@@ -122,37 +126,109 @@ public class GuiTropicalBook extends GuiScreen
                         color = 3355647;
                     }
                 }
-                this.buttonList.add(new GuiClearButton(entry, this.width / 2 - 129, this.height / 2 - 87 + indexPosition * 15, 90, 10, pageTitle, -1, this.pageBackground, color));
+                this.buttonList.add(
+                    new GuiClearButton(
+                        entry,
+                        this.width / 2 - 129,
+                        this.height / 2 - 87 + indexPosition * 15,
+                        90,
+                        10,
+                        pageTitle,
+                        -1,
+                        this.pageBackground,
+                        color));
                 ++indexPosition;
             }
             if (this.indexPage > 0) {
-                this.buttonList.add(new GuiClearButton(2001, this.width / 2 - 168, this.height / 2 - 20, 11, 22, "", 2, this.pageBackground, 4456448));
+                this.buttonList.add(
+                    new GuiClearButton(
+                        2001,
+                        this.width / 2 - 168,
+                        this.height / 2 - 20,
+                        11,
+                        22,
+                        "",
+                        2,
+                        this.pageBackground,
+                        4456448));
             }
             if ((this.indexPage + 1) * this.book.entriesPerIndexPage() < this.book.getPageCount()) {
-                this.buttonList.add(new GuiClearButton(2000, this.width / 2 - 168, this.height / 2 - 50, 11, 22, "", 1, this.pageBackground, 4456448));
+                this.buttonList.add(
+                    new GuiClearButton(
+                        2000,
+                        this.width / 2 - 168,
+                        this.height / 2 - 50,
+                        11,
+                        22,
+                        "",
+                        1,
+                        this.pageBackground,
+                        4456448));
             }
             if (this.indexPage >= 0) {
                 if (this.book.hasRecipeList()) {
                     switch (this.contentMode) {
                         case INFO: {
-                            final List<ShapedRecipes> recipes = ((Encyclopedia)this.book).getRecipesForEntry(this.selectedIndex);
+                            final List<ShapedRecipes> recipes = ((Encyclopedia) this.book)
+                                .getRecipesForEntry(this.selectedIndex);
                             if (recipes != null) {
-                                this.buttonList.add(new GuiClearButton(2010, this.width / 2 + 158, this.height / 2 - 80, 11, 22, "aa", 5, this.pageBackground, 4456448));
+                                this.buttonList.add(
+                                    new GuiClearButton(
+                                        2010,
+                                        this.width / 2 + 158,
+                                        this.height / 2 - 80,
+                                        11,
+                                        22,
+                                        "aa",
+                                        5,
+                                        this.pageBackground,
+                                        4456448));
                                 break;
                             }
                             break;
                         }
                         case RECIPE: {
-                            this.buttonList.add(new GuiClearButton(2011, this.width / 2 + 158, this.height / 2 - 80, 11, 22, "", 6, this.pageBackground, 4456448));
+                            this.buttonList.add(
+                                new GuiClearButton(
+                                    2011,
+                                    this.width / 2 + 158,
+                                    this.height / 2 - 80,
+                                    11,
+                                    22,
+                                    "",
+                                    6,
+                                    this.pageBackground,
+                                    4456448));
                             break;
                         }
                     }
                 }
                 if (this.contentPage > 0) {
-                    this.buttonList.add(new GuiClearButton(2013, this.width / 2 + 158, this.height / 2 - 20, 11, 22, "", 4, this.pageBackground, 4456448));
+                    this.buttonList.add(
+                        new GuiClearButton(
+                            2013,
+                            this.width / 2 + 158,
+                            this.height / 2 - 20,
+                            11,
+                            22,
+                            "",
+                            4,
+                            this.pageBackground,
+                            4456448));
                 }
-                if ((this.contentPage + 1) * this.book.entriesPerContentPage(this.contentMode) < this.book.getContentPageCount(this.selectedIndex, this.contentMode)) {
-                    this.buttonList.add(new GuiClearButton(2012, this.width / 2 + 158, this.height / 2 - 50, 11, 22, "", 3, this.pageBackground, 4456448));
+                if ((this.contentPage + 1) * this.book.entriesPerContentPage(this.contentMode)
+                    < this.book.getContentPageCount(this.selectedIndex, this.contentMode)) {
+                    this.buttonList.add(
+                        new GuiClearButton(
+                            2012,
+                            this.width / 2 + 158,
+                            this.height / 2 - 50,
+                            11,
+                            22,
+                            "",
+                            3,
+                            this.pageBackground,
+                            4456448));
                 }
             }
         }
@@ -160,7 +236,8 @@ public class GuiTropicalBook extends GuiScreen
 
     public void addIcons() {
         int indexPosition = 0;
-        for (int entry = this.indexPage * this.book.entriesPerIndexPage(); entry < (this.indexPage + 1) * this.book.entriesPerIndexPage(); ++entry) {
+        for (int entry = this.indexPage * this.book.entriesPerIndexPage(); entry
+            < (this.indexPage + 1) * this.book.entriesPerIndexPage(); ++entry) {
             if (entry >= this.book.getPageCount()) {
                 return;
             }
@@ -178,7 +255,8 @@ public class GuiTropicalBook extends GuiScreen
             this.itemRenderer.renderWithColor = this.book.isPageVisible(entry);
             final ItemStack is = this.book.getPageItemStack(entry);
             if (is != null) {
-                this.itemRenderer.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, is, -193, -120 + indexPosition * 20);
+                this.itemRenderer
+                    .renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, is, -193, -120 + indexPosition * 20);
             }
             GL11.glPopMatrix();
             ++indexPosition;
@@ -190,7 +268,10 @@ public class GuiTropicalBook extends GuiScreen
             for (int l = 0; l < this.buttonList.size(); ++l) {
                 final GuiButton guibutton = (GuiButton) this.buttonList.get(l);
                 if (guibutton.mousePressed(this.mc, x, y)) {
-                    this.mc.getSoundHandler().playSound((ISound)PositionedSoundRecord.func_147674_a(new ResourceLocation("tropicraft:pageFlip"), 1.0f));
+                    this.mc.getSoundHandler()
+                        .playSound(
+                            (ISound) PositionedSoundRecord
+                                .func_147674_a(new ResourceLocation("tropicraft:pageFlip"), 1.0f));
                     this.actionPerformed(guibutton);
                 }
             }
@@ -201,7 +282,7 @@ public class GuiTropicalBook extends GuiScreen
         super.handleKeyboardInput();
         if (Keyboard.getEventKeyState()) {
             if (Keyboard.getEventKey() == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-                this.mc.displayGuiScreen((GuiScreen)new GuiInventory((EntityPlayer)this.mc.thePlayer));
+                this.mc.displayGuiScreen((GuiScreen) new GuiInventory((EntityPlayer) this.mc.thePlayer));
                 return;
             }
             this.keyTyped(Keyboard.getEventCharacter(), Keyboard.getEventKey());
@@ -215,17 +296,16 @@ public class GuiTropicalBook extends GuiScreen
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             GL11.glDisable(2896);
             TropicraftUtils.bindTextureGui(this.closedTextureIndex);
-            GL11.glTranslatef((float)(this.width / 2), (float)(this.height / 2), 0.0f);
+            GL11.glTranslatef((float) (this.width / 2), (float) (this.height / 2), 0.0f);
             GL11.glScalef(f2, f2, f2);
             this.drawTexturedModalRect(-64, -86, 0, 0, 128, 173);
-        }
-        else {
+        } else {
             final float f3 = 1.35f;
             GL11.glPushMatrix();
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             GL11.glDisable(2896);
             TropicraftUtils.bindTextureGui(this.openTextureIndex);
-            GL11.glTranslatef((float)(this.width / 2), (float)(this.height / 2), 0.0f);
+            GL11.glTranslatef((float) (this.width / 2), (float) (this.height / 2), 0.0f);
             GL11.glScalef(f3, f3, f3);
             this.drawTexturedModalRect(-128, -88, 0, 0, 256, 176);
             GL11.glPopMatrix();
@@ -236,7 +316,8 @@ public class GuiTropicalBook extends GuiScreen
             this.drawTexturedModalRect(this.width / 2 - 162, this.height / 2 - 115, 145, 201, 111, 32);
             GL11.glPopMatrix();
             this.fontRendererObj.drawString("Table of Contents", this.width / 2 - 150, this.height / 2 - 110, 4456448);
-            this.fontRendererObj.drawString("" + (1 + this.indexPage), this.width / 2 - 159, this.height / 2 + 93, 4456448);
+            this.fontRendererObj
+                .drawString("" + (1 + this.indexPage), this.width / 2 - 159, this.height / 2 + 93, 4456448);
             if (this.book.hasIndexIcons()) {
                 this.addIcons();
             }
@@ -244,17 +325,29 @@ public class GuiTropicalBook extends GuiScreen
             GL11.glDisable(2896);
             switch (this.contentMode) {
                 case INFO: {
-                    final String pageTitle = this.book.isPageVisible(this.selectedIndex) ? this.book.getPageTitleByIndex(this.selectedIndex) : "�nPage not found";
-                    this.fontRendererObj.drawString(pageTitle, this.width / 2 + 150 - this.fontRendererObj.getStringWidth(pageTitle), this.height / 2 - 110, 4456448);
-                    this.fontRendererObj.drawSplitString("  " + (this.book.isPageVisible(this.selectedIndex) ? this.book.getPageDescriptionsByIndex(this.selectedIndex) : "???"), this.width / 2 + 20, this.height / 2 - 80, 135, 4456448);
+                    final String pageTitle = this.book.isPageVisible(this.selectedIndex)
+                        ? this.book.getPageTitleByIndex(this.selectedIndex)
+                        : "�nPage not found";
+                    this.fontRendererObj.drawString(
+                        pageTitle,
+                        this.width / 2 + 150 - this.fontRendererObj.getStringWidth(pageTitle),
+                        this.height / 2 - 110,
+                        4456448);
+                    this.fontRendererObj.drawSplitString(
+                        "  " + (this.book.isPageVisible(this.selectedIndex)
+                            ? this.book.getPageDescriptionsByIndex(this.selectedIndex)
+                            : "???"),
+                        this.width / 2 + 20,
+                        this.height / 2 - 80,
+                        135,
+                        4456448);
                     break;
                 }
                 case RECIPE: {
                     this.fontRendererObj.drawString("Crafting", this.width / 2 + 110, this.height / 2 - 110, 4456448);
                     try {
                         this.printRecipes();
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
@@ -288,18 +381,19 @@ public class GuiTropicalBook extends GuiScreen
     }
 
     private void printRecipes() throws Exception {
-        final List<ShapedRecipes> recipes = ((Encyclopedia)this.book).getRecipesForEntry(this.selectedIndex);
+        final List<ShapedRecipes> recipes = ((Encyclopedia) this.book).getRecipesForEntry(this.selectedIndex);
         if (recipes == null || recipes.isEmpty()) {
             return;
         }
         final int newx = this.width / 2 + 25;
         int newy = this.height / 2 - 80;
         int indexPosition = 0;
-        for (int entry = this.contentPage * this.book.entriesPerContentPage(this.contentMode); entry < (this.contentPage + 1) * this.book.entriesPerContentPage(this.contentMode); ++entry) {
+        for (int entry = this.contentPage * this.book.entriesPerContentPage(this.contentMode); entry
+            < (this.contentPage + 1) * this.book.entriesPerContentPage(this.contentMode); ++entry) {
             if (entry >= this.book.getContentPageCount(this.selectedIndex, this.contentMode)) {
                 return;
             }
-            final Encyclopedia.RecipeEntry recipe = ((Encyclopedia)this.book).getFormattedRecipe(recipes.get(entry));
+            final Encyclopedia.RecipeEntry recipe = ((Encyclopedia) this.book).getFormattedRecipe(recipes.get(entry));
             TropicraftUtils.bindTextureGui(this.openTextureIndex);
             this.drawTexturedModalRect(newx - 3, newy - 3, 0, 187, 122, 60);
             final int offsetX = 18;
@@ -314,7 +408,12 @@ public class GuiTropicalBook extends GuiScreen
                         GL11.glEnable(32826);
                         RenderHelper.enableGUIStandardItemLighting();
                         this.itemRenderer.renderWithColor = true;
-                        this.itemRenderer.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, recipe.ingredients[itemIndex], renderX, renderY);
+                        this.itemRenderer.renderItemIntoGUI(
+                            this.fontRendererObj,
+                            this.mc.renderEngine,
+                            recipe.ingredients[itemIndex],
+                            renderX,
+                            renderY);
                         this.itemRenderer.renderWithColor = false;
                         RenderHelper.disableStandardItemLighting();
                         GL11.glDisable(32826);
@@ -335,8 +434,18 @@ public class GuiTropicalBook extends GuiScreen
             GL11.glTranslatef(newx / 3.0f + 1.0f, newy / 3.0f - 0.75f, 0.0f);
             GL11.glEnable(32826);
             RenderHelper.enableGUIStandardItemLighting();
-            this.itemRenderer.renderItemIntoGUI(this.fontRendererObj, this.mc.renderEngine, recipe.output, newx / 3 + 60, newy / 3 + 11);
-            this.itemRenderer.renderItemOverlayIntoGUI(this.fontRendererObj, this.mc.renderEngine, recipe.output, newx / 3 + 60, newy / 3 + 11);
+            this.itemRenderer.renderItemIntoGUI(
+                this.fontRendererObj,
+                this.mc.renderEngine,
+                recipe.output,
+                newx / 3 + 60,
+                newy / 3 + 11);
+            this.itemRenderer.renderItemOverlayIntoGUI(
+                this.fontRendererObj,
+                this.mc.renderEngine,
+                recipe.output,
+                newx / 3 + 60,
+                newy / 3 + 11);
             RenderHelper.disableStandardItemLighting();
             GL11.glDisable(32826);
             GL11.glPopMatrix();
@@ -368,11 +477,12 @@ public class GuiTropicalBook extends GuiScreen
                 break;
             }
         }
-        final int i = (int)(Mouse.getEventX() / scale);
-        final int j = (int)(this.height - Mouse.getEventY() / scale);
+        final int i = (int) (Mouse.getEventX() / scale);
+        final int j = (int) (this.height - Mouse.getEventY() / scale);
         final boolean flag = i >= k && j >= l && i < k + size && j < l + size;
         if (itemstack != null && flag) {
-            final String s = itemstack.getItem().getItemStackDisplayName(itemstack);
+            final String s = itemstack.getItem()
+                .getItemStackDisplayName(itemstack);
             if (s.length() > 0) {
                 RenderHelper.disableStandardItemLighting();
                 GL11.glDisable(2896);

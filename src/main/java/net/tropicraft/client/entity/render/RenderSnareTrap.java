@@ -1,26 +1,30 @@
 package net.tropicraft.client.entity.render;
 
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.entity.*;
-import net.tropicraft.entity.placeable.*;
-import net.minecraft.client.renderer.entity.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.client.renderer.*;
-import net.minecraftforge.common.util.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.entity.*;
 import net.minecraft.util.*;
+import net.minecraftforge.common.util.*;
+import net.tropicraft.entity.placeable.*;
+
+import org.lwjgl.opengl.*;
+
+import cpw.mods.fml.relauncher.*;
 
 @SideOnly(Side.CLIENT)
-public class RenderSnareTrap extends Render
-{
+public class RenderSnareTrap extends Render {
+
     public RenderSnareTrap() {
         this.shadowSize = 0.0f;
     }
-    
-    public void doRender(final Entity var1, final double var2, final double var4, final double var6, final float var8, final float var9) {
-        this.doRenderTrap((EntitySnareTrap)var1, var2, var4, var6, var8, var9);
+
+    public void doRender(final Entity var1, final double var2, final double var4, final double var6, final float var8,
+        final float var9) {
+        this.doRenderTrap((EntitySnareTrap) var1, var2, var4, var6, var8, var9);
     }
-    
-    private void doRenderTrap(final EntitySnareTrap trap, final double x, final double y, final double z, final float yaw, final float ticks) {
+
+    private void doRenderTrap(final EntitySnareTrap trap, final double x, final double y, final double z,
+        final float yaw, final float ticks) {
         final double n = trap.trapPosX;
         final RenderManager renderManager = this.renderManager;
         final double xPos = n - RenderManager.renderPosX;
@@ -57,12 +61,11 @@ public class RenderSnareTrap extends Render
             final double dy = yPos + height - 0.5 - startY;
             final double dz = zPos + 0.5 - dir.offsetZ / 2.0 - startZ;
             for (int steps = 5, i = 0; i <= steps; ++i) {
-                final float step = i / (float)steps;
+                final float step = i / (float) steps;
                 tessellator.addVertex(startX + step * dx, startY + step * dy, startZ + step * dz);
             }
             tessellator.draw();
-        }
-        else {
+        } else {
             tessellator.startDrawing(3);
             tessellator.setColorRGBA_F(0.75f, 0.75f, 0.75f, 0.5f);
             final double startX = xPos + 0.5;
@@ -72,7 +75,7 @@ public class RenderSnareTrap extends Render
             final double dy = yPos + height - 0.5 - startY;
             final double dz = zPos + 0.5 - dir.offsetZ / 2.0 - startZ;
             for (int steps = 5, i = 0; i <= steps; ++i) {
-                final float step = i / (float)steps;
+                final float step = i / (float) steps;
                 tessellator.addVertex(startX + step * dx, startY + step * dy, startZ + step * dz);
             }
             tessellator.draw();
@@ -80,7 +83,7 @@ public class RenderSnareTrap extends Render
         GL11.glEnable(2896);
         GL11.glEnable(3553);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity entity) {
         return null;
     }

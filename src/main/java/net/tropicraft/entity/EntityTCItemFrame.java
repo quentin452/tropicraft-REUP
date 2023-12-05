@@ -1,20 +1,22 @@
 package net.tropicraft.entity;
 
+import java.util.*;
+
+import net.minecraft.block.*;
+import net.minecraft.block.material.*;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.*;
-import cpw.mods.fml.common.registry.*;
-import net.minecraft.world.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.util.*;
+import net.minecraft.world.*;
 import net.tropicraft.registry.*;
-import net.minecraft.entity.*;
-import net.minecraft.block.material.*;
-import net.minecraft.block.*;
-import java.util.*;
+
+import cpw.mods.fml.common.registry.*;
 import io.netty.buffer.*;
 
-public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditionalSpawnData
-{
+public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditionalSpawnData {
+
     private float itemDropChance;
     public int xPosition;
     public int yPosition;
@@ -26,7 +28,8 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         this.setShouldDropContents(false);
     }
 
-    public EntityTCItemFrame(final World par1World, final int par2, final int par3, final int par4, final int par5, final boolean shouldDropContents) {
+    public EntityTCItemFrame(final World par1World, final int par2, final int par3, final int par4, final int par5,
+        final boolean shouldDropContents) {
         super(par1World, par2, par3, par4, par5);
         this.itemDropChance = 1.0f;
         this.xPosition = par2;
@@ -37,19 +40,18 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
 
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(16, (Object)0);
+        this.dataWatcher.addObject(16, (Object) 0);
     }
 
     public void onBroken(final Entity par1Entity) {
         if (!this.getShouldDropContents()) {
             this.entityDropItem(new ItemStack(TCItemRegistry.koaFrame), 0.0f);
-        }
-        else {
+        } else {
             this.entityDropItem(new ItemStack(TCItemRegistry.tropiFrame), 0.0f);
             ItemStack var1 = this.getDisplayedItem();
             if (var1 != null && this.rand.nextFloat() < this.itemDropChance) {
                 var1 = var1.copy();
-                var1.setItemFrame((EntityItemFrame)null);
+                var1.setItemFrame((EntityItemFrame) null);
                 this.entityDropItem(var1, 0.0f);
             }
         }
@@ -57,8 +59,11 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
 
     public void writeEntityToNBT(final NBTTagCompound par1NBTTagCompound) {
         if (this.getDisplayedItem() != null) {
-            par1NBTTagCompound.setTag("Item", (NBTBase)this.getDisplayedItem().writeToNBT(new NBTTagCompound()));
-            par1NBTTagCompound.setByte("ItemRotation", (byte)this.getRotation());
+            par1NBTTagCompound.setTag(
+                "Item",
+                (NBTBase) this.getDisplayedItem()
+                    .writeToNBT(new NBTTagCompound()));
+            par1NBTTagCompound.setByte("ItemRotation", (byte) this.getRotation());
             par1NBTTagCompound.setFloat("ItemDropChance", this.itemDropChance);
             par1NBTTagCompound.setBoolean("ShouldDropContents", this.getShouldDropContents());
         }
@@ -69,7 +74,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         final NBTTagCompound var2 = par1NBTTagCompound.getCompoundTag("Item");
         if (var2 != null && !var2.hasNoTags()) {
             this.setDisplayedItem(ItemStack.loadItemStackFromNBT(var2));
-            this.setItemRotation((int)par1NBTTagCompound.getByte("ItemRotation"));
+            this.setItemRotation((int) par1NBTTagCompound.getByte("ItemRotation"));
             this.setShouldDropContents(par1NBTTagCompound.getBoolean("ShouldDropContents"));
             if (par1NBTTagCompound.hasKey("ItemDropChance")) {
                 this.itemDropChance = par1NBTTagCompound.getFloat("ItemDropChance");
@@ -79,11 +84,12 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
     }
 
     public boolean getShouldDropContents() {
-        return this.getDataWatcher().getWatchableObjectByte(16) == 1;
+        return this.getDataWatcher()
+            .getWatchableObjectByte(16) == 1;
     }
 
     public void setShouldDropContents(final boolean par1) {
-        this.dataWatcher.updateObject(16, (Object)(par1 ? 1 : (0)));
+        this.dataWatcher.updateObject(16, (Object) (par1 ? 1 : (0)));
     }
 
     public void onUpdate() {
@@ -91,7 +97,8 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
     }
 
     public boolean onValidSurface() {
-        if (!this.worldObj.getCollidingBoundingBoxes((Entity)this, this.boundingBox).isEmpty()) {
+        if (!this.worldObj.getCollidingBoundingBoxes((Entity) this, this.boundingBox)
+            .isEmpty()) {
             return false;
         }
         final int var1 = Math.max(1, this.getWidthPixels() / 16);
@@ -117,11 +124,12 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
                 Material var8;
                 Block blawk;
                 if (this.hangingDirection != 2 && this.hangingDirection != 0) {
-                    var8 = this.worldObj.getBlock(this.field_146063_b, var4 + var7, var5 + var6).getMaterial();
+                    var8 = this.worldObj.getBlock(this.field_146063_b, var4 + var7, var5 + var6)
+                        .getMaterial();
                     blawk = this.worldObj.getBlock(this.field_146063_b, var4 + var7, var5 + var6);
-                }
-                else {
-                    var8 = this.worldObj.getBlock(var3 + var6, var4 + var7, this.field_146062_d).getMaterial();
+                } else {
+                    var8 = this.worldObj.getBlock(var3 + var6, var4 + var7, this.field_146062_d)
+                        .getMaterial();
                     blawk = this.worldObj.getBlock(var3 + var6, var4 + var7, this.field_146062_d);
                 }
                 if (!var8.isSolid() && blawk != null && blawk != TCBlockRegistry.bambooChute) {
@@ -129,7 +137,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
                 }
             }
         }
-        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity)this, this.boundingBox);
+        final List var9 = this.worldObj.getEntitiesWithinAABBExcludingEntity((Entity) this, this.boundingBox);
         for (final Object var11 : var9) {
             if (var11 instanceof EntityHanging) {
                 return false;
@@ -150,7 +158,7 @@ public class EntityTCItemFrame extends EntityItemFrame implements IEntityAdditio
         this.field_146063_b = data.readInt();
         this.field_146064_c = data.readInt();
         this.field_146062_d = data.readInt();
-        this.setDirection((int)data.readByte());
+        this.setDirection((int) data.readByte());
         this.setShouldDropContents(data.readBoolean());
     }
 }

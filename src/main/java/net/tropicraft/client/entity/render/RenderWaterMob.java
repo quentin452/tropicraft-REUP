@@ -1,25 +1,27 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.util.*;
 import net.minecraft.client.model.*;
-import net.tropicraft.entity.underdasea.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.entity.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.entity.*;
+import net.minecraft.util.*;
+import net.tropicraft.entity.underdasea.*;
 
-public class RenderWaterMob extends RenderLiving
-{
+import org.lwjgl.opengl.*;
+
+public class RenderWaterMob extends RenderLiving {
+
     private static final ResourceLocation RES_ITEM_GLINT;
-    
+
     public RenderWaterMob(final ModelBase modelbase, final float f) {
         super(modelbase, f);
     }
-    
-    public void renderWaterMob(final EntityTropicraftWaterMob entityliving, final double d, final double d1, final double d2, final float f, final float f1) {
+
+    public void renderWaterMob(final EntityTropicraftWaterMob entityliving, final double d, final double d1,
+        final double d2, final float f, final float f1) {
         GL11.glPushMatrix();
         GL11.glDisable(2884);
-        this.mainModel.onGround = this.renderSwingProgress((EntityLivingBase)entityliving, f1);
+        this.mainModel.onGround = this.renderSwingProgress((EntityLivingBase) entityliving, f1);
         if (this.renderPassModel != null) {
             this.renderPassModel.onGround = this.mainModel.onGround;
         }
@@ -32,13 +34,16 @@ public class RenderWaterMob extends RenderLiving
             this.renderPassModel.isChild = this.mainModel.isChild;
         }
         try {
-            final float f2 = entityliving.prevRenderYawOffset + (entityliving.renderYawOffset - entityliving.prevRenderYawOffset) * f1;
-            final float f3 = entityliving.prevRotationYaw + (entityliving.rotationYaw - entityliving.prevRotationYaw) * f1;
-            final float f4 = entityliving.prevRotationPitch + (entityliving.rotationPitch - entityliving.prevRotationPitch) * f1;
-            this.renderLivingAt((EntityLivingBase)entityliving, d, d1, d2);
-            final float f5 = this.handleRotationFloat((EntityLivingBase)entityliving, f1);
+            final float f2 = entityliving.prevRenderYawOffset
+                + (entityliving.renderYawOffset - entityliving.prevRenderYawOffset) * f1;
+            final float f3 = entityliving.prevRotationYaw
+                + (entityliving.rotationYaw - entityliving.prevRotationYaw) * f1;
+            final float f4 = entityliving.prevRotationPitch
+                + (entityliving.rotationPitch - entityliving.prevRotationPitch) * f1;
+            this.renderLivingAt((EntityLivingBase) entityliving, d, d1, d2);
+            final float f5 = this.handleRotationFloat((EntityLivingBase) entityliving, f1);
             if (entityliving.isInWater() || entityliving.surfaceTick != 0) {
-                this.rotateCorpse((EntityLivingBase)entityliving, f5, f2, f1);
+                this.rotateCorpse((EntityLivingBase) entityliving, f5, f2, f1);
                 GL11.glRotatef(entityliving.rotationPitch, 1.0f, 0.0f, 0.0f);
             }
             if (!entityliving.isInWater() && entityliving.surfaceTick == 0) {
@@ -49,9 +54,10 @@ public class RenderWaterMob extends RenderLiving
             final float f6 = 0.0625f;
             GL11.glEnable(32826);
             GL11.glScalef(-1.0f, -1.0f, 1.0f);
-            this.preRenderCallback((EntityLivingBase)entityliving, f1);
+            this.preRenderCallback((EntityLivingBase) entityliving, f1);
             GL11.glTranslatef(0.0f, -24.0f * f6 - 0.0078125f, 0.0f);
-            float f7 = entityliving.prevLimbSwingAmount + (entityliving.limbSwingAmount - entityliving.prevLimbSwingAmount) * f1;
+            float f7 = entityliving.prevLimbSwingAmount
+                + (entityliving.limbSwingAmount - entityliving.prevLimbSwingAmount) * f1;
             float f8 = entityliving.limbSwing - entityliving.limbSwingAmount * (1.0f - f1);
             if (entityliving.isChild()) {
                 f8 *= 3.0f;
@@ -60,12 +66,12 @@ public class RenderWaterMob extends RenderLiving
                 f7 = 1.0f;
             }
             GL11.glEnable(3008);
-            this.mainModel.setLivingAnimations((EntityLivingBase)entityliving, f8, f7, f1);
-            this.renderModel((EntityLivingBase)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+            this.mainModel.setLivingAnimations((EntityLivingBase) entityliving, f8, f7, f1);
+            this.renderModel((EntityLivingBase) entityliving, f8, f7, f5, f3 - f2, f4, f6);
             for (int i = 0; i < 4; ++i) {
-                final int j = this.shouldRenderPass((EntityLivingBase)entityliving, i, f1);
+                final int j = this.shouldRenderPass((EntityLivingBase) entityliving, i, f1);
                 if (j > 0) {
-                    this.renderPassModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.renderPassModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                     if (j == 15) {
                         final float f9 = entityliving.ticksExisted + f1;
                         this.renderManager.renderEngine.bindTexture(RenderWaterMob.RES_ITEM_GLINT);
@@ -87,7 +93,7 @@ public class RenderWaterMob extends RenderLiving
                             GL11.glRotatef(30.0f - i2 * 60.0f, 0.0f, 0.0f, 1.0f);
                             GL11.glTranslatef(0.0f, f12, 0.0f);
                             GL11.glMatrixMode(5888);
-                            this.renderPassModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                         }
                         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
                         GL11.glMatrixMode(5890);
@@ -102,9 +108,9 @@ public class RenderWaterMob extends RenderLiving
                     GL11.glEnable(3008);
                 }
             }
-            this.renderEquippedItems((EntityLivingBase)entityliving, f1);
+            this.renderEquippedItems((EntityLivingBase) entityliving, f1);
             final float f14 = entityliving.getBrightness(f1);
-            final int k = this.getColorMultiplier((EntityLivingBase)entityliving, f14, f1);
+            final int k = this.getColorMultiplier((EntityLivingBase) entityliving, f14, f1);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(3553);
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -116,11 +122,11 @@ public class RenderWaterMob extends RenderLiving
                 GL11.glDepthFunc(514);
                 if (entityliving.hurtTime > 0 || entityliving.deathTime > 0) {
                     GL11.glColor4f(f14, 0.0f, 0.0f, 0.4f);
-                    this.mainModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                     for (int l = 0; l < 4; ++l) {
-                        if (this.inheritRenderPass((EntityLivingBase)entityliving, l, f1) >= 0) {
+                        if (this.inheritRenderPass((EntityLivingBase) entityliving, l, f1) >= 0) {
                             GL11.glColor4f(f14, 0.0f, 0.0f, 0.4f);
-                            this.renderPassModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -130,11 +136,11 @@ public class RenderWaterMob extends RenderLiving
                     final float f17 = (k & 0xFF) / 255.0f;
                     final float f18 = (k >> 24 & 0xFF) / 255.0f;
                     GL11.glColor4f(f15, f16, f17, f18);
-                    this.mainModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                    this.mainModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                     for (int j2 = 0; j2 < 4; ++j2) {
-                        if (this.inheritRenderPass((EntityLivingBase)entityliving, j2, f1) >= 0) {
+                        if (this.inheritRenderPass((EntityLivingBase) entityliving, j2, f1) >= 0) {
                             GL11.glColor4f(f15, f16, f17, f18);
-                            this.renderPassModel.render((Entity)entityliving, f8, f7, f5, f3 - f2, f4, f6);
+                            this.renderPassModel.render((Entity) entityliving, f8, f7, f5, f3 - f2, f4, f6);
                         }
                     }
                 }
@@ -144,8 +150,7 @@ public class RenderWaterMob extends RenderLiving
                 GL11.glEnable(3553);
             }
             GL11.glDisable(32826);
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
@@ -153,13 +158,13 @@ public class RenderWaterMob extends RenderLiving
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         GL11.glEnable(2884);
         GL11.glPopMatrix();
-        this.passSpecialRender((EntityLivingBase)entityliving, d, d1, d2);
+        this.passSpecialRender((EntityLivingBase) entityliving, d, d1, d2);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity entity) {
         return null;
     }
-    
+
     static {
         RES_ITEM_GLINT = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     }

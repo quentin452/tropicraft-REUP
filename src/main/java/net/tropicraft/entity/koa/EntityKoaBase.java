@@ -1,30 +1,32 @@
 package net.tropicraft.entity.koa;
 
-import net.tropicraft.entity.*;
-import net.minecraft.world.*;
-import CoroUtil.componentAI.jobSystem.*;
-import net.minecraft.nbt.*;
-import CoroUtil.componentAI.*;
 import net.minecraft.entity.*;
+import net.minecraft.nbt.*;
+import net.minecraft.world.*;
+import net.tropicraft.entity.*;
+
+import CoroUtil.componentAI.*;
+import CoroUtil.componentAI.jobSystem.*;
 import CoroUtil.diplomacy.*;
 
-public class EntityKoaBase extends EntityCoroAI
-{
+public class EntityKoaBase extends EntityCoroAI {
+
     public boolean wasInWater;
     public int inWaterTick;
     public int outWaterTick;
     public float waterOffsetY;
     public String koaName;
     public final String[] tribalMaleNames;
-    
+
     public EntityKoaBase(final World par1World) {
         super(par1World);
         this.wasInWater = false;
         this.waterOffsetY = 0.0f;
         this.koaName = "";
-        this.tribalMaleNames = new String[] { "Akamu", "Ekewaka", "Ikaika", "Iukini", "Kai", "Kaimana", "Kaimi", "Kanoa", "Kapena", "Keahi", "Keaweaheulu", "Kekipi", "Kekoa", "Konani", "Makani", "Mano", "Nahele" };
+        this.tribalMaleNames = new String[] { "Akamu", "Ekewaka", "Ikaika", "Iukini", "Kai", "Kaimana", "Kaimi",
+            "Kanoa", "Kapena", "Keahi", "Keaweaheulu", "Kekipi", "Kekoa", "Konani", "Makani", "Mano", "Nahele" };
         this.agent.jobMan.clearJobs();
-        final JobBase jb = (JobBase)new JobHunt(this.agent.jobMan);
+        final JobBase jb = (JobBase) new JobHunt(this.agent.jobMan);
         jb.dontStrayFromHome = true;
         this.agent.jobMan.addPrimaryJob(jb);
         this.agent.collideResistPathing = 0.7f;
@@ -43,37 +45,38 @@ public class EntityKoaBase extends EntityCoroAI
         this.experienceValue = 15;
         this.func_110163_bv();
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.agent.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(30.0);
     }
-    
+
     public void readEntityFromNBT(final NBTTagCompound par1nbtTagCompound) {
         super.readEntityFromNBT(par1nbtTagCompound);
         this.koaName = par1nbtTagCompound.getString("koaName");
     }
-    
+
     public void writeEntityToNBT(final NBTTagCompound par1nbtTagCompound) {
         super.writeEntityToNBT(par1nbtTagCompound);
         par1nbtTagCompound.setString("koaName", this.koaName);
     }
-    
+
     public void checkNewAgent() {
         if (this.agent == null) {
-            this.agent = new AIAgent((ICoroAI)this, true);
+            this.agent = new AIAgent((ICoroAI) this, true);
         }
     }
-    
+
     protected boolean canDespawn() {
         return false;
     }
-    
+
     public boolean isEnemy(final Entity ent) {
-        return DiplomacyHelper.shouldTargetEnt((ICoroAI)this, ent);
+        return DiplomacyHelper.shouldTargetEnt((ICoroAI) this, ent);
     }
-    
+
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (this.isInWater()) {
@@ -81,8 +84,7 @@ public class EntityKoaBase extends EntityCoroAI
                 this.outWaterTick = 0;
             }
             ++this.inWaterTick;
-        }
-        else {
+        } else {
             if (this.inWaterTick != 0) {
                 this.inWaterTick = 0;
             }

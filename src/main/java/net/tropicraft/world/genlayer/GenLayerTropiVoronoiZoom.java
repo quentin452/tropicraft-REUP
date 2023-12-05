@@ -2,17 +2,17 @@ package net.tropicraft.world.genlayer;
 
 import net.minecraft.world.gen.layer.*;
 
-public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft
-{
+public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft {
+
     public Mode zoomMode;
-    
+
     public GenLayerTropiVoronoiZoom(final long seed, final GenLayerTropicraft parent, final Mode zoomMode) {
         super(seed);
         super.parent = parent;
         this.zoomMode = zoomMode;
         this.setZoom(1);
     }
-    
+
     public int[] getInts(int x, int y, final int width, final int length) {
         final int randomResolution = 1024;
         final double half = 0.5;
@@ -33,16 +33,16 @@ public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft
             int baseValue = parentValues[i + 0 + (j + 0) * scaledWidth];
             int advancedValueJ = parentValues[i + 0 + (j + 1) * scaledWidth];
             while (i < scaledWidth - 1) {
-                this.initChunkSeed((long)(i + scaledX << 2), (long)(j + scaledY << 2));
+                this.initChunkSeed((long) (i + scaledX << 2), (long) (j + scaledY << 2));
                 final double offsetY = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6;
                 final double offsetX = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6;
-                this.initChunkSeed((long)(i + scaledX + 1 << 2), (long)(j + scaledY << 2));
+                this.initChunkSeed((long) (i + scaledX + 1 << 2), (long) (j + scaledY << 2));
                 final double offsetYY = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6 + 4.0;
                 final double offsetXY = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6;
-                this.initChunkSeed((long)(i + scaledX << 2), (long)(j + scaledY + 1 << 2));
+                this.initChunkSeed((long) (i + scaledX << 2), (long) (j + scaledY + 1 << 2));
                 final double offsetYX = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6;
                 final double offsetXX = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6 + 4.0;
-                this.initChunkSeed((long)(i + scaledX + 1 << 2), (long)(j + scaledY + 1 << 2));
+                this.initChunkSeed((long) (i + scaledX + 1 << 2), (long) (j + scaledY + 1 << 2));
                 final double offsetYXY = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6 + 4.0;
                 final double offsetXXY = (this.nextInt(1024) / 1024.0 - 0.5) * 3.6 + 4.0;
                 final int advancedValueI = parentValues[i + 1 + (j + 0) * scaledWidth] & 0xFF;
@@ -56,10 +56,14 @@ public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft
                         double distanceXY = 0.0;
                         switch (this.zoomMode) {
                             case CARTESIAN: {
-                                baseDistance = (innerX - offsetX) * (innerX - offsetX) + (innerY - offsetY) * (innerY - offsetY);
-                                distanceY = (innerX - offsetXY) * (innerX - offsetXY) + (innerY - offsetYY) * (innerY - offsetYY);
-                                distanceX = (innerX - offsetXX) * (innerX - offsetXX) + (innerY - offsetYX) * (innerY - offsetYX);
-                                distanceXY = (innerX - offsetXXY) * (innerX - offsetXXY) + (innerY - offsetYXY) * (innerY - offsetYXY);
+                                baseDistance = (innerX - offsetX) * (innerX - offsetX)
+                                    + (innerY - offsetY) * (innerY - offsetY);
+                                distanceY = (innerX - offsetXY) * (innerX - offsetXY)
+                                    + (innerY - offsetYY) * (innerY - offsetYY);
+                                distanceX = (innerX - offsetXX) * (innerX - offsetXX)
+                                    + (innerY - offsetYX) * (innerY - offsetYX);
+                                distanceXY = (innerX - offsetXXY) * (innerX - offsetXXY)
+                                    + (innerY - offsetYXY) * (innerY - offsetYXY);
                                 break;
                             }
                             case MANHATTAN: {
@@ -70,23 +74,24 @@ public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft
                                 break;
                             }
                             default: {
-                                baseDistance = (innerX - offsetX) * (innerX - offsetX) + (innerY - offsetY) * (innerY - offsetY);
-                                distanceY = (innerX - offsetXY) * (innerX - offsetXY) + (innerY - offsetYY) * (innerY - offsetYY);
-                                distanceX = (innerX - offsetXX) * (innerX - offsetXX) + (innerY - offsetYX) * (innerY - offsetYX);
-                                distanceXY = (innerX - offsetXXY) * (innerX - offsetXXY) + (innerY - offsetYXY) * (innerY - offsetYXY);
+                                baseDistance = (innerX - offsetX) * (innerX - offsetX)
+                                    + (innerY - offsetY) * (innerY - offsetY);
+                                distanceY = (innerX - offsetXY) * (innerX - offsetXY)
+                                    + (innerY - offsetYY) * (innerY - offsetYY);
+                                distanceX = (innerX - offsetXX) * (innerX - offsetXX)
+                                    + (innerY - offsetYX) * (innerY - offsetYX);
+                                distanceXY = (innerX - offsetXXY) * (innerX - offsetXXY)
+                                    + (innerY - offsetYXY) * (innerY - offsetYXY);
                                 break;
                             }
                         }
                         if (baseDistance < distanceY && baseDistance < distanceX && baseDistance < distanceXY) {
                             aint1[index++] = baseValue;
-                        }
-                        else if (distanceY < baseDistance && distanceY < distanceX && distanceY < distanceXY) {
+                        } else if (distanceY < baseDistance && distanceY < distanceX && distanceY < distanceXY) {
                             aint1[index++] = advancedValueI;
-                        }
-                        else if (distanceX < baseDistance && distanceX < distanceY && distanceX < distanceXY) {
+                        } else if (distanceX < baseDistance && distanceX < distanceY && distanceX < distanceXY) {
                             aint1[index++] = advancedValueJ;
-                        }
-                        else {
+                        } else {
                             aint1[index++] = advancedValueIJ;
                         }
                     }
@@ -102,15 +107,14 @@ public class GenLayerTropiVoronoiZoom extends GenLayerTropicraft
         }
         return aint2;
     }
-    
+
     public void setZoom(final int zoom) {
         this.zoom = zoom;
         this.parent.setZoom(zoom * 4);
     }
-    
-    public enum Mode
-    {
-        CARTESIAN, 
+
+    public enum Mode {
+        CARTESIAN,
         MANHATTAN;
     }
 }

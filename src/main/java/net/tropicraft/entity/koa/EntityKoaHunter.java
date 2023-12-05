@@ -1,12 +1,12 @@
 package net.tropicraft.entity.koa;
 
-import net.minecraft.world.*;
 import net.minecraft.entity.*;
-import net.tropicraft.registry.*;
 import net.minecraft.item.*;
+import net.minecraft.world.*;
+import net.tropicraft.registry.*;
 
-public class EntityKoaHunter extends EntityKoaBase
-{
+public class EntityKoaHunter extends EntityKoaBase {
+
     public EntityKoaHunter(final World par1World) {
         super(par1World);
     }

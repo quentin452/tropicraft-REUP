@@ -1,19 +1,21 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.renderer.entity.*;
-import net.tropicraft.entity.projectile.*;
-import net.tropicraft.util.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
+import net.tropicraft.entity.projectile.*;
+import net.tropicraft.util.*;
 
-public class RenderDart extends Render
-{
-    public void renderDart(final EntityDart dart, final double x, final double y, final double z, final float f, final float f1) {
+import org.lwjgl.opengl.*;
+
+public class RenderDart extends Render {
+
+    public void renderDart(final EntityDart dart, final double x, final double y, final double z, final float f,
+        final float f1) {
         TropicraftUtils.bindTextureEntity("dart");
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x, (float)y, (float)z);
+        GL11.glTranslatef((float) x, (float) y, (float) z);
         GL11.glRotatef(dart.prevRotationYaw + (dart.rotationYaw - dart.prevRotationYaw) * f1 - 90.0f, 0.0f, 1.0f, 0.0f);
         GL11.glRotatef(dart.prevRotationPitch + (dart.rotationPitch - dart.prevRotationPitch) * f1, 0.0f, 0.0f, 1.0f);
         final Tessellator tessellator = Tessellator.instance;
@@ -38,36 +40,37 @@ public class RenderDart extends Render
         GL11.glTranslatef(-4.0f, 0.0f, 0.0f);
         GL11.glNormal3f(f10, 0.0f, 0.0f);
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double)f6, (double)f8);
-        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double)f7, (double)f8);
-        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double)f7, (double)f9);
-        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double)f6, (double)f9);
+        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double) f6, (double) f8);
+        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double) f7, (double) f8);
+        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double) f7, (double) f9);
+        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double) f6, (double) f9);
         tessellator.draw();
         GL11.glNormal3f(-f10, 0.0f, 0.0f);
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double)f6, (double)f8);
-        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double)f7, (double)f8);
-        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double)f7, (double)f9);
-        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double)f6, (double)f9);
+        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double) f6, (double) f8);
+        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double) f7, (double) f8);
+        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double) f7, (double) f9);
+        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double) f6, (double) f9);
         tessellator.draw();
         for (int j = 0; j < 4; ++j) {
             GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
             GL11.glNormal3f(0.0f, 0.0f, f10);
             tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-8.0, -2.0, 0.0, (double)f2, (double)f4);
-            tessellator.addVertexWithUV(8.0, -2.0, 0.0, (double)f3, (double)f4);
-            tessellator.addVertexWithUV(8.0, 2.0, 0.0, (double)f3, (double)f5);
-            tessellator.addVertexWithUV(-8.0, 2.0, 0.0, (double)f2, (double)f5);
+            tessellator.addVertexWithUV(-8.0, -2.0, 0.0, (double) f2, (double) f4);
+            tessellator.addVertexWithUV(8.0, -2.0, 0.0, (double) f3, (double) f4);
+            tessellator.addVertexWithUV(8.0, 2.0, 0.0, (double) f3, (double) f5);
+            tessellator.addVertexWithUV(-8.0, 2.0, 0.0, (double) f2, (double) f5);
             tessellator.draw();
         }
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
-    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f, final float f1) {
-        this.renderDart((EntityDart)entity, d, d1, d2, f, f1);
+
+    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f,
+        final float f1) {
+        this.renderDart((EntityDart) entity, d, d1, d2, f, f1);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity entity) {
         return TropicraftUtils.getTextureEntity("dart");
     }

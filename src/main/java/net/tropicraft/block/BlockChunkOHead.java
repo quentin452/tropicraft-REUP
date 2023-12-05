@@ -2,8 +2,8 @@ package net.tropicraft.block;
 
 import net.minecraft.block.material.*;
 
-public class BlockChunkOHead extends BlockTropicraft
-{
+public class BlockChunkOHead extends BlockTropicraft {
+
     public BlockChunkOHead() {
         super(Material.rock);
         this.setBlockName("chunk");

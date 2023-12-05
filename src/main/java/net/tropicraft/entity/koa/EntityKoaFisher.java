@@ -1,14 +1,15 @@
 package net.tropicraft.entity.koa;
 
+import net.minecraft.entity.*;
+import net.minecraft.item.*;
 import net.minecraft.world.*;
 import net.tropicraft.entity.ai.jobs.*;
-import CoroUtil.componentAI.jobSystem.*;
-import net.minecraft.entity.*;
 import net.tropicraft.registry.*;
-import net.minecraft.item.*;
 
-public class EntityKoaFisher extends EntityKoaBase
-{
+import CoroUtil.componentAI.jobSystem.*;
+
+public class EntityKoaFisher extends EntityKoaBase {
+
     public float castingStrength;
 
     public EntityKoaFisher(final World par1World) {

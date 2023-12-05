@@ -1,8 +1,8 @@
-import java.util.zip.*;
 import java.util.*;
+import java.util.zip.*;
 
-public class SoundGen
-{
+public class SoundGen {
+
     public static void main(final String[] args) {
         try {
             final ZipFile zip = new ZipFile("F:/dev/code/old workspaces/forge-1.7.10-tropicraft/pkg/assets.zip");
@@ -10,8 +10,9 @@ public class SoundGen
             final ArrayList<String> soundNames = new ArrayList<String>();
             final String initialPath = "assets/tropicraft/";
             while (entries.hasMoreElements()) {
-                final ZipEntry entry = (ZipEntry)entries.nextElement();
-                if (!entry.isDirectory() && entry.toString().endsWith(".ogg")) {
+                final ZipEntry entry = (ZipEntry) entries.nextElement();
+                if (!entry.isDirectory() && entry.toString()
+                    .endsWith(".ogg")) {
                     String name = entry.toString();
                     name = name.substring(initialPath.length());
                     if (name.startsWith("sounds")) {
@@ -31,8 +32,7 @@ public class SoundGen
                         Integer.parseInt(name2.substring(name2.length() - 1));
                         name2 = name2.substring(0, name2.length() - 1);
                         isNumbered = true;
-                    }
-                    catch (NumberFormatException e3) {
+                    } catch (NumberFormatException e3) {
                         isNum = false;
                     }
                 }
@@ -74,8 +74,7 @@ public class SoundGen
                     sb.append("      {\n");
                     sb.append("        \"name\": \"" + name3 + "\",\n        \"stream\": true\n");
                     sb.append("      }\n");
-                }
-                else {
+                } else {
                     ArrayList<String> soundPaths = numbered.get(oriName2);
                     if (soundPaths == null) {
                         soundPaths = new ArrayList<String>();
@@ -85,8 +84,7 @@ public class SoundGen
                         sb.append("      \"" + soundPaths.get(k) + "\"");
                         if (k != soundPaths.size() - 1) {
                             sb.append(",\n");
-                        }
-                        else {
+                        } else {
                             sb.append("\n");
                         }
                     }
@@ -95,15 +93,13 @@ public class SoundGen
                 sb.append("  }");
                 if (j != soundNames.size() - 1) {
                     sb.append(",\n");
-                }
-                else {
+                } else {
                     sb.append("\n");
                 }
             }
             sb.append("}");
             System.out.println(sb.toString());
-        }
-        catch (Exception e2) {
+        } catch (Exception e2) {
             e2.printStackTrace();
         }
     }

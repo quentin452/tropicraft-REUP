@@ -1,18 +1,20 @@
 package net.tropicraft.client.renderer.block;
 
-import cpw.mods.fml.client.registry.*;
 import net.minecraft.block.*;
-import net.minecraft.world.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.util.*;
+import net.minecraft.world.*;
 import net.tropicraft.info.*;
 
-public class TikiTorchRenderHandler implements ISimpleBlockRenderingHandler
-{
-    public void renderInventoryBlock(final Block block, final int metadata, final int modelID, final RenderBlocks renderer) {
-    }
-    
-    public boolean renderWorldBlock(final IBlockAccess world, final int x, final int y, final int z, final Block block, final int modelId, final RenderBlocks renderer) {
+import cpw.mods.fml.client.registry.*;
+
+public class TikiTorchRenderHandler implements ISimpleBlockRenderingHandler {
+
+    public void renderInventoryBlock(final Block block, final int metadata, final int modelID,
+        final RenderBlocks renderer) {}
+
+    public boolean renderWorldBlock(final IBlockAccess world, final int x, final int y, final int z, final Block block,
+        final int modelId, final RenderBlocks renderer) {
         final int metadata = world.getBlockMetadata(x, y, z);
         final Tessellator tessellator = Tessellator.instance;
         final IIcon icon = block.getIcon(0, metadata);
@@ -34,29 +36,29 @@ public class TikiTorchRenderHandler implements ISimpleBlockRenderingHandler
         tessellator.addVertexWithUV(centerX - width, y + height, centerZ + width, topX1, topY2);
         tessellator.addVertexWithUV(centerX + width, y + height, centerZ + width, topX2, topY2);
         tessellator.addVertexWithUV(centerX + width, y + height, centerZ - width, topX2, topY1);
-        tessellator.addVertexWithUV(centerX - width, y + 1.0, (double)z, (double)pixX1, (double)pixY1);
-        tessellator.addVertexWithUV(centerX - width, (double)y, (double)z, (double)pixX1, (double)pixY2);
-        tessellator.addVertexWithUV(centerX - width, (double)y, z + 1.0, (double)pixX2, (double)pixY2);
-        tessellator.addVertexWithUV(centerX - width, y + 1.0, z + 1.0, (double)pixX2, (double)pixY1);
-        tessellator.addVertexWithUV(centerX + width, y + 1.0, z + 1.0, (double)pixX1, (double)pixY1);
-        tessellator.addVertexWithUV(centerX + width, (double)y, z + 1.0, (double)pixX1, (double)pixY2);
-        tessellator.addVertexWithUV(centerX + width, (double)y, (double)z, (double)pixX2, (double)pixY2);
-        tessellator.addVertexWithUV(centerX + width, y + 1.0, (double)z, (double)pixX2, (double)pixY1);
-        tessellator.addVertexWithUV((double)x, y + 1.0, centerZ + width, (double)pixX1, (double)pixY1);
-        tessellator.addVertexWithUV((double)x, (double)y, centerZ + width, (double)pixX1, (double)pixY2);
-        tessellator.addVertexWithUV(x + 1.0, (double)y, centerZ + width, (double)pixX2, (double)pixY2);
-        tessellator.addVertexWithUV(x + 1.0, y + 1.0, centerZ + width, (double)pixX2, (double)pixY1);
-        tessellator.addVertexWithUV(x + 1.0, y + 1.0, centerZ - width, (double)pixX1, (double)pixY1);
-        tessellator.addVertexWithUV(x + 1.0, (double)y, centerZ - width, (double)pixX1, (double)pixY2);
-        tessellator.addVertexWithUV((double)x, (double)y, centerZ - width, (double)pixX2, (double)pixY2);
-        tessellator.addVertexWithUV((double)x, y + 1.0, centerZ - width, (double)pixX2, (double)pixY1);
+        tessellator.addVertexWithUV(centerX - width, y + 1.0, (double) z, (double) pixX1, (double) pixY1);
+        tessellator.addVertexWithUV(centerX - width, (double) y, (double) z, (double) pixX1, (double) pixY2);
+        tessellator.addVertexWithUV(centerX - width, (double) y, z + 1.0, (double) pixX2, (double) pixY2);
+        tessellator.addVertexWithUV(centerX - width, y + 1.0, z + 1.0, (double) pixX2, (double) pixY1);
+        tessellator.addVertexWithUV(centerX + width, y + 1.0, z + 1.0, (double) pixX1, (double) pixY1);
+        tessellator.addVertexWithUV(centerX + width, (double) y, z + 1.0, (double) pixX1, (double) pixY2);
+        tessellator.addVertexWithUV(centerX + width, (double) y, (double) z, (double) pixX2, (double) pixY2);
+        tessellator.addVertexWithUV(centerX + width, y + 1.0, (double) z, (double) pixX2, (double) pixY1);
+        tessellator.addVertexWithUV((double) x, y + 1.0, centerZ + width, (double) pixX1, (double) pixY1);
+        tessellator.addVertexWithUV((double) x, (double) y, centerZ + width, (double) pixX1, (double) pixY2);
+        tessellator.addVertexWithUV(x + 1.0, (double) y, centerZ + width, (double) pixX2, (double) pixY2);
+        tessellator.addVertexWithUV(x + 1.0, y + 1.0, centerZ + width, (double) pixX2, (double) pixY1);
+        tessellator.addVertexWithUV(x + 1.0, y + 1.0, centerZ - width, (double) pixX1, (double) pixY1);
+        tessellator.addVertexWithUV(x + 1.0, (double) y, centerZ - width, (double) pixX1, (double) pixY2);
+        tessellator.addVertexWithUV((double) x, (double) y, centerZ - width, (double) pixX2, (double) pixY2);
+        tessellator.addVertexWithUV((double) x, y + 1.0, centerZ - width, (double) pixX2, (double) pixY1);
         return true;
     }
-    
+
     public int getRenderId() {
         return TCRenderIDs.tikiTorch;
     }
-    
+
     public boolean shouldRender3DInInventory(final int modelId) {
         return false;
     }

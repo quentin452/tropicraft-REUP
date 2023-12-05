@@ -1,11 +1,11 @@
 package net.tropicraft.entity.hostile;
 
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.util.*;
-import net.minecraft.entity.*;
 
-public class AIAshenHunt extends EntityAIBase
-{
+public class AIAshenHunt extends EntityAIBase {
+
     public EntityAshen ashen;
     public long huntRange;
     public long keepDistantRange;
@@ -18,7 +18,7 @@ public class AIAshenHunt extends EntityAIBase
     public int targetNoMoveTicksMax;
     public int panicTicks;
     public EntityLivingBase target;
-    
+
     public AIAshenHunt(final EntityAshen ashen) {
         this.huntRange = 24L;
         this.keepDistantRange = 14L;
@@ -32,7 +32,7 @@ public class AIAshenHunt extends EntityAIBase
         this.panicTicks = 0;
         this.ashen = ashen;
     }
-    
+
     public boolean shouldExecute() {
         final EntityLivingBase entitylivingbase = this.ashen.getAttackTarget();
         if (entitylivingbase == null) {
@@ -41,11 +41,12 @@ public class AIAshenHunt extends EntityAIBase
         this.target = entitylivingbase;
         return true;
     }
-    
+
     public boolean continueExecuting() {
-        return this.shouldExecute() || !this.ashen.getNavigator().noPath();
+        return this.shouldExecute() || !this.ashen.getNavigator()
+            .noPath();
     }
-    
+
     public void resetTask() {
         this.target = null;
     }

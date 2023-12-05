@@ -1,47 +1,47 @@
 package net.tropicraft.entity.hostile;
 
+import net.minecraft.entity.*;
 import net.minecraft.world.*;
 import net.tropicraft.entity.projectile.*;
-import net.minecraft.entity.*;
 
-public class EntityAshenHunter extends EntityAshen
-{
+public class EntityAshenHunter extends EntityAshen {
+
     public boolean hasGTFO;
-    
+
     public EntityAshenHunter(final World par1World) {
         super(par1World);
         this.setActionState(2);
         this.actionPicker = 2;
         this.hasGTFO = false;
     }
-    
+
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (this.worldObj.difficultySetting == EnumDifficulty.PEACEFUL && this.getActionState() != 1) {
             this.setActionState(0);
-        }
-        else if (this.getActionState() != 1) {
+        } else if (this.getActionState() != 1) {
             this.setActionState(this.actionPicker);
         }
     }
-    
+
     protected String getLivingSound() {
         return (this.getAttackTarget() == null) ? null : this.tcSound("ashenLaugh");
     }
-    
+
     public void attackEntityWithRangedAttack(final EntityLivingBase entity, final float range) {
         if (this.getAttackTarget() != null) {
-            this.faceEntity((Entity)this.getAttackTarget(), 180.0f, 180.0f);
-            final EntityDart entitydart = new EntityDart(this.worldObj, (Entity)this, 3.0f, (short)0);
-            this.worldObj.spawnEntityInWorld((Entity)entitydart);
+            this.faceEntity((Entity) this.getAttackTarget(), 180.0f, 180.0f);
+            final EntityDart entitydart = new EntityDart(this.worldObj, (Entity) this, 3.0f, (short) 0);
+            this.worldObj.spawnEntityInWorld((Entity) entitydart);
         }
     }
-    
+
     public boolean attackEntityAsMob(final Entity p_70652_1_) {
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(this.getAttackStrength());
+        this.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+            .setBaseValue(this.getAttackStrength());
         return super.attackEntityAsMob(p_70652_1_);
     }
-    
+
     protected double getAttackStrength() {
         if (this.worldObj == null) {
             return 0.0;

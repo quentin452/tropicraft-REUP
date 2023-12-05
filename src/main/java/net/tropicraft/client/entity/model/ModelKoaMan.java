@@ -4,8 +4,8 @@ import net.minecraft.client.model.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
 
-public class ModelKoaMan extends ModelBase
-{
+public class ModelKoaMan extends ModelBase {
+
     public ModelRenderer bipedHead;
     public ModelRenderer bipedBody;
     public ModelRenderer bipedRightArm;
@@ -25,106 +25,107 @@ public class ModelKoaMan extends ModelBase
     public ModelRenderer leaf9;
     public ModelRenderer leaf10;
     public ModelRenderer armband11;
-    
+
     public ModelKoaMan() {
-        (this.bipedHead = new ModelRenderer((ModelBase)this, 0, 2)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8);
+        (this.bipedHead = new ModelRenderer((ModelBase) this, 0, 2)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8);
         this.bipedHead.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.bipedHead.setTextureSize(64, 32);
         this.bipedHead.mirror = true;
         this.setRotation(this.bipedHead, 0.0f, 0.0f, 0.0f);
-        (this.bipedBody = new ModelRenderer((ModelBase)this, 16, 16)).addBox(-4.0f, 0.0f, -2.0f, 8, 12, 4);
+        (this.bipedBody = new ModelRenderer((ModelBase) this, 16, 16)).addBox(-4.0f, 0.0f, -2.0f, 8, 12, 4);
         this.bipedBody.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.bipedBody.setTextureSize(64, 32);
         this.bipedBody.mirror = true;
         this.setRotation(this.bipedBody, 0.0f, 0.0f, 0.0f);
-        (this.bipedRightArm = new ModelRenderer((ModelBase)this, 40, 16)).addBox(-2.0f, -2.0f, -2.0f, 3, 12, 4);
+        (this.bipedRightArm = new ModelRenderer((ModelBase) this, 40, 16)).addBox(-2.0f, -2.0f, -2.0f, 3, 12, 4);
         this.bipedRightArm.setRotationPoint(-4.0f, 3.0f, 0.0f);
         this.bipedRightArm.setTextureSize(64, 32);
         this.bipedRightArm.mirror = true;
         this.setRotation(this.bipedRightArm, 0.0f, 0.0f, 0.0f);
-        (this.bipedLeftArm = new ModelRenderer((ModelBase)this, 40, 16)).addBox(-1.0f, -2.0f, -2.0f, 3, 12, 4);
+        (this.bipedLeftArm = new ModelRenderer((ModelBase) this, 40, 16)).addBox(-1.0f, -2.0f, -2.0f, 3, 12, 4);
         this.bipedLeftArm.setRotationPoint(5.0f, 3.0f, 0.0f);
         this.bipedLeftArm.setTextureSize(64, 32);
         this.bipedLeftArm.mirror = true;
         this.setRotation(this.bipedLeftArm, 0.0f, 0.0f, 0.0f);
-        (this.bipedRightLeg = new ModelRenderer((ModelBase)this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
+        (this.bipedRightLeg = new ModelRenderer((ModelBase) this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
         this.bipedRightLeg.setRotationPoint(-2.0f, 12.0f, 0.0f);
         this.bipedRightLeg.setTextureSize(64, 32);
         this.bipedRightLeg.mirror = true;
         this.setRotation(this.bipedRightLeg, 0.0f, 0.0f, 0.0f);
-        (this.bipedLeftLeg = new ModelRenderer((ModelBase)this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
+        (this.bipedLeftLeg = new ModelRenderer((ModelBase) this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
         this.bipedLeftLeg.setRotationPoint(2.0f, 12.0f, 0.0f);
         this.bipedLeftLeg.setTextureSize(64, 32);
         this.bipedLeftLeg.mirror = true;
         this.setRotation(this.bipedLeftLeg, 0.0f, 0.0f, 0.0f);
-        (this.headband = new ModelRenderer((ModelBase)this, 24, 0)).addBox(-5.0f, 0.0f, -5.0f, 10, 2, 10);
+        (this.headband = new ModelRenderer((ModelBase) this, 24, 0)).addBox(-5.0f, 0.0f, -5.0f, 10, 2, 10);
         this.headband.setRotationPoint(0.0f, -7.0f, 0.0f);
         this.headband.setTextureSize(64, 32);
         this.headband.mirror = true;
         this.setRotation(this.headband, 0.0f, 0.0f, 0.0f);
-        (this.armband1 = new ModelRenderer((ModelBase)this, 35, 5)).addBox(-2.0f, 0.0f, -3.0f, 4, 1, 6);
+        (this.armband1 = new ModelRenderer((ModelBase) this, 35, 5)).addBox(-2.0f, 0.0f, -3.0f, 4, 1, 6);
         this.armband1.setRotationPoint(-6.0f, 3.0f, 0.0f);
         this.armband1.setTextureSize(64, 32);
         this.armband1.mirror = true;
         this.setRotation(this.armband1, 0.0f, 0.0f, 0.0f);
-        (this.leaf = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf.setRotationPoint(2.0f, -6.0f, -6.0f);
         this.leaf.setTextureSize(64, 32);
         this.leaf.mirror = true;
         this.setRotation(this.leaf, 0.0f, 0.0f, 0.0f);
-        (this.leaf3 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf3 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf3.setRotationPoint(-1.0f, -6.0f, -6.0f);
         this.leaf3.setTextureSize(64, 32);
         this.leaf3.mirror = true;
         this.setRotation(this.leaf3, 0.0f, 0.0f, 0.0f);
-        (this.leaf2 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf2 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf2.setRotationPoint(-4.0f, -6.0f, -6.0f);
         this.leaf2.setTextureSize(64, 32);
         this.leaf2.mirror = true;
         this.setRotation(this.leaf2, 0.0f, 0.0f, 0.0f);
-        (this.leaf4 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf4 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf4.setRotationPoint(0.0f, -7.0f, -6.0f);
         this.leaf4.setTextureSize(64, 32);
         this.leaf4.mirror = true;
         this.setRotation(this.leaf4, 0.0f, 0.0f, 0.0f);
-        (this.leaf5 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf5 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf5.setRotationPoint(5.0f, -6.0f, -1.0f);
         this.leaf5.setTextureSize(64, 32);
         this.leaf5.mirror = true;
         this.setRotation(this.leaf5, 0.0f, 0.0f, 0.0f);
-        (this.leaf6 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf6 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf6.setRotationPoint(5.0f, -6.0f, 3.0f);
         this.leaf6.setTextureSize(64, 32);
         this.leaf6.mirror = true;
         this.setRotation(this.leaf6, 0.0f, 0.0f, 0.0f);
-        (this.leaf7 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf7 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf7.setRotationPoint(-6.0f, -6.0f, 0.0f);
         this.leaf7.setTextureSize(64, 32);
         this.leaf7.mirror = true;
         this.setRotation(this.leaf7, 0.0f, 0.0f, 0.0f);
-        (this.leaf8 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf8 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf8.setRotationPoint(-6.0f, -6.0f, -4.0f);
         this.leaf8.setTextureSize(64, 32);
         this.leaf8.mirror = true;
         this.setRotation(this.leaf8, 0.0f, 0.0f, 0.0f);
-        (this.leaf9 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf9 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf9.setRotationPoint(-2.0f, -6.0f, 5.0f);
         this.leaf9.setTextureSize(64, 32);
         this.leaf9.mirror = true;
         this.setRotation(this.leaf9, 0.0f, 0.0f, 0.0f);
-        (this.leaf10 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
+        (this.leaf10 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(0.0f, 0.0f, 0.0f, 1, 0, 1);
         this.leaf10.setRotationPoint(2.0f, -6.0f, 5.0f);
         this.leaf10.setTextureSize(64, 32);
         this.leaf10.mirror = true;
         this.setRotation(this.leaf10, 0.0f, 0.0f, 0.0f);
-        (this.armband11 = new ModelRenderer((ModelBase)this, 35, -1)).addBox(-2.0f, 0.0f, -3.0f, 4, 1, 6);
+        (this.armband11 = new ModelRenderer((ModelBase) this, 35, -1)).addBox(-2.0f, 0.0f, -3.0f, 4, 1, 6);
         this.armband11.setRotationPoint(6.0f, 3.0f, 0.0f);
         this.armband11.setTextureSize(64, 32);
         this.armband11.mirror = true;
         this.setRotation(this.armband11, 0.0f, 0.0f, 0.0f);
     }
-    
-    public void render(final Entity entity, final float f, final float f1, final float f2, final float f3, final float f4, final float f5) {
+
+    public void render(final Entity entity, final float f, final float f1, final float f2, final float f3,
+        final float f4, final float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         this.bipedHead.render(f5);
@@ -147,20 +148,21 @@ public class ModelKoaMan extends ModelBase
         this.leaf10.render(f5);
         this.armband11.render(f5);
     }
-    
+
     private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;
         model.rotateAngleZ = z;
     }
-    
+
     private void a(final ModelRenderer a, final ModelRenderer b) {
         a.rotateAngleX = b.rotateAngleX;
         a.rotateAngleY = b.rotateAngleY;
         a.rotateAngleZ = b.rotateAngleZ;
     }
-    
-    public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4, final float f5, final Entity ent) {
+
+    public void setRotationAngles(final float f, final float f1, final float f2, final float f3, final float f4,
+        final float f5, final Entity ent) {
         this.bipedHead.rotateAngleY = f3 / 57.29578f;
         this.bipedHead.rotateAngleX = f4 / 57.29578f;
         this.a(this.headband, this.bipedHead);
@@ -284,7 +286,7 @@ public class ModelKoaMan extends ModelBase
             final float f7 = MathHelper.sin(f6 * 3.141593f);
             final float f8 = MathHelper.sin(this.onGround * 3.141593f) * -(this.bipedHead.rotateAngleX - 0.7f) * 0.75f;
             final ModelRenderer bipedRightArm3 = this.bipedRightArm;
-            bipedRightArm3.rotateAngleX -= (float)(f7 * 1.2 + f8);
+            bipedRightArm3.rotateAngleX -= (float) (f7 * 1.2 + f8);
             final ModelRenderer bipedRightArm4 = this.bipedRightArm;
             bipedRightArm4.rotateAngleY += this.bipedBody.rotateAngleY * 2.0f;
             this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * 3.141593f) * -0.4f;

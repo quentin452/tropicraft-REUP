@@ -1,16 +1,18 @@
 package net.tropicraft.encyclopedia;
 
-import java.util.logging.*;
-import net.minecraft.nbt.*;
-import java.util.*;
-import cpw.mods.fml.client.*;
-import cpw.mods.fml.relauncher.*;
 import java.io.*;
+import java.util.*;
+import java.util.logging.*;
+
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
+import net.minecraft.nbt.*;
 
-public abstract class TropicalBook
-{
+import cpw.mods.fml.client.*;
+import cpw.mods.fml.relauncher.*;
+
+public abstract class TropicalBook {
+
     private File dataFile;
     public static File file;
     private HashMap<String, Byte> visiblePages;
@@ -20,7 +22,8 @@ public abstract class TropicalBook
     public String outsideTexture;
     public String insideTexture;
 
-    public TropicalBook(final String savedDataFile, final String contentsFile, final String outsideTex, final String insideTex) {
+    public TropicalBook(final String savedDataFile, final String contentsFile, final String outsideTex,
+        final String insideTex) {
         this.visiblePages = new HashMap<String, Byte>();
         this.pageTitles = new HashMap<String, String>();
         this.pageDescriptions = new HashMap<String, String>();
@@ -38,11 +41,11 @@ public abstract class TropicalBook
                 }
                 dataInput.close();
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
-        final BufferedReader contents = new BufferedReader(new InputStreamReader(TropicalBook.class.getResourceAsStream(contentsFile)));
+        final BufferedReader contents = new BufferedReader(
+            new InputStreamReader(TropicalBook.class.getResourceAsStream(contentsFile)));
         try {
             String line;
             while ((line = contents.readLine()) != null) {
@@ -52,26 +55,28 @@ public abstract class TropicalBook
                 final String[] split = line.split("=", 2);
                 final String name = split[0].trim();
                 final String entry = split[1].trim();
-                if (name.toLowerCase().endsWith(".title")) {
+                if (name.toLowerCase()
+                    .endsWith(".title")) {
                     this.pageTitles.put(name.substring(0, name.length() - ".title".length()), entry);
                     this.sortedPages.add(name.substring(0, name.length() - ".title".length()));
-                }
-                else {
-                    if (!name.toLowerCase().endsWith(".desc")) {
+                } else {
+                    if (!name.toLowerCase()
+                        .endsWith(".desc")) {
                         continue;
                     }
                     this.pageDescriptions.put(name.substring(0, name.length() - ".desc".length()), entry);
                 }
             }
-        }
-        catch (IOException ex2) {
-            Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex2);
+        } catch (IOException ex2) {
+            Logger.getLogger(TropicalBook.class.getName())
+                .log(Level.SEVERE, null, ex2);
         }
     }
 
     @SideOnly(Side.CLIENT)
     public static String getClientSidePath() {
-        return FMLClientHandler.instance().getClient().mcDataDir.getPath();
+        return FMLClientHandler.instance()
+            .getClient().mcDataDir.getPath();
     }
 
     protected void saveData() {
@@ -81,14 +86,14 @@ public abstract class TropicalBook
                 final OutputStream dataOutput = new FileOutputStream(this.dataFile);
                 final NBTTagCompound data = new NBTTagCompound();
                 for (final String s : this.visiblePages.keySet()) {
-                    data.setByte(s, (byte)this.visiblePages.get(s));
+                    data.setByte(s, (byte) this.visiblePages.get(s));
                 }
                 CompressedStreamTools.writeCompressed(data, dataOutput);
                 dataOutput.close();
             }
-        }
-        catch (IOException ex) {
-            Logger.getLogger(TropicalBook.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TropicalBook.class.getName())
+                .log(Level.SEVERE, null, ex);
         }
     }
 
@@ -201,8 +206,7 @@ public abstract class TropicalBook
         TropicalBook.file = null;
     }
 
-    public enum ContentMode
-    {
+    public enum ContentMode {
         INFO,
         RECIPE;
     }

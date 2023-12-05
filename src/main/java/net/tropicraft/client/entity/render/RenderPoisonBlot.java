@@ -1,24 +1,36 @@
 package net.tropicraft.client.entity.render;
 
-import net.minecraft.client.renderer.entity.*;
-import net.tropicraft.entity.projectile.*;
-import net.tropicraft.util.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
+import net.tropicraft.entity.projectile.*;
+import net.tropicraft.util.*;
 
-public class RenderPoisonBlot extends Render
-{
-    public void renderBlot(final EntityPoisonBlot entitypoisonblot, final double d, final double d1, final double d2, final float f, final float f1) {
+import org.lwjgl.opengl.*;
+
+public class RenderPoisonBlot extends Render {
+
+    public void renderBlot(final EntityPoisonBlot entitypoisonblot, final double d, final double d1, final double d2,
+        final float f, final float f1) {
         if (entitypoisonblot.prevRotationYaw == 0.0f && entitypoisonblot.prevRotationPitch == 0.0f) {
             return;
         }
         TropicraftUtils.bindTextureEntity("treefrog/blot");
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)d, (float)d1, (float)d2);
-        GL11.glRotatef(entitypoisonblot.prevRotationYaw + (entitypoisonblot.rotationYaw - entitypoisonblot.prevRotationYaw) * f1 - 90.0f, 0.0f, 1.0f, 0.0f);
-        GL11.glRotatef(entitypoisonblot.prevRotationPitch + (entitypoisonblot.rotationPitch - entitypoisonblot.prevRotationPitch) * f1, 0.0f, 0.0f, 1.0f);
+        GL11.glTranslatef((float) d, (float) d1, (float) d2);
+        GL11.glRotatef(
+            entitypoisonblot.prevRotationYaw + (entitypoisonblot.rotationYaw - entitypoisonblot.prevRotationYaw) * f1
+                - 90.0f,
+            0.0f,
+            1.0f,
+            0.0f);
+        GL11.glRotatef(
+            entitypoisonblot.prevRotationPitch
+                + (entitypoisonblot.rotationPitch - entitypoisonblot.prevRotationPitch) * f1,
+            0.0f,
+            0.0f,
+            1.0f);
         final Tessellator tessellator = Tessellator.instance;
         final int i = 0;
         final float f2 = 0.0f;
@@ -36,36 +48,37 @@ public class RenderPoisonBlot extends Render
         GL11.glTranslatef(-4.0f, 0.0f, 0.0f);
         GL11.glNormal3f(f10, 0.0f, 0.0f);
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double)f6, (double)f8);
-        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double)f7, (double)f8);
-        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double)f7, (double)f9);
-        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double)f6, (double)f9);
+        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double) f6, (double) f8);
+        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double) f7, (double) f8);
+        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double) f7, (double) f9);
+        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double) f6, (double) f9);
         tessellator.draw();
         GL11.glNormal3f(-f10, 0.0f, 0.0f);
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double)f6, (double)f8);
-        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double)f7, (double)f8);
-        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double)f7, (double)f9);
-        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double)f6, (double)f9);
+        tessellator.addVertexWithUV(-7.0, 2.0, -2.0, (double) f6, (double) f8);
+        tessellator.addVertexWithUV(-7.0, 2.0, 2.0, (double) f7, (double) f8);
+        tessellator.addVertexWithUV(-7.0, -2.0, 2.0, (double) f7, (double) f9);
+        tessellator.addVertexWithUV(-7.0, -2.0, -2.0, (double) f6, (double) f9);
         tessellator.draw();
         for (int j = 0; j < 4; ++j) {
             GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
             GL11.glNormal3f(0.0f, 0.0f, f10);
             tessellator.startDrawingQuads();
-            tessellator.addVertexWithUV(-8.0, -2.0, 0.0, (double)f2, (double)f4);
-            tessellator.addVertexWithUV(8.0, -2.0, 0.0, (double)f3, (double)f4);
-            tessellator.addVertexWithUV(8.0, 2.0, 0.0, (double)f3, (double)f5);
-            tessellator.addVertexWithUV(-8.0, 2.0, 0.0, (double)f2, (double)f5);
+            tessellator.addVertexWithUV(-8.0, -2.0, 0.0, (double) f2, (double) f4);
+            tessellator.addVertexWithUV(8.0, -2.0, 0.0, (double) f3, (double) f4);
+            tessellator.addVertexWithUV(8.0, 2.0, 0.0, (double) f3, (double) f5);
+            tessellator.addVertexWithUV(-8.0, 2.0, 0.0, (double) f2, (double) f5);
             tessellator.draw();
         }
         GL11.glDisable(32826);
         GL11.glPopMatrix();
     }
-    
-    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f, final float f1) {
-        this.renderBlot((EntityPoisonBlot)entity, d, d1, d2, f, f1);
+
+    public void doRender(final Entity entity, final double d, final double d1, final double d2, final float f,
+        final float f1) {
+        this.renderBlot((EntityPoisonBlot) entity, d, d1, d2, f, f1);
     }
-    
+
     protected ResourceLocation getEntityTexture(final Entity var1) {
         return TropicraftUtils.getTextureEntity("treefrog/blot");
     }

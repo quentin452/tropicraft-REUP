@@ -1,13 +1,13 @@
 package net.tropicraft.entity.underdasea;
 
-import net.minecraft.world.*;
 import net.minecraft.entity.*;
+import net.minecraft.world.*;
 
-public class EntityTurtleEgg extends EntityLiving
-{
+public class EntityTurtleEgg extends EntityLiving {
+
     public int hatchingTime;
     public double rotationRand;
-    
+
     public EntityTurtleEgg(final World par1World) {
         super(par1World);
         this.setSize(0.1f, 0.1f);
@@ -15,7 +15,7 @@ public class EntityTurtleEgg extends EntityLiving
         this.rotationRand = 10.0;
         this.ignoreFrustumCheck = true;
     }
-    
+
     public void onUpdate() {
         super.onUpdate();
         this.rotationYaw = 0.0f;
@@ -32,7 +32,7 @@ public class EntityTurtleEgg extends EntityLiving
                     final double d4 = this.posY;
                     final double d5 = this.posZ;
                     babyturtle.setLocationAndAngles(d3, d4, d5, 0.0f, 0.0f);
-                    this.worldObj.spawnEntityInWorld((Entity)babyturtle);
+                    this.worldObj.spawnEntityInWorld((Entity) babyturtle);
                     this.setDead();
                 }
                 for (int i = 0; i < 8; ++i) {
@@ -44,9 +44,10 @@ public class EntityTurtleEgg extends EntityLiving
             }
         }
     }
-    
+
     public void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(2.0);
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth)
+            .setBaseValue(2.0);
     }
 }
