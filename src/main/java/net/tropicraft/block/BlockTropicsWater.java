@@ -1,14 +1,20 @@
 package net.tropicraft.block;
 
-import net.minecraft.block.material.*;
-import net.minecraft.client.renderer.texture.*;
-import net.minecraft.creativetab.*;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraftforge.fluids.*;
-import net.tropicraft.registry.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.tropicraft.registry.TCBlockRegistry;
+import net.tropicraft.registry.TCFluidRegistry;
 
-import cpw.mods.fml.relauncher.*;
+import java.util.Random;
 
 public class BlockTropicsWater extends BlockFluidClassic {
 
@@ -20,7 +26,7 @@ public class BlockTropicsWater extends BlockFluidClassic {
     public BlockTropicsWater(final Fluid fluid, final Material material) {
         super(fluid, material);
         this.lightOpacity = 0;
-        this.setCreativeTab((CreativeTabs) null);
+        this.setCreativeTab(null);
         this.displacements.put(TCBlockRegistry.coral, false);
         this.displacements.put(TCBlockRegistry.bambooFence, false);
         this.setRenderPass(1);
@@ -42,5 +48,40 @@ public class BlockTropicsWater extends BlockFluidClassic {
         final Material material = world.getBlock(x, y, z)
             .getMaterial();
         return material != this.blockMaterial && (side == 1 || super.shouldSideBeRendered(world, x, y, z, side));
+    }
+    @Override
+    public void updateTick(World world, int x, int y, int z, Random rand)
+    {
+        /*
+         * Fix so that tropics water can form infinite water sources again.
+         * Turns blocks into source blocks if they are between two other source blocks.
+         */
+
+        int currentMeta = world.getBlockMetadata(x, y, z);
+        if (currentMeta > 0 &&
+            world.getBlock(x, y - 1,  z).getMaterial() != Material.air)
+        {
+            int neighbourSources = 0;
+            if (IsNeighbourSource (world, x + 1, y, z))
+                neighbourSources ++;
+            if (IsNeighbourSource (world, x - 1, y, z))
+                neighbourSources ++;
+            if (IsNeighbourSource (world, x, y, z + 1))
+                neighbourSources ++;
+            if (IsNeighbourSource (world, x, y, z - 1))
+                neighbourSources ++;
+
+            if (neighbourSources >= 2)
+                world.setBlock(x, y, z, this, 0, 3); // set meta to 0
+        }
+
+        // Need to do this for the water to flow !!
+        super.updateTick(world, x, y, z, rand);
+    }
+
+    private boolean IsNeighbourSource(World world, int x, int y, int z)
+    {
+        return world.getBlock(x, y, z) == this &&
+                world.getBlockMetadata(x, y, z) == 0;
     }
 }
