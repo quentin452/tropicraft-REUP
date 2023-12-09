@@ -3,6 +3,7 @@ package net.tropicraft.block;
 import java.util.*;
 
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
@@ -13,6 +14,7 @@ public class BlockTropicraftOre extends BlockTropicraft {
     private Random rand;
 
     public BlockTropicraftOre() {
+        super(Material.rock);
         this.rand = new Random();
     }
 

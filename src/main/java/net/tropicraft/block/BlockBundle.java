@@ -1,5 +1,6 @@
 package net.tropicraft.block;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
@@ -12,6 +13,7 @@ public class BlockBundle extends BlockTropicraft {
     private IIcon side;
 
     public BlockBundle(final String name) {
+        super(Material.plants);
         this.setBlockTextureName(name);
         this.setBlockName(name);
     }
