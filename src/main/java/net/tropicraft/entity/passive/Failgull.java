@@ -122,6 +122,6 @@ public class Failgull extends EntityFlying {
     }
 
     protected String getLivingSound() {
-        return "";
+        return null;
     }
 }

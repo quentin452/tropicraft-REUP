@@ -106,7 +106,7 @@ public class VMonkey extends EntityCoroAI {
     }
 
     protected String getDeathSound() {
-        return "";
+        return null;
     }
 
     public boolean allowLeashing() {
