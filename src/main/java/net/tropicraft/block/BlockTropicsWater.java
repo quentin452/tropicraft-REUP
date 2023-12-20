@@ -50,32 +50,19 @@ public class BlockTropicsWater extends BlockFluidClassic {
         return material != this.blockMaterial && (side == 1 || super.shouldSideBeRendered(world, x, y, z, side));
     }
     @Override
-    public void updateTick(World world, int x, int y, int z, Random rand)
-    {
-        /*
-         * Fix so that tropics water can form infinite water sources again.
-         * Turns blocks into source blocks if they are between two other source blocks.
-         */
-
-        int currentMeta = world.getBlockMetadata(x, y, z);
-        if (currentMeta > 0 &&
-            world.getBlock(x, y - 1,  z).getMaterial() != Material.air)
-        {
+    public void updateTick(World world, int x, int y, int z, Random rand) {
+        if (world.getBlockMetadata(x, y, z) > 0 && world.getBlock(x, y - 1, z).getMaterial() != Material.air) {
             int neighbourSources = 0;
-            if (IsNeighbourSource (world, x + 1, y, z))
-                neighbourSources ++;
-            if (IsNeighbourSource (world, x - 1, y, z))
-                neighbourSources ++;
-            if (IsNeighbourSource (world, x, y, z + 1))
-                neighbourSources ++;
-            if (IsNeighbourSource (world, x, y, z - 1))
-                neighbourSources ++;
+            neighbourSources += IsNeighbourSource(world, x + 1, y, z) ? 1 : 0;
+            neighbourSources += IsNeighbourSource(world, x - 1, y, z) ? 1 : 0;
+            neighbourSources += IsNeighbourSource(world, x, y, z + 1) ? 1 : 0;
+            neighbourSources += IsNeighbourSource(world, x, y, z - 1) ? 1 : 0;
 
-            if (neighbourSources >= 2)
-                world.setBlock(x, y, z, this, 0, 3); // set meta to 0
+            if (neighbourSources >= 2) {
+                world.setBlock(x, y, z, this, 0, 3);
+            }
         }
 
-        // Need to do this for the water to flow !!
         super.updateTick(world, x, y, z, rand);
     }
 
