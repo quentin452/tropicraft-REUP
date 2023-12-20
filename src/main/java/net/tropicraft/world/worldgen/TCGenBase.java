@@ -37,21 +37,29 @@ public abstract class TCGenBase extends WorldGenerator {
     }
 
     public List<ChunkCoordinates> genCircle(final int x, final int y, final int z, final double outerRadius, final double innerRadius,
-                                    final Block block, final int meta, final boolean solid) {
+                                            final Block block, final int meta, final boolean solid) {
         List<ChunkCoordinates> generatedPositions = new ArrayList<>();
-        for (int i = (int) (-outerRadius - 1.0) + x; i <= (int) (outerRadius + 1.0) + x; ++i) {
-            for (int k = (int) (-outerRadius - 1.0) + z; k <= (int) (outerRadius + 1.0) + z; ++k) {
-                final double d = (double) ((i - x) * (i - x)) + (k - z) * (k - z);
-                if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius
-                    && (this.worldObj.isAirBlock(i, y, k) || solid)
-                    && this.worldObj.setBlock(i, y, k, block, meta, TCGenBase.blockGenNotifyFlag)) {
-                    generatedPositions.add(new ChunkCoordinates(i, y, k));
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+
+        for (int chunkI = chunkX - (int) outerRadius - 1; chunkI <= chunkX + (int) outerRadius + 1; ++chunkI) {
+            for (int chunkK = chunkZ - (int) outerRadius - 1; chunkK <= chunkZ + (int) outerRadius + 1; ++chunkK) {
+                if (this.worldObj.getChunkProvider().chunkExists(chunkI, chunkK)) {
+                    for (int i = chunkI << 4; i < (chunkI << 4) + 16; ++i) {
+                        for (int k = chunkK << 4; k < (chunkK << 4) + 16; ++k) {
+                            final double d = (double) ((i - x) * (i - x)) + (k - z) * (k - z);
+                            if (d <= outerRadius * outerRadius && d >= innerRadius * innerRadius
+                                && (this.worldObj.isAirBlock(i, y, k) || solid)
+                                && this.worldObj.setBlock(i, y, k, block, meta, TCGenBase.blockGenNotifyFlag)) {
+                                generatedPositions.add(new ChunkCoordinates(i, y, k));
+                            }
+                        }
+                    }
                 }
             }
         }
         return generatedPositions;
     }
-
     public boolean checkCircle(final int i, final int j, final int k, final double outerRadius,
         final double innerRadius, final List allowedBlockList) {
         for (int x = (int) (-outerRadius - 2.0) + i; x < (int) (outerRadius + 2.0) + i; ++x) {
@@ -102,42 +110,63 @@ public abstract class TCGenBase extends WorldGenerator {
         }
         return true;
     }
-    public List<int[]> placeBlockLine(final int[] ai, final int[] ai1, final Block block, final int meta) {
-        List<int[]> places = new ArrayList<>();
-        final int[] ai2 = { 0, 0, 0 };
-        byte byte0 = 0;
-        int j = 0;
-        while (byte0 < 3) {
-            ai2[byte0] = ai1[byte0] - ai[byte0];
-            if (Math.abs(ai2[byte0]) > Math.abs(ai2[j])) {
-                j = byte0;
+    public void placeBlockLine(final int[] start, final int[] end, final Block block, final int meta) {
+        int[] difference = new int[]{end[0] - start[0], end[1] - start[1], end[2] - start[2]};
+        int largestDifferenceIndex = getLargestDifferenceIndex(difference);
+
+        if (difference[largestDifferenceIndex] == 0) {
+            return;
+        }
+
+        byte[] otherCoordPairs = TCGenBase.otherCoordPairs;
+        byte otherCoord1 = otherCoordPairs[largestDifferenceIndex];
+        byte otherCoord2 = otherCoordPairs[largestDifferenceIndex + 3];
+        byte sign = (byte) (difference[largestDifferenceIndex] > 0 ? 1 : -1);
+        double d1 = difference[otherCoord1] / (double) difference[largestDifferenceIndex];
+        double d2 = difference[otherCoord2] / (double) difference[largestDifferenceIndex];
+
+        int chunkX = start[0] >> 4;
+        int chunkZ = start[2] >> 4;
+
+        Set<String> placedBlocks = new HashSet<>();
+
+        int[] currentPos = new int[3];
+        for (int k = 0, l = difference[largestDifferenceIndex] + sign; k != l; k += sign) {
+            currentPos[largestDifferenceIndex] = MathHelper.floor_double(start[largestDifferenceIndex] + k + 0.5);
+            currentPos[otherCoord1] = MathHelper.floor_double(start[otherCoord1] + k * d1 + 0.5);
+            currentPos[otherCoord2] = MathHelper.floor_double(start[otherCoord2] + k * d2 + 0.5);
+
+            int blockChunkX = currentPos[0] >> 4;
+            int blockChunkZ = currentPos[2] >> 4;
+
+            if (blockChunkX != chunkX || blockChunkZ != chunkZ) {
+                chunkX = blockChunkX;
+                chunkZ = blockChunkZ;
+
+                if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+                    continue;
+                }
             }
-            ++byte0;
-        }
-        if (ai2[j] == 0) {
-            return places;
-        }
 
-        final byte byte2 = TCGenBase.otherCoordPairs[j];
-        final byte byte3 = TCGenBase.otherCoordPairs[j + 3];
-        final byte byte4 = (byte) (ai2[j] > 0 ? 1 : -1);
-        final double d = ai2[byte2] / (double) ai2[j];
-        final double d2 = ai2[byte3] / (double) ai2[j];
+            String blockKey = currentPos[0] + "_" + currentPos[1] + "_" + currentPos[2];
 
-        int[] ai3 = { 0, 0, 0 };
-        for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
-            ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
-            ai3[byte2] = MathHelper.floor_double(ai[byte2] + k * d + 0.5);
-            ai3[byte3] = MathHelper.floor_double(ai[byte3] + k * d2 + 0.5);
-
-            // Check if the block is already placed
-            if (worldObj.getBlock(ai3[0], ai3[1], ai3[2]) != block) {
-                worldObj.setBlock(ai3[0], ai3[1], ai3[2], block, meta, TCGenBase.blockGenNotifyFlag);
-                places.add(new int[]{ai3[0], ai3[1], ai3[2]});
+            if (worldObj.getBlock(currentPos[0], currentPos[1], currentPos[2]) != block) {
+                worldObj.setBlock(currentPos[0], currentPos[1], currentPos[2], block, meta, TCGenBase.blockGenNotifyFlag);
+                placedBlocks.add(blockKey);
             }
         }
-        return places;
     }
+
+    private int getLargestDifferenceIndex(int[] differences) {
+        int largestIndex = 0;
+        for (byte i = 0; i < 3; i++) {
+            if (Math.abs(differences[i]) > Math.abs(differences[largestIndex])) {
+                largestIndex = i;
+            }
+        }
+        return largestIndex;
+    }
+
 
     public boolean checkBlockCircleLine(final int[] ai, final int[] ai1, final double outerRadius,
         final double innerRadius, final List allowedBlockList) {

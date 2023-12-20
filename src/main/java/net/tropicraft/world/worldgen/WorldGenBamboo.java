@@ -24,22 +24,24 @@ public class WorldGenBamboo extends TCGenBase {
         if (!this.worldObj.isAirBlock(i, j, k)) {
             return false;
         }
-        if (this.worldObj.getBlock(i + 1, j - 1, k)
-            .getMaterial() != Material.water
-            && this.worldObj.getBlock(i - 1, j - 1, k)
-                .getMaterial() != Material.water
-            && this.worldObj.getBlock(i, j - 1, k + 1)
-                .getMaterial() != Material.water
-            && this.worldObj.getBlock(i, j - 1, k - 1)
-                .getMaterial() != Material.water) {
+
+        Material material1 = this.worldObj.getBlock(i + 1, j - 1, k).getMaterial();
+        Material material2 = this.worldObj.getBlock(i - 1, j - 1, k).getMaterial();
+        Material material3 = this.worldObj.getBlock(i, j - 1, k + 1).getMaterial();
+        Material material4 = this.worldObj.getBlock(i, j - 1, k - 1).getMaterial();
+
+        if (material1 != Material.water && material2 != Material.water &&
+            material3 != Material.water && material4 != Material.water) {
             return false;
         }
+
         final int amount = this.rand.nextInt(30) + 30;
         final int spread = this.rand.nextInt(3) - 1 + (int) (Math.sqrt(amount) / 2.0);
+
         for (int l = 0; l < amount; ++l) {
             for (int x = i + this.rand.nextInt(spread) - this.rand.nextInt(spread),
-                z = k + this.rand.nextInt(spread) - this.rand.nextInt(spread), y = this.getTerrainHeightAt(x, z),
-                height = this.rand.nextInt(4) + 4, h = 0; h < height && this.worldObj.isAirBlock(x, y + h, z); ++h) {
+                 z = k + this.rand.nextInt(spread) - this.rand.nextInt(spread), y = this.getTerrainHeightAt(x, z),
+                 height = this.rand.nextInt(4) + 4, h = 0; h < height && this.worldObj.isAirBlock(x, y + h, z); ++h) {
                 this.worldObj.setBlock(x, y + h, z, WorldGenBamboo.BAMBOO_BLOCK, 0, WorldGenBamboo.blockGenNotifyFlag);
             }
         }

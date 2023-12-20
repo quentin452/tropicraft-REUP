@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.tropicraft.registry.*;
 
 public class WorldGenTallTree extends TCGenBase {
@@ -27,6 +28,12 @@ public class WorldGenTallTree extends TCGenBase {
     }
 
     public boolean generate(final int i, final int j, final int k) {
+        int chunkX = i >> 4;
+        int chunkZ = k >> 4;
+
+        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+            return false;
+        }
         Block blockUnder = this.worldObj.getBlock(i, j - 1, k);
         if (blockUnder != Blocks.dirt && blockUnder != Blocks.grass) {
             return false;
@@ -107,34 +114,107 @@ public class WorldGenTallTree extends TCGenBase {
         this.genCircle(i, j + height, k, leafSize2 - 2, 0.0, WorldGenTallTree.LEAF_BLOCK, 1, false);
         this.genCircle(i, j + height - 1, k, (leafSize2 - 1), (leafSize2 - 4), WorldGenTallTree.LEAF_BLOCK, 1, false);
         this.genCircle(i, j + height - 2, k, leafSize2, (leafSize2 - 1), WorldGenTallTree.LEAF_BLOCK, 1, false);
+
+        generateVineCluster(i, j, k, leafSize2, height);
+        return true;
+    }
+
+    private void generateVineCluster(int i, int j, int k, int leafSize2, int height) {
+        List<ChunkCoordinates> vineCoordinates = new ArrayList<>();
+
         for (int x = i - leafSize2; x <= i + leafSize2; ++x) {
             for (int z = k - leafSize2; z <= k + leafSize2; ++z) {
                 for (int y4 = j + height + 3; y4 <= j + height + 6; ++y4) {
                     if (this.rand.nextInt(5) == 0) {
-                        this.genVines(x, y4, z);
+                        vineCoordinates.add(new ChunkCoordinates(x, y4, z));
                     }
                 }
+            }
+        }
+
+        placeVines(vineCoordinates);
+    }
+
+    private void placeVines(List<ChunkCoordinates> vineCoordinates) {
+        int chunkX, chunkZ;
+        int vineChance = 5;
+
+        for (ChunkCoordinates pos : vineCoordinates) {
+            chunkX = pos.posX >> 4;
+            chunkZ = pos.posZ >> 4;
+
+            if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+                continue;
+            }
+
+            if (this.rand.nextInt(vineChance) == 0) {
+                this.genVines(pos.posX, pos.posY, pos.posZ);
+            }
+        }
+    }
+
+    private boolean genVines(final int i, final int j, final int k) {
+        int chunkX = i >> 4;
+        int chunkZ = k >> 4;
+
+        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+            return false;
+        }
+
+        Block vineBlock = Blocks.vine;
+        Random rand = this.rand;
+
+        boolean isBlockAir = false;
+
+        for (int m = 2; m <= 5; ++m) {
+            if (vineBlock.canPlaceBlockOnSide(this.worldObj, i, j, k, m)) {
+                int vineSide = 1 << Direction.facingToDirection[Facing.oppositeSide[m]];
+
+                int maxLength = 8;
+                int length = rand.nextInt(maxLength) + 1;
+                int startY = j - length;
+                startY = Math.max(0, startY);
+
+                if (this.worldObj.isAirBlock(i, j, k)) {
+                    isBlockAir = true;
+                }
+
+                if (isBlockAir || canPlaceVines(i, j, k, startY)) {
+                    placeVinesBottomUp(i, j, k, vineBlock, vineSide, startY, j);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean canPlaceVines(int i, int j, int k, int startY) {
+        for (int y = j - 1; y >= startY; --y) {
+            if (!this.worldObj.isAirBlock(i, y, k)) {
+                return false;
             }
         }
         return true;
     }
 
-    private boolean genVines(final int i, final int j, final int k) {
-        for (int m = 2; m <= 5; ++m) {
-            if (Blocks.vine.canPlaceBlockOnSide(this.worldObj, i, j, k, m)
-                && this.worldObj.getBlock(i, j, k) == Blocks.air) {
-                this.worldObj.setBlock(i, j, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
-                for (int length = this.rand.nextInt(4) + 4, y = j - 1; y > j - length; --y) {
-                    if (this.worldObj.getBlock(i, y, k) != Blocks.air) {
-                        return true;
-                    }
-                    this.worldObj.setBlock(i, y, k, Blocks.vine, 1 << Direction.facingToDirection[Facing.oppositeSide[m]], WorldGenTallTree.blockGenNotifyFlag);
-                }
-                return true;
+
+    private void placeVinesBottomUp(int i, int j, int k, Block vineBlock, int vineSide, int startY, int endY) {
+        int chunkX = i >> 4;
+        int chunkZ = k >> 4;
+        Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
+
+        int adjustedJ = Math.min(j, endY);
+
+        for (int y = adjustedJ; y >= startY; --y) {
+            int localX = i & 15;
+            int localZ = k & 15;
+
+            if (chunk.getBlock(localX, y, localZ).isAir(this.worldObj, localX, y, localZ)) {
+                chunk.func_150807_a(localX, y, localZ, vineBlock, vineSide);
             }
         }
-        return false;
     }
+
 
     static {
         WOOD_BLOCK = TCBlockRegistry.logs;

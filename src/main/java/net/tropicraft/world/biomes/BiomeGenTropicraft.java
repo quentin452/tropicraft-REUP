@@ -146,7 +146,7 @@ public class BiomeGenTropicraft extends BiomeGenBase {
                 break;
             }
         }
-        return 0;
+        return height;
     }
 
     public final int randCoord(final Random rand, final int base, final int variance) {
