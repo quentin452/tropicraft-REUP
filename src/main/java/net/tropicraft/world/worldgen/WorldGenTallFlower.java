@@ -1,10 +1,13 @@
 package net.tropicraft.world.worldgen;
 
-import java.util.*;
-
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.*;
+import net.minecraft.world.World;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class WorldGenTallFlower extends TCGenBase {
 
@@ -30,24 +33,30 @@ public class WorldGenTallFlower extends TCGenBase {
             return false;
         }
 
-        for (int l = 0; l < this.FLOWER_TRIES; ++l) {
-            final int i2 = i + this.rand.nextInt(8) - this.rand.nextInt(8);
-            final int j2 = j + this.rand.nextInt(3) - this.rand.nextInt(3);
-            final int k2 = k + this.rand.nextInt(8) - this.rand.nextInt(8);
+        List<ChunkCoordinates> potentialFlowerLocations = new ArrayList<>();
 
-            if (canPlaceFlowerAt(i2, j2, k2)) {
-                placeFlower(i2, j2, k2);
+        for (int l = 0; l < this.FLOWER_TRIES; ++l) {
+            final int i2 = i + this.rand.nextInt(17) - 8;
+            final int j2 = j + this.rand.nextInt(7) - 3;
+            final int k2 = k + this.rand.nextInt(17) - 8;
+
+            potentialFlowerLocations.add(new ChunkCoordinates(i2, j2, k2));
+        }
+
+        for (ChunkCoordinates pos : potentialFlowerLocations) {
+            if (canPlaceFlowerAt(pos.posX, pos.posY, pos.posZ)) {
+                placeFlower(pos.posX, pos.posY, pos.posZ);
             }
         }
 
         return true;
     }
-
     private boolean canPlaceFlowerAt(int i, int j, int k) {
-        int blockID = Block.getIdFromBlock(this.worldObj.getBlock(i, j, k));
-        int blockAboveID = Block.getIdFromBlock(this.worldObj.getBlock(i, j + 1, k));
+        Block block = this.worldObj.getBlock(i, j, k);
+        Block blockAbove = this.worldObj.getBlock(i, j + 1, k);
 
-        return blockID == 0 && blockAboveID == 0
+        return block == Blocks.grass
+            && blockAbove.isAir(worldObj, i, j + 1, k)
             && this.plantBlock.canBlockStay(this.worldObj, i, j, k);
     }
 
