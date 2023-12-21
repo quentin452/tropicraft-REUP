@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.feature.*;
 
 public abstract class TCGenBase extends WorldGenerator {
@@ -75,7 +76,7 @@ public abstract class TCGenBase extends WorldGenerator {
         return true;
     }
 
-    public boolean checkBlockLine(final int[] ai, final int[] ai1, final List allowedBlockList) {
+    public boolean checkBlockLine(final int[] ai, final int[] ai1, final List<Block> allowedBlockList) {
         final int[] ai2 = { 0, 0, 0 };
         byte byte0 = 0;
         int j = 0;
@@ -100,11 +101,30 @@ public abstract class TCGenBase extends WorldGenerator {
         final double d = ai2[byte2] / (double) ai2[j];
         final double d2 = ai2[byte3] / (double) ai2[j];
         final int[] ai3 = { 0, 0, 0 };
+
+        World world = this.worldObj;
+
         for (int k = 0, l = ai2[j] + byte4; k != l; k += byte4) {
             ai3[j] = MathHelper.floor_double(ai[j] + k + 0.5);
             ai3[byte2] = MathHelper.floor_double(ai[byte2] + k * d + 0.5);
             ai3[byte3] = MathHelper.floor_double(ai[byte3] + k * d2 + 0.5);
-            if (!allowedBlockList.contains(this.worldObj.getBlock(ai3[0], ai3[1], ai3[2]))) {
+
+            int chunkX = ai3[0] >> 4;
+            int chunkZ = ai3[2] >> 4;
+
+            if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+                return false;
+            }
+
+            Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+
+            if (!chunk.isChunkLoaded) {
+                return false;
+            }
+
+            Block block = chunk.getBlock(ai3[0] & 15, ai3[1], ai3[2] & 15);
+
+            if (!allowedBlockList.contains(block)) {
                 return false;
             }
         }
