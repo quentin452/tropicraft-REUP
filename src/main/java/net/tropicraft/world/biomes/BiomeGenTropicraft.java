@@ -125,8 +125,12 @@ public class BiomeGenTropicraft extends BiomeGenBase {
         }
 
         if (rand.nextInt(4) == 0) {
-            new WorldGenTallGrass(Blocks.tallgrass, 1)
-                .generate(world, rand, i, this.getTerrainHeightAt(world, i, k), k);
+            terrainHeight = this.getTerrainHeightAt(world, i, k);
+            if (terrainHeight > 0 && world.isAirBlock(i, terrainHeight, k)) {
+                if (world.getBlock(i, terrainHeight - 1, k) == Blocks.grass) {
+                    world.setBlock(i, terrainHeight, k, Blocks.tallgrass, 1, 2);
+                }
+            }
         }
 
         for (int a = 0; a < 25; ++a) {
