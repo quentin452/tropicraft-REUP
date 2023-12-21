@@ -42,14 +42,13 @@ public class WorldGenTualang extends TCGenBase {
             return false;
         }
 
-        setBaseBlocks(i, j, k);
-
         buildTrunk(i, j, k, height);
 
         generateBranches(i, k, height, branches);
 
         return true;
     }
+
     private boolean checkBlocks(int i, int j, int k, int height) {
         for (int y = j; y < j + height; ++y) {
             Block block = this.worldObj.getBlock(i, y, k);
@@ -60,25 +59,9 @@ public class WorldGenTualang extends TCGenBase {
         return false;
     }
 
-    private void setBaseBlocks(int i, int j, int k) {
-        for (int xOffset = -1; xOffset <= 1; xOffset++) {
-            for (int zOffset = -1; zOffset <= 1; zOffset++) {
-                if (xOffset == 0 && zOffset == 0) {
-                    this.worldObj.setBlock(i + xOffset, j, k + zOffset, Blocks.dirt, 0, WorldGenTualang.blockGenNotifyFlag);
-                } else {
-                    this.worldObj.setBlock(i + xOffset, j, k + zOffset, Blocks.dirt, 0, 2);
-                }
-            }
-        }
-    }
-
     private void buildTrunk(int i, int j, int k, int height) {
         for (int y = j; y < height; ++y) {
-            for (int xOffset = -1; xOffset <= 1; xOffset++) {
-                for (int zOffset = -1; zOffset <= 1; zOffset++) {
-                    this.worldObj.setBlock(i + xOffset, y, k + zOffset, WorldGenTualang.WOOD_BLOCK, 1, 2);
-                }
-            }
+            this.worldObj.setBlock(i, y, k, WorldGenTualang.WOOD_BLOCK, 1, WorldGenTualang.blockGenNotifyFlag);
         }
     }
 
@@ -99,7 +82,6 @@ public class WorldGenTualang extends TCGenBase {
             this.genCircle(bx, branchHeight + 1, bz, 3.0, 2.0, WorldGenTualang.LEAF_BLOCK, 1, false);
         }
     }
-
 
     private int sign(final int i) {
         return (i == 0) ? 0 : ((i <= 0) ? -1 : 1);
