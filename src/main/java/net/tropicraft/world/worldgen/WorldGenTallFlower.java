@@ -2,11 +2,8 @@ package net.tropicraft.world.worldgen;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class WorldGenTallFlower extends TCGenBase {
@@ -33,31 +30,35 @@ public class WorldGenTallFlower extends TCGenBase {
             return false;
         }
 
-        List<ChunkCoordinates> potentialFlowerLocations = new ArrayList<>();
+        int radius = 5;
 
         for (int l = 0; l < this.FLOWER_TRIES; ++l) {
-            final int i2 = i + this.rand.nextInt(17) - 8;
+            final int i2 = i + this.rand.nextInt(radius * 2 + 1) - radius;
             final int j2 = j + this.rand.nextInt(7) - 3;
-            final int k2 = k + this.rand.nextInt(17) - 8;
+            final int k2 = k + this.rand.nextInt(radius * 2 + 1) - radius;
 
-            potentialFlowerLocations.add(new ChunkCoordinates(i2, j2, k2));
-        }
+            if (isWithinChunkBounds(i2, k2, chunkX, chunkZ)) {
+                Block block = this.worldObj.getBlock(i2, j2, k2);
+                Block blockAbove = this.worldObj.getBlock(i2, j2 + 1, k2);
 
-        for (ChunkCoordinates pos : potentialFlowerLocations) {
-            if (canPlaceFlowerAt(pos.posX, pos.posY, pos.posZ)) {
-                placeFlower(pos.posX, pos.posY, pos.posZ);
+                if (block == Blocks.grass
+                    && (blockAbove == Blocks.air || blockAbove == Blocks.tallgrass)
+                    && this.plantBlock.canBlockStay(this.worldObj, i2, j2, k2)) {
+                    placeFlower(i2, j2, k2);
+                }
             }
         }
 
         return true;
     }
-    private boolean canPlaceFlowerAt(int i, int j, int k) {
-        Block block = this.worldObj.getBlock(i, j, k);
-        Block blockAbove = this.worldObj.getBlock(i, j + 1, k);
 
-        return block == Blocks.grass
-            && blockAbove.isAir(worldObj, i, j + 1, k)
-            && this.plantBlock.canBlockStay(this.worldObj, i, j, k);
+    private boolean isWithinChunkBounds(int i, int k, int chunkX, int chunkZ) {
+        int chunkStartX = chunkX << 4;
+        int chunkStartZ = chunkZ << 4;
+        int chunkEndX = chunkStartX + 15;
+        int chunkEndZ = chunkStartZ + 15;
+
+        return i >= chunkStartX && i <= chunkEndX && k >= chunkStartZ && k <= chunkEndZ;
     }
 
     private void placeFlower(int i, int j, int k) {
