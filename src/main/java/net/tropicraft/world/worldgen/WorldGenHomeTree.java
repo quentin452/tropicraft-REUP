@@ -8,7 +8,6 @@ import net.minecraft.item.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
-import net.minecraft.world.chunk.Chunk;
 import net.tropicraft.registry.*;
 
 public class WorldGenHomeTree extends TCGenBase {
@@ -198,41 +197,23 @@ public class WorldGenHomeTree extends TCGenBase {
     }
 
     public void genLeafCircle(final int x, final int y, final int z, final int outerRadius, final int innerRadius,
-                              final Block leafID2, final int meta, final boolean vines) {
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
-            return;
-        }
-
+        final Block leafID2, final int meta, final boolean vines) {
         final int outerRadiusSquared = outerRadius * outerRadius;
         final int innerRadiusSquared = innerRadius * innerRadius;
-
-        boolean isVineGenerated = false;
-
-        Chunk chunk = this.worldObj.getChunkFromChunkCoords(chunkX, chunkZ);
-
-        for (int i = chunk.xPosition << 4; i < (chunk.xPosition << 4) + 16; ++i) {
-            for (int k = chunk.zPosition << 4; k < (chunk.zPosition << 4) + 16; ++k) {
-                final double d = (x - i) * (x - i) + (double)(z - k) * (z - k);
-
+        for (int i = -outerRadius + x; i < outerRadius + x; ++i) {
+            for (int k = -outerRadius + z; k < outerRadius + z; ++k) {
+                final double d = (x - i) * (x - i) + (z - k) * (z - k);
                 if (d <= outerRadiusSquared && d >= innerRadiusSquared) {
-                    Block blockAtPos = chunk.getBlock(i & 15, y, k & 15);
-
-                    if (blockAtPos.isAir(this.worldObj, i, y, k) || blockAtPos == leafID2) {
+                    if (this.worldObj.isAirBlock(i, y, k) || this.worldObj.getBlock(i, y, k) == leafID2) {
                         this.placeBlock(i, y, k, leafID2, meta, false);
                     }
-
-                    if (!isVineGenerated && vines && this.rand.nextInt(20) == 0) {
+                    if (this.rand.nextInt(20) == 0 && vines) {
                         this.genVines(i, y - 1, k);
-                        isVineGenerated = true;
                     }
                 }
             }
         }
     }
-
 
     public void genVines(final int i, final int j, final int k) {
         final int length = this.rand.nextInt(15) + 8;
