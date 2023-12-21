@@ -196,9 +196,10 @@ public class WorldGenHomeTree extends TCGenBase {
     }
 
     public void genLeafCircle(final int x, final int y, final int z, final int outerRadius, final int innerRadius,
-        final Block leafID2, final int meta, final boolean vines) {
+                              final Block leafID2, final int meta, final boolean vines) {
         final int outerRadiusSquared = outerRadius * outerRadius;
         final int innerRadiusSquared = innerRadius * innerRadius;
+
         for (int i = -outerRadius + x; i < outerRadius + x; ++i) {
             for (int k = -outerRadius + z; k < outerRadius + z; ++k) {
                 final double d = (x - i) * (x - i) + (z - k) * (z - k);
@@ -223,18 +224,18 @@ public class WorldGenHomeTree extends TCGenBase {
     }
 
     public boolean placeBlock(final int i, final int j, final int k, final Block woodID2, final int meta,
-        final boolean force) {
+                              final boolean force) {
         final Block bID = this.worldObj.getBlock(i, j, k);
-        if (!force && bID != Blocks.water
-            && bID != Blocks.flowing_water
-            && bID != TCBlockRegistry.tropicsWater
-            && bID != Blocks.air) {
+        if (!force && !canReplaceBlock(bID)) {
             return false;
         }
-        if (meta == 0) {
-            return this.worldObj.setBlock(i, j, k, woodID2, 0, 0);
-        }
+
         return this.worldObj.setBlock(i, j, k, woodID2, meta, 0);
+    }
+
+    private boolean canReplaceBlock(Block block) {
+        return block == Blocks.water || block == Blocks.flowing_water ||
+            block == TCBlockRegistry.tropicsWater || block == Blocks.air;
     }
 
     public List<ChunkCoordinates> genCircle(final int i, final int j, final int k, final double outerRadius, final double innerRadius,
