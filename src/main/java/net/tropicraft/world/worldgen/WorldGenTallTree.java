@@ -152,13 +152,15 @@ public class WorldGenTallTree extends TCGenBase {
     private boolean canPlaceVines(int x, int y, int z) {
         Block vineBlock = Blocks.vine;
 
-        Block blockAtPos = this.worldObj.getBlock(x, y, z);
-        Block blockAbove = this.worldObj.getBlock(x, y + 1, z);
-        Block blockBelow = this.worldObj.getBlock(x, y - 1, z);
+        IBlockAccess world = this.worldObj;
 
-        boolean isAir = blockAtPos.isAir(this.worldObj, x, y, z);
-        boolean isAirAbove = blockAbove.isAir(this.worldObj, x, y + 1, z);
-        boolean isAirBelow = blockBelow.isAir(this.worldObj, x, y - 1, z);
+        Block blockAtPos = world.getBlock(x, y, z);
+        Block blockAbove = world.getBlock(x, y + 1, z);
+        Block blockBelow = world.getBlock(x, y - 1, z);
+
+        boolean isAir = blockAtPos.isAir(world, x, y, z);
+        boolean isAirAbove = blockAbove.isAir(world, x, y + 1, z);
+        boolean isAirBelow = blockBelow.isAir(world, x, y - 1, z);
 
         return isAir && isAirAbove && isAirBelow && blockAtPos == vineBlock && !vineExistsNearby(x, y, z);
     }
@@ -185,16 +187,13 @@ public class WorldGenTallTree extends TCGenBase {
         List<Integer> validSides = new ArrayList<>();
 
         for (int m = 2; m <= 5; ++m) {
-            Block currentBlock = this.worldObj.getBlock(x, y, z);
-
-            if (!vineExistsAtPosition(x, y, z)) {
-                boolean isReplaceable = currentBlock.isReplaceable(this.worldObj, x, y, z);
-                if (isReplaceable && isAirBlockAround(x, y, z) && vineBlock == currentBlock) {
-                    validSides.add(1 << Direction.facingToDirection[Facing.oppositeSide[m]]);
-                } else {
-                    String blockName = currentBlock.getUnlocalizedName();
-                    System.out.println("Block at (" + x + ", " + y + ", " + z + ") is not replaceable or cannot place block on side. Block: " + blockName);
-                }
+            int blockX = x + Facing.offsetsXForSide[m];
+            int blockY = y + Facing.offsetsYForSide[m];
+            int blockZ = z + Facing.offsetsZForSide[m];
+            
+            if (this.worldObj.isAirBlock(blockX, blockY, blockZ)) {
+                validSides.add(1 << Direction.facingToDirection[Facing.oppositeSide[m]]);
+            } else {
             }
         }
 
@@ -206,15 +205,6 @@ public class WorldGenTallTree extends TCGenBase {
 
             batchPlaceVines(validSides, x, y, z, vineBlock, startY, y);
         }
-    }
-
-    private boolean isAirBlockAround(int x, int y, int z) {
-        return this.worldObj.isAirBlock(x, y, z) &&
-            this.worldObj.isAirBlock(x, y + 1, z) && this.worldObj.isAirBlock(x, y - 1, z);
-    }
-
-    private boolean vineExistsAtPosition(int x, int y, int z) {
-        return this.worldObj.getBlock(x, y, z) == Blocks.vine;
     }
 
     private void batchPlaceVines(List<Integer> validSides, int x, int y, int z, Block vineBlock, int startY, int maxY) {
