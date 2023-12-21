@@ -143,10 +143,39 @@ public class WorldGenTallTree extends TCGenBase {
             int posY = pos.posY;
             int posZ = pos.posZ;
 
-            if (this.rand.nextInt(vineChance) == 0) {
+            if (this.rand.nextInt(vineChance) == 0 && canPlaceVines(posX, posY, posZ)) {
                 generateVinesAt(posX, posY, posZ);
             }
         }
+    }
+
+    private boolean canPlaceVines(int x, int y, int z) {
+        Block vineBlock = Blocks.vine;
+
+        Block blockAtPos = this.worldObj.getBlock(x, y, z);
+        Block blockAbove = this.worldObj.getBlock(x, y + 1, z);
+        Block blockBelow = this.worldObj.getBlock(x, y - 1, z);
+
+        boolean isAir = blockAtPos.isAir(this.worldObj, x, y, z);
+        boolean isAirAbove = blockAbove.isAir(this.worldObj, x, y + 1, z);
+        boolean isAirBelow = blockBelow.isAir(this.worldObj, x, y - 1, z);
+
+        return isAir && isAirAbove && isAirBelow && blockAtPos == vineBlock && !vineExistsNearby(x, y, z);
+    }
+
+
+    private boolean vineExistsNearby(int x, int y, int z) {
+        int range = 2;
+        for (int i = x - range; i <= x + range; i++) {
+            for (int j = y - range; j <= y + range; j++) {
+                for (int k = z - range; k <= z + range; k++) {
+                    if (this.worldObj.getBlock(i, j, k) == Blocks.vine) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private void generateVinesAt(int x, int y, int z) {
@@ -156,8 +185,16 @@ public class WorldGenTallTree extends TCGenBase {
         List<Integer> validSides = new ArrayList<>();
 
         for (int m = 2; m <= 5; ++m) {
-            if (vineBlock.canPlaceBlockOnSide(this.worldObj, x, y, z, m)) {
-                validSides.add(1 << Direction.facingToDirection[Facing.oppositeSide[m]]);
+            Block currentBlock = this.worldObj.getBlock(x, y, z);
+
+            if (!vineExistsAtPosition(x, y, z)) {
+                boolean isReplaceable = currentBlock.isReplaceable(this.worldObj, x, y, z);
+                if (isReplaceable && isAirBlockAround(x, y, z) && vineBlock == currentBlock) {
+                    validSides.add(1 << Direction.facingToDirection[Facing.oppositeSide[m]]);
+                } else {
+                    String blockName = currentBlock.getUnlocalizedName();
+                    System.out.println("Block at (" + x + ", " + y + ", " + z + ") is not replaceable or cannot place block on side. Block: " + blockName);
+                }
             }
         }
 
@@ -167,9 +204,22 @@ public class WorldGenTallTree extends TCGenBase {
             int startY = y - length;
             startY = Math.max(y - 8, startY);
 
-            for (int vineSide : validSides) {
-                placeVinesBottomUp(x, y, z, vineBlock, vineSide, startY, y);
-            }
+            batchPlaceVines(validSides, x, y, z, vineBlock, startY, y);
+        }
+    }
+
+    private boolean isAirBlockAround(int x, int y, int z) {
+        return this.worldObj.isAirBlock(x, y, z) &&
+            this.worldObj.isAirBlock(x, y + 1, z) && this.worldObj.isAirBlock(x, y - 1, z);
+    }
+
+    private boolean vineExistsAtPosition(int x, int y, int z) {
+        return this.worldObj.getBlock(x, y, z) == Blocks.vine;
+    }
+
+    private void batchPlaceVines(List<Integer> validSides, int x, int y, int z, Block vineBlock, int startY, int maxY) {
+        for (int vineSide : validSides) {
+            placeVinesBottomUp(x, y, z, vineBlock, vineSide, startY, maxY);
         }
     }
 
