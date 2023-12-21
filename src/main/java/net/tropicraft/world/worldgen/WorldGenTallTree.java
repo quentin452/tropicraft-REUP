@@ -152,7 +152,14 @@ public class WorldGenTallTree extends TCGenBase {
     private boolean canPlaceVines(int x, int y, int z) {
         Block vineBlock = Blocks.vine;
 
-        IBlockAccess world = this.worldObj;
+        World world = this.worldObj;
+
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+
+        if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+            return false;
+        }
 
         Block blockAtPos = world.getBlock(x, y, z);
         Block blockAbove = world.getBlock(x, y + 1, z);
@@ -164,7 +171,6 @@ public class WorldGenTallTree extends TCGenBase {
 
         return isAir && isAirAbove && isAirBelow && blockAtPos == vineBlock && !vineExistsNearby(x, y, z);
     }
-
 
     private boolean vineExistsNearby(int x, int y, int z) {
         int range = 2;
@@ -190,7 +196,7 @@ public class WorldGenTallTree extends TCGenBase {
             int blockX = x + Facing.offsetsXForSide[m];
             int blockY = y + Facing.offsetsYForSide[m];
             int blockZ = z + Facing.offsetsZForSide[m];
-            
+
             if (this.worldObj.isAirBlock(blockX, blockY, blockZ)) {
                 validSides.add(1 << Direction.facingToDirection[Facing.oppositeSide[m]]);
             } else {
