@@ -3,6 +3,7 @@ package net.tropicraft.world.worldgen;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.tropicraft.registry.TCBlockRegistry;
 
@@ -79,10 +80,8 @@ public class WorldGenCoffeePlant extends TCGenBase {
     }
 
     private void placeBlocks(int x, int y, int z, ForgeDirection direction) {
-        int chunkX = x >> 4;
-        int chunkZ = z >> 4;
-
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = worldObj.getChunkFromChunkCoords(x >> 4, z >> 4);
+        if (!chunk.isChunkLoaded) {
             return;
         }
 

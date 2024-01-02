@@ -3,6 +3,7 @@ package net.tropicraft.world.worldgen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.Random;
 
@@ -26,7 +27,8 @@ public class WorldGenTallFlower extends TCGenBase {
         int chunkX = i >> 4;
         int chunkZ = k >> 4;
 
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX >> 4, chunkZ >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
 

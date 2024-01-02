@@ -5,6 +5,7 @@ import java.util.*;
 import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.tropicraft.registry.*;
 
 public class WorldGenTualang extends TCGenBase {
@@ -21,9 +22,8 @@ public class WorldGenTualang extends TCGenBase {
     }
 
     public boolean generate(final int i, final int j, final int k) {
-        int chunkX = i >> 4;
-        int chunkZ = k >> 4;
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = worldObj.getChunkFromChunkCoords(i >> 4, k >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
         final int height = this.rand.nextInt(this.maxHeight - this.baseHeight) + this.baseHeight + j;

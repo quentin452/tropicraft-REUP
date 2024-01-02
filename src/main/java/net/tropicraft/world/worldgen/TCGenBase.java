@@ -42,10 +42,12 @@ public abstract class TCGenBase extends WorldGenerator {
         List<ChunkCoordinates> generatedPositions = new ArrayList<>();
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
-
+        Chunk chunk = worldObj.getChunkFromChunkCoords(x >> 4, z >> 4);
+        if (!chunk.isChunkLoaded) {
+            return null;
+        }
         for (int chunkI = chunkX - (int) outerRadius - 1; chunkI <= chunkX + (int) outerRadius + 1; ++chunkI) {
             for (int chunkK = chunkZ - (int) outerRadius - 1; chunkK <= chunkZ + (int) outerRadius + 1; ++chunkK) {
-                if (this.worldObj.getChunkProvider().chunkExists(chunkI, chunkK)) {
                     for (int i = chunkI << 4; i < (chunkI << 4) + 16; ++i) {
                         for (int k = chunkK << 4; k < (chunkK << 4) + 16; ++k) {
                             final double d = (double) ((i - x) * (i - x)) + (k - z) * (k - z);
@@ -56,7 +58,6 @@ public abstract class TCGenBase extends WorldGenerator {
                             }
                         }
                     }
-                }
             }
         }
         return generatedPositions;
@@ -112,12 +113,7 @@ public abstract class TCGenBase extends WorldGenerator {
             int chunkX = ai3[0] >> 4;
             int chunkZ = ai3[2] >> 4;
 
-            if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
-                return false;
-            }
-
-            Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-
+            Chunk chunk = world.getChunkFromChunkCoords(chunkX >> 4, chunkZ >> 4);
             if (!chunk.isChunkLoaded) {
                 return false;
             }
@@ -163,8 +159,9 @@ public abstract class TCGenBase extends WorldGenerator {
                 chunkX = blockChunkX;
                 chunkZ = blockChunkZ;
 
-                if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
-                    continue;
+                Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX >> 4, chunkZ >> 4);
+                if (!chunk.isChunkLoaded) {
+                    return;
                 }
             }
 

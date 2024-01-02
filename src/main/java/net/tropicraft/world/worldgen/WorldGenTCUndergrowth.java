@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.init.*;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.*;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.tropicraft.registry.*;
 
@@ -25,7 +26,8 @@ public class WorldGenTCUndergrowth extends TCGenBase {
         int chunkX = i >> 4;
         int chunkZ = k >> 4;
 
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = worldObj.getChunkFromChunkCoords(chunkX >> 4, chunkZ >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
 
@@ -41,7 +43,6 @@ public class WorldGenTCUndergrowth extends TCGenBase {
         int chunkStartZ = (k - size) >> 4;
         int chunkEndX = (i + size) >> 4;
         int chunkEndZ = (k + size) >> 4;
-
         for (int y = j; y < j + size; ++y) {
             for (int x = i - size; x <= i + size; ++x) {
                 final int xVariance = x - i;
@@ -50,20 +51,13 @@ public class WorldGenTCUndergrowth extends TCGenBase {
                     int blockChunkX = x >> 4;
                     int blockChunkZ = z >> 4;
                     if (shouldPlaceLeafBlock(xVariance, zVariance, blockChunkX, blockChunkZ, chunkStartX, chunkStartZ, chunkEndX, chunkEndZ)) {
-                        if (this.worldObj.getChunkProvider().chunkExists(blockChunkX, blockChunkZ)) {
                             this.worldObj.setBlock(x, y, z, WorldGenTCUndergrowth.LEAF_BLOCK, 1, WorldGenTCUndergrowth.blockGenNotifyFlag);
-                        }
                     }
                 }
             }
         }
 
         return true;
-    }
-
-
-    private boolean isChunkExists(int chunkX, int chunkZ) {
-        return this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ);
     }
 
     private boolean isValidUnderBlock(int i, int j, int k) {

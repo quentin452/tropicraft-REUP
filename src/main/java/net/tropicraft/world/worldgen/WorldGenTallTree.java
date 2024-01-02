@@ -28,10 +28,8 @@ public class WorldGenTallTree extends TCGenBase {
     }
 
     public boolean generate(final int i, final int j, final int k) {
-        int chunkX = i >> 4;
-        int chunkZ = k >> 4;
-
-        if (!this.worldObj.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = worldObj.getChunkFromChunkCoords(i >> 4, k >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
         Block blockUnder = this.worldObj.getBlock(i, j - 1, k);
@@ -157,7 +155,8 @@ public class WorldGenTallTree extends TCGenBase {
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
 
-        if (!world.getChunkProvider().chunkExists(chunkX, chunkZ)) {
+        Chunk chunk = world.getChunkFromChunkCoords(x >> 4, z >> 4);
+        if (!chunk.isChunkLoaded) {
             return false;
         }
 
